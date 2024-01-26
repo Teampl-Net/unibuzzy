@@ -190,7 +190,7 @@
                                   style=""
                                   v-if="CONT_DETAIL.actorList.length > 3 && index === 2"
                                 >
-                                  <span>+{{ CONT_DETAIL.actorList.length - 3 }}</span>
+                                  <span>+{{ CONT_DETAIL.actorList.length - 2 }}</span>
                                 </div>
                               </div>
                               <div

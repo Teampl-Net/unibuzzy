@@ -328,13 +328,13 @@
               <div v-if="CONT_DETAIL.jobkindId === 'TODO' && !(CONT_DETAIL && CONT_DETAIL.actorList.length === 2 && CONT_DETAIL.actorList[0].accessKey === GE_USER.userKey && CONT_DETAIL.actorList[1].accessKey === GE_USER.userKey)" class="todoOtherInfosAsignee">
                 <div class="w100P actorImgList cursorP" @click.stop=" openRecvActorListPop()">
                   <template v-for="(each, index) in CONT_DETAIL.actorList" :key="index">
-                    <img v-if="each.actType === 'RV' && each.accessKind === 'U' && index < 3 " class="actorImg" :src="each.domainPath ? each.domainPath + each.pathMtext : require(`@/assets/images/todo/defaultImg.png`)" style="" :alt="each.userDispMtext"/>
-                    <img v-else-if="each.actType === 'RV' && index < 3" class="actorImg" :src="require(`@/assets/images/todo/channer_addressBook.svg`)" style="" :alt="each.userDispMtext"/>
-                    <div class="moreActorImg" style="" v-if="index === 2">
-                      <span>+{{ CONT_DETAIL.actorList.length }}</span>
+                    <img v-if="each.accessKind === 'U' && index < 2 " class="actorImg" :src="each.domainPath ? each.domainPath + each.pathMtext : require(`@/assets/images/todo/defaultImg.png`)" style="" :alt="each.userDispMtext"/>
+                    <img v-else-if="each.accessKind === 'C' && index < 2" class="actorImg" :src="require(`@/assets/images/todo/channer_addressBook.svg`)" style="" :alt="each.userDispMtext"/>
+                    <div class="moreActorImg" style="" v-if="index === 1">
+                      <span>+{{ CONT_DETAIL.actorList.length -2 }}</span>
                     </div>
                     <div class="moreActorImg" style="" v-else-if="(CONT_DETAIL.actorList.length === 1 && CONT_DETAIL.actorList[0].actType === 'CK') || (CONT_DETAIL.actorList.length === 2 && CONT_DETAIL.actorList[1].actType === 'CK') && index === 1">
-                      <span>+{{ CONT_DETAIL.actorList.length }}</span>
+                      <span>+{{ CONT_DETAIL.actorList.length -2 }}</span>
                     </div>
                     <div class="actorNameListWrap" v-if="mOpenActorListYn">
                       <div class="actorNameList">

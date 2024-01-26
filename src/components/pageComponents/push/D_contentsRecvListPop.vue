@@ -88,9 +88,9 @@ export default {
   },
   created () {
     if (this.initData) {
-      console.log(this.initData)
-      this.mActorList = this.replaceArr(this.initData.actorList)
-      console.log(this.mActorList)
+      console.log('this.initData', this.initData)
+      this.mActorList = this.initData.actorList
+      console.log('mActorList', this.mActorList)
     }
     var history = this.$store.getters['D_HISTORY/hStack']
     this.popId = 'recvListPop' + history.length

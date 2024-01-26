@@ -175,9 +175,9 @@
                     v-for="(each, index) in CONT_DETAIL.actorList"
                     :key="index"
                 >
-                    <div v-if="index < 3" style="display: flex">
+                    <div v-if="index < 2" style="display: flex">
                     <img
-                        v-if="each.accessKind === 'U' && each.actType === 'RV'"
+                        v-if="each.accessKind === 'U'"
                         class="actorImg"
                         :src="
                         each.domainPath
@@ -188,7 +188,7 @@
                         :alt="each.userDispMtext"
                     />
                     <img
-                        v-else-if="each.accessKind === 'C' && each.actType === 'RV'"
+                        v-else-if="each.accessKind === 'C'"
                         class="actorImg"
                         :src="
                         require(`@/assets/images/todo/channer_addressBook.svg`)
@@ -199,9 +199,9 @@
                     <div
                         class="moreActorImg"
                         style=""
-                        v-if="CONT_DETAIL.actorList.length > 0 && index === 2"
+                        v-if="CONT_DETAIL.actorList.length > 0 && index === 1"
                     >
-                        <span>+{{ CONT_DETAIL.actorList.length }}</span>
+                        <span>+{{ CONT_DETAIL.actorList.length -2 }}</span>
                     </div>
                     <div
                         class="moreActorImg"
@@ -261,7 +261,8 @@ export default {
     return {
       mOpenActorListYn: false,
       mGetWhichTodoIndex: -1,
-      tagTextColor: '#222'
+      tagTextColor: '#222',
+      countRVNumber: 0
     }
   },
   created () {
@@ -270,10 +271,26 @@ export default {
         this.CONT_DETAIL.stickerList.push({ blackYn: true })
       }
     }
+    this.countRVCount()
+    console.log('countRVNumber!!!!', this.countRVNumber)
   },
   mounted () {
   },
   methods: {
+    countRVCount () {
+      // 배열 순회
+      for (let i = 0; i < this.CONT_DETAIL.actorList.length; i++) {
+        // 각 사람의 정보
+        const person = this.CONT_DETAIL.actorList[i]
+        console.log('person???', person)
+
+        // 'RV'인 경우 count 증가
+        if (person.actType === 'RV') {
+          this.countRVNumber++
+        }
+      }
+      return this.countRVNumber
+    },
     getLightOrDark (colors) {
       if (colors && colors.length > 0) {
         // Variables for red, green, blue values
