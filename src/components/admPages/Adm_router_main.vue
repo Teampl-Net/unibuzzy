@@ -1,9 +1,9 @@
 <template>
-  <div id="routerRef" class="w-100P h-100P mainBackgroundColor listRefresh" style="overflow:hidden"  >
+  <div id="routerRef" class="w-100P h-100P mainBackgroundColor listRefresh" style="overflow:hidden; padding-top:60px;"  >
   <gAdmPopWrap v-if="popUpShow" @dataUpdated="dataUpdated" :pPropParams="propParams" :pClosePop="closePop" :pOrgList="myOrgList"/>
   <gAdmPageWrap v-if="pageShow" @changeBranch="changeBranch" @openPop="openPop" :pPropParams="propParams" :pPageData="pageData" :pClosePage="closePage" :pOrgList="myOrgList"/>
   <commonHeader />
-  <router-view v-if="dataLoaded" style="overflow:hidden auto; padding:60px 30px 30px;" @openPage="openPage" @openPop="openPop" :pSelectedApp="mSelectedApp" :pMyOrgList="myAppList"></router-view>
+  <router-view v-if="dataLoaded" style="overflow:hidden auto;" @openPage="openPage" @openPop="openPop" :pSelectedApp="mSelectedApp" :pMyOrgList="myAppList"></router-view>
   <commonFooter v-if="footer" />
   </div>
 </template>
@@ -38,6 +38,10 @@ export default {
   created () {
     this.getOrgList()
     console.log('GE_USER', this.GE_USER)
+    var history = this.$store.getters['D_HISTORY/hStack']
+    this.popId = 'admMain' + history.length
+    history.push(this.popId)
+    this.$store.commit('D_HISTORY/updateStack', history)
   },
   methods: {
     async getOrgList () {
@@ -86,11 +90,16 @@ export default {
   computed: {
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
+    },
+    historyStack () {
+      return this.$store.getters['D_HISTORY/hRPage']
+    },
+    pageUpdate () {
+      return this.$store.getters['D_HISTORY/hUpdate']
     }
   }
 }
 </script>
 
 <style scoped>
-
 </style>

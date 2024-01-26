@@ -268,21 +268,33 @@ export const routes = [
     name: 'boardDetail',
     props: true,
     component: () => import(/* webpackChunkName: "about" */ '../../components/board/D_boardMain.vue')
+  },
+  {
+    path: '/admPages',
+    name: 'routerMain',
+    component: () => import(/* webpackChunkName: "about" */ '../../components/admPages/Adm_router_main.vue'),
+    children: [
+      {
+        path: '/admPages',
+        name: 'admPageMain',
+        props: true,
+        meta: {
+          page: 1
+        },
+        component: () => import(/* webpackChunkName: "about" */ '../../components/admPages/adm_main.vue')
+      },
+      {
+        path: '/addOrg',
+        name: 'addOrg',
+        props: true,
+        component: () => import(/* webpackChunkName: "about" */ '../../components/admPages/popUP/Adm_addGroupPop.vue')
+      },
+      {
+        path: '/addMember',
+        name: 'addMember',
+        props: true,
+        component: () => import(/* webpackChunkName: "about" */ '../../components/admPages/popUP/Adm_addMemberPop.vue')
+      }
+    ]
   }
-  // {
-  //   path: '/admPages',
-  //   name: 'routerMain',
-  //   component: () => import(/* webpackChunkName: "about" */ '../../components/admPages/Adm_router_main.vue'),
-  //   children: [
-  //     {
-  //       path: '/',
-  //       name: 'main',
-  //       props: true,
-  //       meta: {
-  //         page: 1
-  //       },
-  //       component: () => import(/* webpackChunkName: "about" */ '../../components/admPages/adm_main.vue')
-  //     }
-  //   ]
-  // }
 ]

@@ -79,7 +79,6 @@ computed: {
     this.popId = 'selectChanTypePop' + history.length
     history.push(this.popId)
     this.$store.commit('D_HISTORY/updateStack', history)
-
   },
   methods: {
     closeXPop () {

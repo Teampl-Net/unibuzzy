@@ -1,25 +1,25 @@
 <template>
   <seleciconBgPopup v-if="mIconBgSelectPopYn=='iconPop' || mIconBgSelectPopYn=='bgPop'" :isAdmTrue="true" :selectIcon="this.mSelectedIcon" :selectBg="this.mSelectedBg" @no='mIconBgSelectPopYn=false' @makeParam='setIconOrBGData' :opentype="mIconBgSelectPopYn" />
 
-  <div id="layout" class="w100P alignCenter" style="flex-direction:column; gap:1rem; justify-content:space-between;">
+  <div id="admLayout" class="w100P alignCenter" style="flex-direction:column; gap:1rem; justify-content:space-between;">
 
     <div class="w100P alignCenter" style="flex-direction:column;">
 
-      <header class="w100P">
-      <div class="w100P font30 fontBold " style="color:#5F61BD; text-align:center; padding-bottom:20px;">{{ pPropParams.popType === 'addGroup' ? '조직 추가' : '조직 수정' }}</div>
-      </header>
+      <!-- <header class="w100P">
+      <div class="w100P font30 fontBold " style="color:#5F61BD; text-align:center; padding-bottom:20px;">{{ '조직 추가' }}</div>
+      </header> -->
 
-      <div @click="mIconBgSelectPopYn='bgPop'" :style="'background: url(' + mSelectedBg.selectPath + ');'" class="w100P" style="height:230px; background-repeat: no-repeat;background-size: cover;"></div>
+      <div @click="mIconBgSelectPopYn='bgPop'" :style="'background: url(' + mSelectedBg.selectPath + ');'" class="w100P cursorP" style="height:230px; background-repeat: no-repeat;background-size: cover;"></div>
       <div :style="'background-image: url(' + mSelectedIcon.selectPath + ')'" class="profileImg cursorP" @click="mIconBgSelectPopYn='iconPop'" style="background-size: cover; background-position: center; background-repeat: no-repeat;">
       </div>
 
       <div class="w100P infoFillArea">
-        <div class="w100P alignCenter" style="justify-content:space-between;">
+        <div class="w100P alignCenter" style="justify-content:space-between; gap:10px;">
           <div class="infoName" style="width:70%;">
             <p>조직명</p>
             <input type="text" class="inputs nameInput" v-model="infoGroupName" :placeholder=mNamePlaceHolder />
           </div>
-          <div class="infoType" style="width:25%;">
+          <div class="infoType" style="width:25%; min-width:235px;">
             <p>조직타입</p>
             <select v-model="selectedOption" @change="changeTypeOption">
               <option v-for="(type, index) in mTypeOption" :key="index" :value="type.value">{{type.name}}</option>
@@ -34,8 +34,8 @@
     </div>
 
         <div class="w100P">
-        <button type="button" @click="saveGroup" class="admBtn saveBtn">{{ pPropParams.popType === 'addGroup' ? '추가' : '수정'}}</button>
-          <button type="button" @click="pClosePop" class="admBtn">닫기</button>
+        <button type="button" @click="saveGroup" class="admBtn saveBtn">{{ '추가' }}</button>
+          <button type="button" @click="closeXPop" class="admBtn">닫기</button>
         </div>
       </div>
 </template>
@@ -65,6 +65,10 @@ export default {
     if (this.pSelectedOrg) {
       this.mSelectedIcon = this.pSelectedOrg.iconPath
     }
+    var history = this.$store.getters['D_HISTORY/hStack']
+    this.popId = 'addOrg' + history.length
+    history.push(this.popId)
+    this.$store.commit('D_HISTORY/updateStack', history)
   },
   data () {
     return {
@@ -87,6 +91,15 @@ export default {
     }
   },
   methods: {
+    closeXPop () {
+      // var history = this.$store.getters['D_HISTORY/hStack']
+      // var removePage = history[history.length - 1]
+      // console.log('history', history, 'removePage', removePage)
+      // history = history.filter((element, index) => index < history.length - 1)
+      // this.$store.commit('D_HISTORY/setRemovePage', removePage)
+      // this.$store.commit('D_HISTORY/updateStack', history)
+      this.$router.push('/admPages')
+    },
     changeTypeOption (value) {
       this.infoGroupType = this.selectedOption
       console.log('this.infoGroupType', this.infoGroupType)
@@ -104,7 +117,8 @@ export default {
       if (this.pPropParams.popType === 'editGroup') { // 수정이면
         paramSet.orgKey = this.pPropParams.orgKey
       }
-      this.$emit('saveGroup', paramSet)
+      var result = await axios.post('/sUniB/tp.saveOrg', { org: paramSet }, { withCredentials: true, headers: { DemoYn: true } })
+      console.log('result', result)
     },
     async getOrgList () {
       console.log('getOrgList 실행됨 - add Group Pop')
@@ -130,6 +144,19 @@ export default {
   computed: {
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
+    },
+    historyStack () {
+      return this.$store.getters['D_HISTORY/hRPage']
+    },
+    pageUpdate () {
+      return this.$store.getters['D_HISTORY/hUpdate']
+    }
+  },
+  watch: {
+    pageUpdate (value, old) {
+      this.closeXPop()
+    },
+    historyStack (value, old) {
     }
   }
 }
@@ -137,11 +164,6 @@ export default {
 
 <style scoped>
 
-#layout{
-  width:100%;
-  height:100%;
-  padding:60px 30px 50px;
-}
 .profileImg{
   width:150px;
   height:150px;
@@ -164,7 +186,7 @@ export default {
 .infoFillArea p {
   text-align:left;
   font-size:14px;
-  width:80px;
+  width:60px;
 }
 .infoName, .infoDesc, .infoType{
   display:flex;
@@ -184,5 +206,19 @@ export default {
   background-color:#5F61BD;
   color:#fff;
   margin-right:1rem;
+}
+
+@media screen and (max-width:730px){
+  .infoFillArea > div:first-child{
+    flex-direction:column;
+    justify-content:start;
+    align-items:start;
+  }
+  .infoFillArea > div:first-child .infoName{
+    width:100% !important;
+  }
+  .inputs, select{
+    width:calc(100% - 60px);
+  }
 }
 </style>

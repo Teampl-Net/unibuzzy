@@ -1,5 +1,5 @@
 <template>
-  <div class="w100P h100P admPageMain">
+  <div class="w100P h100P admPageMain" id="admLayout">
     <div class="topArea w100P">
       <div class="myInfoArea">
         <p class="font30" style="padding-right:10px;">내 조직 IN </p>
@@ -17,7 +17,7 @@
       <template v-for="(branch, index) in mBranchList" :key="index">
         <jojikCompo @click="openPage(branch)" :pBranch="branch" class="cursorP"/>
       </template>
-      <div class="jojikAddBtn cursorP" @click="openPop('addGroup')">
+      <div class="jojikAddBtn cursorP" @click="gotoAddOrg">
         <div style="width:50px; height:50px; border-radius:50%; background-color:#ebebeb; font-size:30px; line-height:50px;">+</div>
         <p class="font15" style="margin-left:0.5rem;">조직 추가</p>
       </div>
@@ -55,6 +55,9 @@ export default {
     }
   },
   methods: {
+    gotoAddOrg () {
+      this.$router.push('/addOrg')
+    },
     openPop (popType) {
       this.propParams.popType = popType
       this.$emit('openPop', this.propParams)
@@ -109,7 +112,6 @@ export default {
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:20px 0;
   height:auto;
 }
 .myInfoArea{

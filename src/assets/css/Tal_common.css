@@ -152,6 +152,24 @@ input, select {
   }
 }
 
+/* adm Pages */
+#admLayout{
+  width:100%;
+  height:100%;
+  padding:20px 30px 50px;
+  box-shadow:0 0 5px rgba(0,0,0,0.2);
+  z-index:3;
+  /* background-color:#fff; */
+  width:100%;
+  height:100%;
+}
+
+@media screen and (max-width:730px){
+  #admLayout{
+    padding:20px 1rem 50px !important;
+  }
+}
+
 /* popup AddTodo animation */
 .show_right-enter {
   position: absolute;
