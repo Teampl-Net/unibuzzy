@@ -18,17 +18,30 @@ export const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../../pages/D_coreProxy.vue')
   },
   {
-    path: '/admRouterMain',
+    path: '/admMain',
     name: 'admRouterMain',
     component: admRouterMain,
     children: [
       {
-        path: '/admMain',
-        name: 'admMain',
+        path: '/admPages',
+        name: 'admPageMain',
         props: true,
         meta: {
           page: 1
-        }
+        },
+        component: () => import(/* webpackChunkName: "about" */ '../../components/admPages/adm_main.vue')
+      },
+      {
+        path: '/addOrg',
+        name: 'addOrg',
+        props: true,
+        component: () => import(/* webpackChunkName: "about" */ '../../components/admPages/popUP/Adm_addGroupPop.vue')
+      },
+      {
+        path: '/addMember',
+        name: 'addMember',
+        props: true,
+        component: () => import(/* webpackChunkName: "about" */ '../../components/admPages/popUP/Adm_addMemberPop.vue')
       }
     ]
   },
@@ -55,38 +68,6 @@ export const routes = [
               next('/policies')
             }
           } */
-      },
-      {
-        path: '/admMain',
-        name: 'admPage',
-        props: true,
-        meta: {
-          page: 1
-        },
-        component: () => import(/* webpackChunkName: "about" */ '../../components/admPages/Adm_router_main.vue'),
-        children: [
-          {
-            path: '/admPages',
-            name: 'admPageMain',
-            props: true,
-            meta: {
-              page: 1
-            },
-            component: () => import(/* webpackChunkName: "about" */ '../../components/admPages/adm_main.vue')
-          },
-          {
-            path: '/addOrg',
-            name: 'addOrg',
-            props: true,
-            component: () => import(/* webpackChunkName: "about" */ '../../components/admPages/popUP/Adm_addGroupPop.vue')
-          },
-          {
-            path: '/addMember',
-            name: 'addMember',
-            props: true,
-            component: () => import(/* webpackChunkName: "about" */ '../../components/admPages/popUP/Adm_addMemberPop.vue')
-          }
-        ]
       },
       {
         path: '/unknown',
