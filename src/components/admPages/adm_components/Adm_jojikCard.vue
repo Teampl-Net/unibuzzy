@@ -63,7 +63,7 @@ export default {
         if (urlParam.appToken) {
           this.$APP_CONFIG.appToken = urlParam.appToken
           if (this.$route.params.orgKey) {
-            this.getOrgList(Number(this.$route.params.orgKey))
+            // this.getOrgList(Number(this.$route.params.orgKey))
           }
         }
       }
@@ -113,8 +113,8 @@ export default {
             const result = JSON.parse(event.data)
             if (result.data) {
               this.mOtherAppUserInfo = result.data
-              // this.$APP_CONFIG.appToken = result.data.appToken
-              // this.getOrgList(this.mOtherAppUserInfo.orgKey)
+              this.$APP_CONFIG.appToken = result.data.appToken
+              this.getOrgList(this.$route.params.orgKey)
             }
             if (callback) {
               callback(result)
