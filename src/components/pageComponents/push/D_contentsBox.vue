@@ -205,7 +205,7 @@
                     <img
                       class="cursorP"
                       v-if="
-                        CONT_DETAIL.contTarget && CONT_DETAIL.contTarget === 'myRef'
+                        (CONT_DETAIL.contTarget && CONT_DETAIL.contTarget === 'myRef') || (this.userRefYn && this.userRefYn.length > 0)
                       "
                       src="@/assets/images/todo/checkboxRef.svg"
                       width="30"
@@ -451,7 +451,8 @@
             <span v-if="CONT_DETAIL.jobkindId !== 'TODO'">{{ this.$changeDateFormat(CONT_DETAIL.creDate) }}</span>
             <div @click.stop="clickFileDownload()" v-if="CONT_DETAIL.fileCount" class="cursorP" style="margin-left:0.6rem;">
               <img src="../../../assets/images/push/contentsClipIcon.svg" style="width:15px;" class="" alt=""/>
-              <span class="font15" style="margin-left:0.1rem;"> {{ CONT_DETAIL.fileCount }} file</span>
+              <span v-if="propDetailYn===true" class="font15" style="margin-left:0.1rem;"> {{ CONT_DETAIL.attachFileList ? CONT_DETAIL.attachFileList.length : '0' }} file</span>
+              <span v-else-if="propDetailYn===false" class="font15" style="margin-left:0.1rem;"> 1+ file</span>
             </div>
             </div>
           </div>
@@ -1276,6 +1277,8 @@ export default {
     pNoAuthYn: {}
   },
   created () {
+    console.log('contentsBox this.CONT_DETAIL', this.CONT_DETAIL)
+    this.checkUserRef()
     // this.saveStickerList()
     if (this.pFadeNotShowYn) this.mFadeNotShowYn = true
     else this.mFadeNotShowYn = false
@@ -1297,6 +1300,7 @@ export default {
   },
   data () {
     return {
+      userRefYn: [],
       mCommentPopShowYn: false,
       mMemoLeng: 0,
       mFadeNotShowYn: false,
@@ -1384,6 +1388,24 @@ export default {
     }
   },
   methods: {
+    checkUserRef () {
+      if (this.CONT_DETAIL && this.CONT_DETAIL.actorList && this.CONT_DETAIL.actorList.length > 0) {
+        for (let i = 0; i < this.CONT_DETAIL.actorList.length; i++) {
+          const check2 = []
+          if (this.CONT_DETAIL.actorList[i].accessKey === this.GE_USER.userKey) {
+            check2.push(this.CONT_DETAIL.actorList[i])
+          }
+          if (check2.length > 0) {
+            for (let j = 0; j < check2.length; j++) {
+              if (check2[j].actType === 'RF') {
+                this.userRefYn.push(check2[j])
+                console.log('check2[j]', check2[j])
+              }
+            }
+          }
+        }
+      }
+    },
     getLightOrDark (colors) {
       if (colors && colors.length > 0) {
         // Variables for red, green, blue values

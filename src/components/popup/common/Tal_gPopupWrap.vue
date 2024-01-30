@@ -343,6 +343,7 @@ export default {
       }
       const res = await this.$saveContents(params)
       var param = {}
+      console.log('save Posts res', res)
       if (res && res.data) {
         param.contentsKey = res.data.contents.contentsKey
         param.jobkindId = res.data.contents.jobkindId

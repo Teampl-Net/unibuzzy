@@ -271,8 +271,7 @@ export default {
         this.CONT_DETAIL.stickerList.push({ blackYn: true })
       }
     }
-    this.countRVCount()
-    console.log('countRVNumber!!!!', this.countRVNumber)
+    // this.countRVCount()
   },
   mounted () {
   },
@@ -282,7 +281,7 @@ export default {
       for (let i = 0; i < this.CONT_DETAIL.actorList.length; i++) {
         // 각 사람의 정보
         const person = this.CONT_DETAIL.actorList[i]
-        console.log('person???', person)
+        // console.log('person???', person)
 
         // 'RV'인 경우 count 증가
         if (person.actType === 'RV') {

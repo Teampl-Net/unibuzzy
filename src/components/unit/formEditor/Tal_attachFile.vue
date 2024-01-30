@@ -174,6 +174,7 @@ export default {
               this.preImgUr = src
               this.selectFile = compressedFile
               this.sFileList.push({ preImgUrl: src, attachKey: this.gAttachKey, addYn: true, file: newFile })
+              console.log('여기555555555555555')
               this.$emit('setSelectedAttachFileList', { attachYn: true, preImgUrl: src, attachKey: this.gAttachKey, addYn: true, file: newFile })
               this.uploadCnt += 1
             /* await uploadToServer(compressedFile) */ // write your own logic
@@ -190,6 +191,7 @@ export default {
               this.sFileList = []
             }
             this.sFileList.push({ fileYn: true, attachKey: this.gAttachKey, addYn: true, attachYn: true, file: this.selectFile })
+            console.log('여기6666666666666666666')
             this.$emit('setSelectedAttachFileList', { attachYn: true, fileYn: true, attachKey: this.gAttachKey, addYn: true, file: this.selectFile })
           }
         }
@@ -254,6 +256,7 @@ export default {
               this.preImgUr = src
               this.selectFile = compressedFile
               this.sFileList.push({ preImgUrl: src, attachKey: this.gAttachKey, addYn: true, file: newFile })
+              console.log('여기111111111111')
               this.$emit('setSelectedAttachFileList', { attachYn: true, preImgUrl: src, attachKey: this.gAttachKey, addYn: true, file: newFile })
               this.uploadCnt += 1
             /* await uploadToServer(compressedFile) */ // write your own logic
@@ -272,6 +275,7 @@ export default {
             }
             // console.log(this.sFileList)
             this.sFileList.push({ fileYn: true, attachKey: this.gAttachKey, addYn: true, attachYn: true, file: this.selectFile })
+            console.log('여기2222222222222')
             this.$emit('setSelectedAttachFileList', { attachYn: true, fileYn: true, attachKey: this.gAttachKey, addYn: true, file: this.selectFile })
           }
         }
@@ -315,6 +319,7 @@ export default {
                 thisthis.preImgUr = result.path
                 thisthis.selectFile = result.file
                 thisthis.sFileList.push({ preImgUrl: result.path, attachKey: thisthis.gAttachKey, addYn: true, file: result.file })
+                console.log('여기33333333333333')
                 thisthis.$emit('setSelectedAttachFileList', [{ attachYn: true, preImgUrl: result.path, attachKey: thisthis.gAttachKey, addYn: true, file: result.file }])
                 thisthis.uploadCnt += 1
                 // editorImgResize1(canvas.toDataURL('image/png', 0.8))
@@ -340,6 +345,7 @@ export default {
             }
             // console.log(this.sFileList)
             this.sFileList.push({ fileYn: true, attachKey: this.gAttachKey, addYn: true, attachYn: true, file: this.selectFile })
+            console.log('여기444444444444444444')
             this.$emit('setSelectedAttachFileList', [{ attachYn: true, fileYn: true, attachKey: this.gAttachKey, addYn: true, file: this.selectFile }])
           }
         }

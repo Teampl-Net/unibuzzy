@@ -70,15 +70,14 @@
                     <div style="padding-left:0; margin-bottom:0; margin-right:10px; text-align:left;">
                       <div class="memoTabWrap w100P" style="overflow-x:scroll;">
                         <div :style="{ width: (GE_DISP_MEMO_LIST.content.length * 33) + '%' }" style="display:flex; align-items:start; flex-wrap:nowrap;">
-                          <!-- <div v-for="(memo, mIndex) in GE_DISP_MEMO_LIST.content" :key="mIndex" class="memoTab" :style="{background: showMemoYn && this.mSelectedMemoIdx !== null && this.mSelectedMemoIdx === mIndex ? `url(${require('@/assets/images/todo/memo_opened.png')}) no-repeat left top / 100% 100%` : `url(${require('@/assets/images/todo/memo_folded.png')}) no-repeat left top / 100% 100%`}"> -->
-                          <div v-for="(memo, mIndex) in GE_DISP_MEMO_LIST.content" :key="mIndex" class="memoTab" :class="{selected : mSelectedMemoIdx === mIndex}" :style="mSelectedMemoIdx !== mIndex ? 'border-bottom: 1.5px solid rgb(219, 219, 243);' : ''">
+                          <div v-for="(memo, mIndex) in GE_DISP_MEMO_LIST.content" :key="mIndex" class="memoTab" :class="{selected : mSelectedMemoIdx === mIndex}" :style="{'background' : memo.bgColor ? `linear-gradient(-135deg, transparent 11px, ${memo.bgColor} 0)` : 'linear-gradient(-135deg, transparent 11px, #FCF5AD 0)', 'border-bottom' : mSelectedMemoIdx === mIndex && memo.bgColor ? `1.5px solid ${memo.bgColor}` : mSelectedMemoIdx === mIndex && !memo.bgColor ? '1.5px solid #FCF5AD' : ''}">
                             <p @click.stop="selectMemo(mIndex)" class="memoTitle font13 w100P" style="height:25px; line-height:25px;">{{memo.title}}</p>
                           </div>
                         </div>
                       </div>
-                      <div v-if="showMemoYn && this.mSelectedMemoIdx !== null" class="memoBody" @click="openMemoManagePop(mSelectedMemoIdx)" :style="{'background-color' : mMemoColor}">
+                      <div v-if="showMemoYn && this.mSelectedMemoIdx !== null" class="memoBody" @click="openMemoManagePop(mSelectedMemoIdx)" :style="{'background-color' : this.GE_DISP_MEMO_LIST.content[this.mSelectedMemoIdx].bgColor ? this.GE_DISP_MEMO_LIST.content[this.mSelectedMemoIdx].bgColor : '#FCF5AD' }">
                         <p class="font13" style="font-weight:normal;">{{this.GE_DISP_MEMO_LIST.content && this.mSelectedMemoIdx >= 0 ? decodeContents(this.GE_DISP_MEMO_LIST.content[this.mSelectedMemoIdx].bodyFullStr) : ''}}</p>
-                        <p class="w100P font13 showMoreBtn fontBold cursorP" style="opacity:80%;" :style="{'background-image': `linear-gradient(to bottom, ${mMemoColor}, ${mMemoColor})`}">{{ $t('COMMON_NAME_MORE') + '👉🏻'}}</p>
+                        <p class="w100P font13 showMoreBtn fontBold cursorP" style="opacity:80%;" :style="{'background-image': `linear-gradient(to bottom, ${this.GE_DISP_MEMO_LIST.content[this.mSelectedMemoIdx].bgColor}, ${this.GE_DISP_MEMO_LIST.content[this.mSelectedMemoIdx].bgColor}`}">{{ $t('COMMON_NAME_MORE') + '👉🏻'}}</p>
                       </div>
                       <!-- <div v-if="showMemoYn" class="memoBody" @click="openWriteMemoPop(GE_DISP_MEMO_LIST.content[mSelectedMemoIdx])"> -->
                       <!-- <div v-if="showMemoYn" class="memoBody" @click="openWriteMemoPop(mSelectedMemoIdx)">/ -->
@@ -995,6 +994,7 @@ export default {
         if (this.mPopupType === 'MEMO') {
           newParam.jobkindId = 'MEMO'
           nonLoadingYn = true
+          console.log('res', res)
         } else {
           newParam.jobkindId = 'TODO'
         }
@@ -2691,11 +2691,11 @@ export default {
   overflow:hidden;
   text-align:left;
   position:relative;
-  background: linear-gradient(-135deg, transparent 11px, #FCF5AD 0);
+  /* background: linear-gradient(-135deg, transparent 11px, #FCF5AD 0); */
+  border-bottom: 1.5px solid rgb(219, 219, 243);
 }
 .memoTab.selected{
   border-radius:5px 0 0px 0px !important;
-  border-bottom:1.5px solid #FCF5AD;
 }
 .memoTab::after{
   content:'';
@@ -2706,7 +2706,7 @@ export default {
   position:absolute;
   top:0;
   right:0;
-  background: linear-gradient(-135deg, transparent 11px, #ccc685 0);
+  background: linear-gradient(-135deg, transparent 11px, rgba(0,0,0,0.1) 0);
   box-shadow:-3px 0px 3px rgba(0,0,0,0.1);
 }
 .memoTitle{

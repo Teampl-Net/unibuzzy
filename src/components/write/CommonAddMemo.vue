@@ -11,7 +11,7 @@
 <template>
   <!-- <div id="layout" :style="{'background-color' : mMemoColor, 'background-image': `linear-gradient(-135deg, transparent 36px, ${mMemoColor} 0)` }"> -->
   <div id="layout" @click.stop="memoColorChoice = false" :style="{background : `linear-gradient(-405deg, transparent 36px, ${mMemoColor} 0)`}">
-    <div class="foldedDeco" :style="{background : `linear-gradient(-405deg, transparent 36px, ${mMemoFolded} 0)`}"></div>
+    <div class="foldedDeco"></div>
     <div class="w100P" style="height:calc(100% - 60px); display:flex; flex-direction:column; align-items:center; justify-content:space-between;">
       <div class="w100P" style="height:30px; display:flex; align-items:center; justify-content:space-between;">
         <div class="w100P" style="height:30px;">
@@ -80,6 +80,10 @@ export default {
       this.memoTitle = this.pMemoList.content[this.pMemoIdx].title
       this.memoBody = this.decodeContents(this.pMemoList.content[this.pMemoIdx].bodyFullStr)
       this.memoDate = this.getDates(this.pMemoList.content[this.pMemoIdx].creDate)
+      if (this.pMemoList.content[this.pMemoIdx].bgColor) {
+        this.mMemoColor = this.pMemoList.content[this.pMemoIdx].bgColor
+        this.getSelectedMemoColorIdx()
+      }
     } else { this.newMemo() }
     console.log('클릭된메모내용', this.pMemoList.content[this.pMemoIdx])
     var history = this.$store.getters['D_HISTORY/hStack']
@@ -118,6 +122,10 @@ export default {
     }
   },
   methods: {
+    getSelectedMemoColorIdx () {
+      const idx = this.mMemoColors.findIndex(color => color.color === this.pMemoList.content[this.pMemoIdx].bgColor)
+      this.mSelectedMemoColorIdx = idx
+    },
     changeMemoColor (index) {
       this.mSelectedMemoColorIdx = index
       this.mMemoColor = this.mMemoColors[index].color
@@ -179,6 +187,7 @@ export default {
         if (this.pMemoList && this.pMemoList.content.length > 0 && this.pMemoIdx !== null) { // 새 메모가 아니면
           params.contentsKey = this.pMemoList.content[this.pMemoIdx].contentsKey
         }
+        params.bgColor = this.mMemoColor
         params.jobkindId = 'MEMO'
         params.workStatCreUserName = this.GE_USER.userDispMtext
         params.title = this.memoTitle
@@ -307,6 +316,7 @@ header {
   bottom:0;
   right:0;
   box-shadow:-3px 0px 3px rgba(0,0,0,0.1);
+  background : linear-gradient(-405deg, transparent 36px, rgba(0,0,0,0.1) 0)
 }
 .colorPal{
   width:auto;

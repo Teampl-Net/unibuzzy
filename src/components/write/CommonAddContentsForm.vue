@@ -1712,9 +1712,12 @@ export default defineComponent({
       }
     })
     const delAttachFile = (val) => {
+      console.log('val', val)
       if (tempFileList.findIndex(f => f.fileKey === val.fileKey) !== -1 || tempFileList.findIndex(f => f.attachKey === val.attachKey) !== -1) {
         let index = tempFileList.findIndex(f => f.fileKey === val.fileKey)
+        console.log('index?', index)
         if (index !== -1) {
+          console.log('?????????')
           tempFileList[index].addYn = false
         } else {
           index = tempFileList.findIndex(f => f.attachKey === val.attachKey)
