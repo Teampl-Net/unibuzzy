@@ -36,7 +36,7 @@
 
         <div class="w100P">
         <button type="button" @click="confirmPopYn = true" class="admBtn saveBtn">{{ '추가' }}</button>
-          <button type="button" @click="closeXPop" class="admBtn">닫기</button>
+          <!-- <button type="button" @click="closeXPop" class="admBtn">닫기</button> -->
         </div>
       </div>
 </template>

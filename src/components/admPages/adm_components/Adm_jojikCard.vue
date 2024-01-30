@@ -4,28 +4,28 @@
       <div style="display:flex; align-items:center;">
         <div class="imgInfo"></div>
         <div class="textInfo">
-          <p class="font15">{{ mSelectedBranch.orgName ? mSelectedBranch.orgName : '새 조직' }}</p>
+          <p class="font13">{{ mSelectedBranch.orgName ? mSelectedBranch.orgName : '새 조직' }}</p>
           <!-- <p class="font13">{{ mSelectedBranch.orgKey ? mSelectedBranch.orgKey : '00' }}</p> -->
         </div>
       </div>
-      <div>
-        <p class="font14">{{ mSelectedBranch.orgType && mSelectedBranch.orgType === 'T' ? '채널' : mSelectedBranch.orgType === 'B' ? '주소록' : '채널' }}</p>
-        <p class="font13">🙍🏻‍♂️{{ mSelectedBranch.allCount ? mSelectedBranch.allCount : '미측정' }}</p>
+      <div style="text-align:right;">
+        <p class="font13">{{ mSelectedBranch.orgType && mSelectedBranch.orgType === 'T' ? '채널' : mSelectedBranch.orgType === 'B' ? '주소록' : '채널' }}</p>
+        <p class="font12">🙍🏻‍♂️{{ mSelectedBranch.allCount ? mSelectedBranch.allCount : '미측정' }}</p>
       </div>
     </div>
 
     <div class="w100P detailInfos">
-      <div class="w100P" style="padding-bottom:10px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #ccc;">
-        <p class="font15" style="width:calc(100% - 20px)' text-align:left;">{{ mSelectedBranch.orgDesc ? mSelectedBranch.orgDesc : '안녕하세요, 우리 조직을 소개합니다.' }}</p>
-        <div v-if="moreOpen===false" class="cursorP" @click="showMore" style="width:20px;">➕</div>
-        <div v-if="moreOpen===true" class="cursorP" @click="showMore" style="width:20px;">➖</div>
+      <div class="w100P alignCenter" style="justify-content:space-between;">
+        <p class="font13" style="width:calc(100% - 20px)' text-align:left;">{{ mSelectedBranch.orgDesc ? mSelectedBranch.orgDesc : '안녕하세요, 우리 조직을 소개합니다.' }}</p>
+        <!-- <div v-if="moreOpen===false" class="cursorP" @click="showMore" style="width:20px;">➕</div>
+        <div v-if="moreOpen===true" class="cursorP" @click="showMore" style="width:20px;">➖</div> -->
       </div>
       <div v-if="moreOpen" class="w100P" style="padding-top:10px;">
-        <div style="display:flex; align-items:center; justify-content:space-between; text-align:left;">
+        <div class="alignCenter" style="justify-content:space-between; text-align:left;">
           <p class="font14">📫{{ mSelectedBranch.address ? mSelectedBranch.address : mSelectedBranch.orgName + '의 주소입니다.' }}</p>
           <p class="font14">👜***-***-****</p>
         </div>
-        <div class="w100P" style="display:flex; align-items:center; justify-content:space-between; text-align:left;">
+        <div class="w100P alignCenter" style="justify-content:space-between; text-align:left;">
           <p class="font14" style="calc(100% - 20px);">🤵🏻‍♂️{{ mSelectedBranch.founder ? mSelectedBranch.founder : '대표명 (010-1111-1111)' }}</p>
           <p @click="openPop('editGroup')" class="font16 cursorP" style="width:20px;">⚙️</p>
         </div>
@@ -132,18 +132,22 @@ export default {
 </script>
 
 <style scoped>
+
 .jojikInfoWrap{
-  padding:20px;
-  background-color:#fff;
+  border:1px solid #e0e0e0;
+  padding:15px;
+  border-radius:10px;
 }
 .defaultInfos{
   display:flex;
   align-items:center;
   justify-content:space-between;
+  padding-bottom:20px;
+  border-bottom:1px solid #ececec;
 }
 .imgInfo{
-  width:70px;
-  height:70px;
+  width:50px;
+  height:50px;
   border-radius:50%;
   background-color:pink;
 }
@@ -157,7 +161,7 @@ export default {
   flex-direction:column;
   align-items:start;
   justify-content:center;
-  padding-top:30px;
+  padding-top:10px;
 }
 
 </style>

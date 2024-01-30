@@ -6,7 +6,7 @@
       </div>
       <div v-if="mAppDetail && mAppDetail.length > 0" class="myInfoArea">
         <select v-model="mSelectedBranch" @change="changeSelectedBranch" style="height:30px;">
-          <option v-for="(branch, index) in mSelectedBranch" :key="index" :value="branch">{{ branch.orgName ? branch.orgName : '새 조직' }}</option>
+          <option v-for="(branch, index) in pMyOrgList" :key="index" :value="branch">{{ branch.orgName ? branch.orgName : '새 조직' }}</option>
         </select>
         <!-- <p class="font30" style="padding-left:10px;">IN {{ pPropParams.myApps ? pPropParams.myApps.title : '' }}</p> -->
         <p class="font30" style="padding-left:10px;">관리자 페이지</p>
@@ -14,27 +14,12 @@
     </div>
 
     <div class="bottomArea w100P">
-      <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid #5F61BD; ">
-        <ul style="display:flex; align-items:center; justify-content:start; gap:1rem; margin-bottom:-1px;">
-          <li class="jojikTab cursorP" v-for="(tab, index) in jojikTabs" :key="index" :class="{selected : mSelectedJojikTabIdx === index}" @click="changeJojikTab(index)">
+      <div class="alignCenter" style="justify-content:space-between; border-bottom:2px solid #5F61BD; ">
+        <ul class="alignCenter" style="justify-content:start; gap:0.5rem; margin-bottom:-1px; padding:0;">
+          <li class="jojikTab cursorP font13" v-for="(tab, index) in jojikTabs" :key="index" :class="{selected : mSelectedJojikTabIdx === index}" @click="changeJojikTab(index)">
             {{ tab.tabName }}
           </li>
         </ul>
-        <div v-if="mSelectedJojikTabIdx === 1" class="userBtns">
-          <div class="managerBtns">
-            <div class="searchArea">
-              <input type="text" v-model="mSearchData" style="cursor:auto;"/>
-              <div class="cursorP" style="background-color:#fff; padding:0px 10px;">검색</div>
-            </div>
-            <select v-model="selectedManage">
-              <option value="전체">전체</option>
-              <option v-for="(manager, index) in mSelectedBranch.manage" :key="index">{{ manager.name }}</option>
-            </select>
-            <span @click="gotoAddMember" class="btnAdd cursorP">추가</span>
-            <span class="btnDel cursorP">삭제</span>
-            <span @click="addUser" class="btnAdd cursorP">수정</span>
-          </div>
-        </div>
       </div>
 
       <div class="detailInfos w100P">
@@ -96,7 +81,7 @@ export default {
       mSelectedJojikTabIdx: 0,
       jojikTabs: [
         { idx: 1, tabName: '조직 정보' },
-        { idx: 1, tabName: '사용자 관리' }
+        { idx: 1, tabName: '유저 정보' }
       ],
       mSearchData: '',
       selectedManage: '전체',
@@ -245,7 +230,7 @@ export default {
 }
 
 .bottomArea{
-  padding-top:30px;
+  padding-top:60px;
 }
 
 .jojikTab{

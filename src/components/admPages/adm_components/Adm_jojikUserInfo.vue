@@ -1,21 +1,39 @@
 <template>
+    <div class="searchArea">
+     <div class="inputWrap">
+        <input type="text" v-model="mSearchData" class="w100P searchInput" style="cursor:auto;"/>
+        <div class="cursorP searchBtn font12" style="padding:0px 20px; white-space:nowrap;">검색</div>
+      </div>
+      <select class="selectBtn" v-model="selectedManage">
+        <option value="전체">전체</option>
+        <!-- <option v-for="(manager, index) in mSelectedBranch.manage" :key="index">{{ manager.name }}</option> -->
+      </select>
+    </div>
+
   <div class="detailInfos w100P">
     <table class="w100P manageTable">
     <thead>
-      <th style="width:50px;">선택</th>
-      <th style="width:50px;">No</th>
-      <th style="width:28%'">사용자</th>
-      <th style="width:27%;">연락처</th>
-      <th style="width:25%;">부가정보</th>
-      <th style="width:10%;">권한</th>
+      <!-- <th style="width:50px;">선택</th> -->
+      <th style="width:20px;"></th>
+      <th style="width:27%">사용자</th>
+      <th style="width:43%;">연락처</th>
+      <!-- <th style="width:25%;">부가정보</th> -->
+      <th style="width:30%;">권한</th>
     </thead>
 
     <tbody v-if="isLoading===true" >
         <tr v-for="(user, index) in mMOrgUserList.org" :key="index">
-            <jojikManagerOption :pUser="user" :pIndex="index" :pMOrgUserList="mMOrgUserList" :pFilteredPageData="pFilteredPageData" :pSelectedOrg="pSelectedOrg"/>
+            <jojikManagerOption :pModiYn="modiYn" :pUser="user" :pIndex="index" :pMOrgUserList="mMOrgUserList" :pFilteredPageData="pFilteredPageData" :pSelectedOrg="pSelectedOrg"/>
         </tr>
     </tbody>
   </table>
+
+  </div>
+
+  <div class="btnWraps alignCenter">
+    <span @click="gotoAddMember" class="btnAdd cursorP h100P">추가</span>
+    <span class="btnDel cursorP h100P">삭제</span>
+    <span @click="setToModi" class="btnAdd cursorP h100P">{{ modiYn === false ? '편집' : '편집 완료' }}</span>
   </div>
 </template>
 
@@ -44,10 +62,16 @@ export default {
   data () {
     return {
       mSelectedManage: {},
-      isLoading: false
+      isLoading: false,
+      mSearchData: '',
+      selectedManage: '',
+      modiYn: false
     }
   },
   methods: {
+    setToModi () {
+      this.modiYn = !this.modiYn
+    },
     async getMOrgUserList () {
       var paramSet = {}
       paramSet.orgKey = Number(this.orgKey)
@@ -84,18 +108,81 @@ export default {
 </script>
 
 <style scoped>
+
+.searchArea{
+  display:flex;
+  align-items:center;
+  width:100%;
+  background-color:#fff;
+  padding:10px;
+  justify-content:space-between;
+  gap:1rem;
+}
+.inputWrap{
+  width:70%;
+  display:flex;
+  align-items:center;
+  position:relative;
+  height:auto;
+  box-shadow:0 0 3px rgba(0,0,0,0.3);
+  border-radius:20px;
+  padding:5px;
+}
+.searchInput{
+  width:calc(100% - 40px);
+  border:none !important;
+}
+.searchBtn{
+  position:absolute;
+  right:0;
+  top:50%;
+  transform:translateY(-50%);
+}
+
+.selectBtn{
+  border-radius:20px !important;
+  padding:5px 0 !important;
+  width:25%;
+  height:33px;
+  box-shadow:0 0 3px rgba(0,0,0,0.3);
+  border:none !important;
+}
+.managerBtns{
+  width:auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:0.5rem;
+}
+.btnDel, .btnAdd{
+  padding:5px 10px;
+  background-color:#fff;
+}
+.btnDel{
+  background-color:#eee;
+}
 .detailInfos{
   background-color:#fff;
   height:auto;
-  padding:10px;
 }
 .manageTable{
   height:auto;
 }
-
+.btnWraps{
+  width:100%;
+  height:60px;
+  position:absolute;
+  bottom:0;
+  left:0;
+  box-shadow:0 -2px 10px 0px rgba(228, 228, 228, 0.1)}
+.btnWraps > span{
+  width:33.3%;
+  line-height:50px;
+}
 thead th{
   padding:10px 0;
   border-bottom:1px solid #e8e8e8;
+  font-size:13px;
 }
 tbody td{
   padding:10px 0;

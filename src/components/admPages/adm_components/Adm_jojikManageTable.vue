@@ -1,27 +1,27 @@
 <template>
     <div class="w100P manageInfos">
       <div class="w100P manageAreaTitle">
-        <p class="font20 fontBold">권한 관리</p>
+        <p class="font15 fontBold">권한 관리</p>
         <div class="managerBtns">
           <div class="font25">
-            <span class="cursorP">⬆️</span>
-            <span class="cursorP">⬇️</span>
+            <span class="cursorP font13">⬆️</span>
+            <span class="cursorP font13">⬇️</span>
           </div>
           <div>
-            <span v-if="addManagerTypeYn === false" @click="addManage" class="btnAdd cursorP">추가</span>
-            <span v-if="addManagerTypeYn === true" @click="saveAuths(null, null)" class="btnAdd cursorP">저장</span>
-            <span class="btnDel cursorP">삭제</span>
-            <span class="btnEdit cursorP">수정</span>
+            <span v-if="addManagerTypeYn === false" @click="addManage" class="btnAdd cursorP font12">추가</span>
+            <span v-if="addManagerTypeYn === true" @click="saveAuths(null, null)" class="btnAdd cursorP font12">저장</span>
+            <span class="btnDel cursorP font12">삭제</span>
+            <span class="btnEdit cursorP font12">수정</span>
           </div>
         </div>
       </div>
 
   <table class="w100P manageTable">
     <thead>
-      <th style="width:50px;">선택</th>
-      <th style="width:50px;">No</th>
-      <th style="width:40%'">권한명</th>
-      <th style="width:25%;">사용자 관리(권한)</th>
+      <th style="width:30px;"></th>
+      <th style="width:25px;">No</th>
+      <th style="width:50%'">권한명</th>
+      <th style="width:25%;">사용자 관리</th>
       <th style="width:25%;">조직 관리</th>
     </thead>
 
@@ -31,7 +31,7 @@
               <input type="checkbox" />
             </td>
             <td>{{ index + 1 }}</td>
-            <td @click="openUserInfo(auth.authName)">{{ auth.authName ? auth.authName : ''}} ({{ auth.count ? auth.count + '명': '0명' }})</td>
+            <td class="name" @click="openUserInfo(auth.authName)">{{ auth.authName ? auth.authName : ''}} ({{ auth.count ? auth.count + '명': '0명' }})</td>
             <td>
               <input type="checkbox" class="mngUser" @click="saveAuths(auth, 'user')" :checked="auth.mngUserYn"/>
             </td>
@@ -41,11 +41,11 @@
         </tr>
         <tr v-if="addManagerTypeYn === true">
             <td>
-              <p @click="pCloseAddManage">X</p>
+              <p class="cursorP" @click="closeAddManage">X</p>
             </td>
             <td>{{ pSelectedOrg.authList.length + 1 }}</td>
-            <td>
-              <input type="text" v-model="newAuthName"/>
+            <td class="name">
+              <input type="text" v-model="newAuthName" style="width:50%; min-width:70px;"/>
             </td>
             <td>
               <input type="checkbox" v-model="mNewMngOrg"/>
@@ -66,8 +66,7 @@ export default {
   props: {
     pPageData: {},
     pSelectedOrg: {},
-    pGE_USER: {},
-    pCloseAddManage: Function
+    pGE_USER: {}
   },
   created () {
     console.log('jojikManageTable pPageData', this.pPageData)
@@ -202,8 +201,14 @@ export default {
 thead th{
   padding:10px 0;
   border-bottom:1px solid #e8e8e8;
+  font-size:13px;
 }
 tbody td{
   padding:10px 0;
+  font-size:13px;
+}
+td.name{
+  text-align:left !important;
+  padding-left:5px;
 }
 </style>

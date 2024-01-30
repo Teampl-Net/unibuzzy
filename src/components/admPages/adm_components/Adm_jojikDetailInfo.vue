@@ -1,5 +1,5 @@
 <template>
-  <p class="font13" style="text-align:right;"> 최종 업데이트 : {{ pSelectedOrg.upDated ? pSelectedOrg.upDated : '오늘' }}</p>
+  <p class="font12" style="text-align:right;"> 최종 업데이트 : {{ pSelectedOrg.upDated ? pSelectedOrg.upDated : '오늘' }}</p>
 
   <!-- 조직 기본 데이터들 -->
   <jojikCard :pSelectedOrg="pSelectedOrg"/>
@@ -53,15 +53,6 @@ export default {
 
 <style scoped>
 
-.jojikInfoWrap{
-  border:1px solid gray;
-  padding:20px;
-}
-.defaultInfos{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
 .imgInfo{
   width:70px;
   height:70px;
