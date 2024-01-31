@@ -36,7 +36,7 @@
 
         <div class="w100P">
         <button type="button" @click="confirmPopYn = true" class="admBtn saveBtn">{{ '추가' }}</button>
-          <!-- <button type="button" @click="closeXPop" class="admBtn">닫기</button> -->
+          <button type="button" @click="closeXPop" class="admBtn">닫기</button>
         </div>
       </div>
 </template>
@@ -90,7 +90,7 @@ export default {
       mSelectedBg: { selectedId: '11', selectPath: '/resource/channeliconbg/BG01.jpg' },
       infoGroupName: '',
       infoGroupDesc: '',
-      infoGroupType: '',
+      infoGroupType: 'T',
       mNamePlaceHolder: '조직명을 입력하세요.',
       mDescPlaceHolder: '조직 설명을 입력하세요.',
       selectedOption: 'T',
@@ -162,6 +162,7 @@ export default {
       // if (this.pPropParams.popType && this.pPropParams.popType === 'editGroup') { // 수정이면
       //   paramSet.orgKey = this.pPropParams.orgKey
       // }
+      console.log('params', paramSet)
       var result = await axios.post('/sUniB/tp.saveOrg', { org: paramSet }, { withCredentials: true, headers: { UserAuthorization: this.GE_USER.userToken, Authorization: this.$APP_CONFIG.appToken } })
       // eslint-disable-next-line no-debugger
       debugger

@@ -21,8 +21,9 @@
       <th style="width:30px;"></th>
       <th style="width:25px;">No</th>
       <th style="width:50%'">권한명</th>
-      <th style="width:25%;">사용자 관리</th>
-      <th style="width:25%;">조직 관리</th>
+      <th style="width:15%;">사용자 관리</th>
+      <th style="width:15%;">조직 관리</th>
+      <th style="width:15%;">전문가</th>
     </thead>
 
     <tbody>
@@ -38,6 +39,9 @@
             <td>
               <input type="checkbox" class="mngOrg" @click="saveAuths(auth, 'org')" :checked="auth.mngOrgYn"/>
             </td>
+            <td>
+              <input type="checkbox" class="mExpert" @click="saveAuths(auth, 'expert')" :checked="auth.sSub && auth.sSub === 'E'"/>
+            </td>
         </tr>
         <tr v-if="addManagerTypeYn === true">
             <td>
@@ -52,6 +56,9 @@
             </td>
             <td>
               <input type="checkbox" v-model="mNewMngUser"/>
+            </td>
+            <td>
+              <input type="checkbox" v-model="mNewExpert"/>
             </td>
         </tr>
     </tbody>
@@ -79,19 +86,13 @@ export default {
       mMngUser: false,
       mNewMngOrg: false,
       mNewMngUser: false,
+      mNewExpert: false,
+      mExpert: false,
       dispName: '회원님',
       newAuthName: ''
     }
   },
   methods: {
-    setMngOrg (authKey) {
-      console.log('authKey', authKey)
-      this.mMngOrg = !this.mMngOrg
-    },
-    setMngUser (authKey) {
-      console.log('authKey', authKey)
-      this.mMngUser = !this.mMngUser
-    },
     addManage () {
       this.addManagerTypeYn = true
     },
@@ -105,13 +106,18 @@ export default {
       const paramSet = {}
       if (!auth && !type) { // 새 조직
         if (this.newAuthName === '') return
+        console.log('새 조직을 만듭니다.')
         paramSet.orgKey = this.pSelectedOrg.orgKey
         paramSet.authName = this.newAuthName
         paramSet.authDispName = this.dispName
         paramSet.mngOrgYn = this.mNewMngOrg
         paramSet.mngUserYn = this.mNewMngUser
         paramSet.creUserKey = this.GE_USER.userKey
+        if (this.mExpert === true) {
+          paramSet.ssub = 'E'
+        }
       } else if (auth && type) {
+        console.log('기존 조직을 수정합니다.')
         if (auth.authKey) { // 수정이면
           paramSet.authKey = auth.authKey
         }
@@ -132,6 +138,12 @@ export default {
           } else if (auth.mngOrgYn === false || auth.mngOrgYn === 0) {
             paramSet.mngOrgYn = true
           }
+        } else if (auth && type === 'expert') { // 전문가 여부 수정
+          console.log('전문가를 수정합니다.')
+          if (paramSet.ssub && paramSet.ssub === 'E') {
+            console.log('원래 전문가였다.')
+            paramSet.ssub = null
+          } else { console.log('원래 전문가가 아니었다.'); paramSet.ssub = 'E' }
         }
       }
       console.log('paramSet', paramSet)

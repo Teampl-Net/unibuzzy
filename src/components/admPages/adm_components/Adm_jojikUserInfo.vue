@@ -4,10 +4,11 @@
         <input type="text" v-model="mSearchData" class="w100P searchInput" style="cursor:auto;"/>
         <div class="cursorP searchBtn font12" style="padding:0px 20px; white-space:nowrap;">검색</div>
       </div>
-      <select class="selectBtn" v-model="selectedManage">
-        <option value="전체">전체</option>
-        <!-- <option v-for="(manager, index) in mSelectedBranch.manage" :key="index">{{ manager.name }}</option> -->
+      <select class="selectBtn" v-model="selectedManage" @change="handleSelectAuth">
+        <option value="all">전체</option>
+        <option v-for="(auth, index) in pSelectedOrg.authList" :key="index" :value="auth.authKey">{{ auth.authName }}</option>
       </select>
+      <div class="sendMsg cursorP">✉️</div>
     </div>
 
   <div class="detailInfos w100P">
@@ -61,14 +62,21 @@ export default {
   },
   data () {
     return {
-      mSelectedManage: {},
+      mSelectedManage: '',
       isLoading: false,
       mSearchData: '',
-      selectedManage: '',
+      selectedManage: 'all',
       modiYn: false
     }
   },
   methods: {
+    handleSelectAuth (value) {
+      this.mSelectedManage = this.selectedManage
+      console.log('this.mSelectedManage', this.mSelectedManage)
+    },
+    gotoAddMember () {
+      this.$router.push(`/addMember/${this.orgKey}`)
+    },
     setToModi () {
       this.modiYn = !this.modiYn
     },
@@ -129,7 +137,7 @@ export default {
   padding:5px;
 }
 .searchInput{
-  width:calc(100% - 40px);
+  width:calc(100% - 100px);
   border:none !important;
 }
 .searchBtn{
@@ -141,11 +149,20 @@ export default {
 
 .selectBtn{
   border-radius:20px !important;
-  padding:5px 0 !important;
+  padding:5px !important;
   width:25%;
   height:33px;
   box-shadow:0 0 3px rgba(0,0,0,0.3);
   border:none !important;
+  min-width:100px;
+}
+.sendMsg{
+  width:50px;
+  min-width:50px;
+  border-radius:20px;
+  height:33px;
+  line-height:33px;
+  box-shadow:0 0 3px rgba(0,0,0,0.3);
 }
 .managerBtns{
   width:auto;
