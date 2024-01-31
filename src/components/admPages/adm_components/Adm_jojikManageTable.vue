@@ -20,9 +20,9 @@
     <thead>
       <th style="width:30px;"></th>
       <th style="width:25px;">No</th>
-      <th style="width:50%'">권한명</th>
-      <th style="width:15%;">사용자 관리</th>
-      <th style="width:15%;">조직 관리</th>
+      <th style="width:48%'">권한명</th>
+      <th style="width:17%;">유저관리</th>
+      <th style="width:15%;">조직관리</th>
       <th style="width:15%;">전문가</th>
     </thead>
 
