@@ -136,13 +136,17 @@ export default {
       }
     },
     closeXPop () {
+      if (window.self !== window.top) {
+        window.parent.postMessage(JSON.stringify({ sender: 'Hb', type: 'close' }), this.mOtherParents)
+      } else {
+        this.$router.push('/admMain')
+      }
       // var history = this.$store.getters['D_HISTORY/hStack']
       // var removePage = history[history.length - 1]
       // console.log('history', history, 'removePage', removePage)
       // history = history.filter((element, index) => index < history.length - 1)
       // this.$store.commit('D_HISTORY/setRemovePage', removePage)
       // this.$store.commit('D_HISTORY/updateStack', history)
-      this.$router.push('/admMain')
     },
     closeConfirmPop () {
       this.confirmPopYn = false
@@ -171,7 +175,7 @@ export default {
         console.log(this.mOtherParents)
         if (this.mOtherParents) {
           // alert(JSON.stringify(this.mOtherAppUserInfo))
-          window.parent.postMessage(JSON.stringify({ sender: 'Hb', type: 'close' }), this.mOtherParents)
+          window.parent.postMessage(JSON.stringify({ sender: 'Hb', type: 'close', result: result.data }), this.mOtherParents)
         }
       }
     },
