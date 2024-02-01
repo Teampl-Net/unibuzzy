@@ -2,7 +2,7 @@
   <p class="font12" style="text-align:right;"> 최종 업데이트 : {{ pSelectedOrg.upDated ? pSelectedOrg.upDated : '오늘' }}</p>
 
   <!-- 조직 기본 데이터들 -->
-  <jojikCard :pSelectedOrg="pSelectedOrg"/>
+  <jojikCard :pSelectedOrg="pSelectedOrg" :pOrgUesrs="pOrgUesrs"/>
 
   <!-- 조직 권한 설정 -->
   <div class="w100P manageTable">
@@ -22,7 +22,8 @@ export default {
   props: {
     pSelectedOrg: Object,
     pGE_USER: {},
-    pPageData: {}
+    pPageData: {},
+    pOrgUesrs: {}
   },
   created () {
     console.log('jojikDetailInfo pSelectedOrg', this.pSelectedOrg)

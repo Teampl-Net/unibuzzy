@@ -1,10 +1,8 @@
 <template>
-  <!-- <td>
-    <input type="checkbox"/>
-  </td> -->
-  <td v-if="pModiYn === false">{{ pIndex + 1 }}</td>
-  <td v-if="pModiYn === true">
-    <input type="checkbox"/>
+  <!-- <td v-if="pModiYn === false">{{ pIndex + 1 }}</td> -->
+  <td style="text-align:center;">
+    <!-- <span>{{ pIndex + 1 }}</span> -->
+    <input type="checkbox" @click="addSelectedUser(pUser)" :checked="isSelected(pUser)" @change="handleCheckboxChange(pUser)"/>
   </td>
   <td>{{ pUser.userNameMtext ? $changeText(pUser.userNameMtext) : '이름' }}</td>
   <td style="text-align:left;">{{ pUser.userEmail ? pUser.userEmail : '이메일' }}<br/>{{ pUser.phoneNoEnc ? pUser.phoneNoEnc : '000-0000-0000' }}</td>
@@ -30,7 +28,9 @@ export default {
   },
   data () {
     return {
-      mSelectedManage: ''
+      mSelectedManage: '',
+      mSelectedUsers: [],
+      selectedItems: []
     }
   },
   mounted () {
@@ -41,6 +41,24 @@ export default {
     this.setSelectOption()
   },
   methods: {
+    isSelected (item) {
+      // 선택된 항목인지 여부를 판단
+      console.log('item??', item)
+      return this.selectedItems.some(selectedItem => selectedItem.mouKey === item.mouKey)
+    },
+    handleCheckboxChange (use) {
+      if (this.isSelected(use)) {
+        // 이미 선택된 항목이면 제거
+        const index = this.selectedItems.findIndex(selectedItem => selectedItem.mouKey === use.mouKey)
+        if (index !== -1) {
+          this.selectedItems.splice(index, 1)
+        }
+      } else {
+        // 선택되지 않은 항목이면 추가
+        this.selectedItems.push(use)
+      }
+      console.log('selectedItems', this.selectedItems)
+    },
     setSelectOption () {
       const index = this.pSelectedOrg.authList.findIndex(org => org.authKey === this.pUser.authKey)
       this.mSelectedManage = this.pSelectedOrg.authList[index].authName

@@ -32,7 +32,7 @@
               <input type="checkbox" />
             </td>
             <td>{{ index + 1 }}</td>
-            <td class="name" @click="openUserInfo(auth.authName)">{{ auth.authName ? auth.authName : ''}} ({{ auth.count ? auth.count + '명': '0명' }})</td>
+            <td class="name" @click="openUserInfo(auth.authName)">{{ auth.authName ? auth.authName : ''}} ({{ countAuthNumber(auth.authKey) + '명' }})</td>
             <td>
               <input type="checkbox" class="mngUser" @click="saveAuths(auth, 'user')" :checked="auth.mngUserYn"/>
             </td>
@@ -93,6 +93,12 @@ export default {
     }
   },
   methods: {
+    countAuthNumber (authKey) {
+      if (this.pSelectedOrg && this.pSelectedOrg.authList && authKey !== null) {
+        const count = this.pSelectedOrg.authList.filter(item => item.authKey === authKey).length
+        return count
+      }
+    },
     addManage () {
       this.addManagerTypeYn = true
     },
@@ -192,12 +198,15 @@ export default {
   padding-bottom:5px;
   border-bottom:1px solid #ccc;
 }
+.manageAreaTitle > p{
+  padding-left:5px;
+}
 .managerBtns{
   width:auto;
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:1rem;
+  gap:0.5rem;
 }
 .btnDel, .btnAdd, .btnEdit{
   padding:5px 10px;

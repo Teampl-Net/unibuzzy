@@ -2,7 +2,7 @@
     <div class="searchArea">
      <div class="inputWrap">
         <input type="text" v-model="mSearchData" class="w100P searchInput" style="cursor:auto;"/>
-        <div class="cursorP searchBtn font12" style="padding:0px 20px; white-space:nowrap;">검색</div>
+        <div class="cursorP searchBtn font12" style="padding:0px 10px; white-space:nowrap;">검색</div>
       </div>
       <select class="selectBtn" v-model="selectedManage" @change="handleSelectAuth">
         <option value="all">전체</option>
@@ -34,7 +34,7 @@
   <div class="btnWraps alignCenter">
     <span @click="gotoAddMember" class="btnAdd cursorP h100P">추가</span>
     <span class="btnDel cursorP h100P">삭제</span>
-    <span @click="setToModi" class="btnAdd cursorP h100P">{{ modiYn === false ? '편집' : '편집 완료' }}</span>
+    <span class="btnAdd cursorP h100P">{{ modiYn === false ? '편집' : '취소' }}</span>
   </div>
 </template>
 
@@ -189,7 +189,7 @@ export default {
   width:100%;
   height:60px;
   position:absolute;
-  bottom:0;
+  bottom:60px;
   left:0;
   box-shadow:0 -2px 10px 0px rgba(228, 228, 228, 0.1)}
 .btnWraps > span{
