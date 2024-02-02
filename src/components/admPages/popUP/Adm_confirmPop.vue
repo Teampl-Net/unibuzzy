@@ -2,10 +2,10 @@
   <div class="bgPop"></div>
   <div class="popupWrap">
     <div class="confirmPopHeader w100P">
-      <p class=" fontBold font20">{{ '조직 생성하기' }}</p>
+      <p class=" fontBold font20">{{ pConfirmPopHeader ? pConfirmPopHeader : '추가하기'}}</p>
     </div>
     <div class="confirmPopBody w100P">
-      {{ '조직을 생성하시겠습니까?' }}
+      <p>{{ pConfirmPopText ? pConfirmPopText : '새로 생성하시겠습니까?' }}</p>
     </div>
     <div class="confirmPopBtns w100P">
       <button @click="confirmOK" class="admBtn okBtn fontBold">확인</button>
@@ -17,7 +17,9 @@
 <script>
 export default {
   props: {
-    pClosePop: Function
+    pClosePop: Function,
+    pConfirmPopText: String,
+    pConfirmPopHeader: String
   },
   data () {
     return {
@@ -63,6 +65,10 @@ export default {
 }
 .confirmPopBody{
   padding:30px 0;
+}
+
+.confirmPopBody p{
+  font-size:15px;
 }
 .confirmPopBtns{
   display:flex;

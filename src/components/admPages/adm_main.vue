@@ -65,7 +65,8 @@ export default {
     },
     gotoOrgDetail (branch) {
       // console.log('branch', branch)
-      this.$router.push(`/orgDetail/${branch.orgKey}`)
+      // this.$router.push(`/orgDetail/${branch.orgKey}`)
+      this.$router.push(`/expertList/${branch.orgKey}`)
     },
     openPop (popType) {
       this.propParams.popType = popType

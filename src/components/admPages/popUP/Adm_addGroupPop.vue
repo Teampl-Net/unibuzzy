@@ -1,5 +1,6 @@
 <template>
-  <confirmPop v-if="confirmPopYn" @confirmOk="saveGroup" :pClosePop="closeConfirmPop"/>
+  <confirmPop v-if="confirmPopYn" @confirmOk="saveGroup" :pConfirmPopHeader="'조직 생성하기'" :pConfirmPopText="'새 조직을 생성하시겠습니까?'" :pClosePop="closeConfirmPop"/>
+  <OkPop v-if="okPopYn" :pClosePop="closeOkPop" :pOkPopText="okPopText" :pOkPopHeader="'조직 생성하기'"/>
   <seleciconBgPopup v-if="mIconBgSelectPopYn=='iconPop' || mIconBgSelectPopYn=='bgPop'" :isAdmTrue="true" :selectIcon="this.mSelectedIcon" :selectBg="this.mSelectedBg" @no='mIconBgSelectPopYn=false' @makeParam='setIconOrBGData' :opentype="mIconBgSelectPopYn" />
 
   <div id="admLayout" class="w100P alignCenter" style="flex-direction:column; gap:1rem; justify-content:space-between;">
@@ -35,7 +36,7 @@
     </div>
 
         <div class="w100P">
-        <button type="button" @click="confirmPopYn = true" class="admBtn saveBtn">{{ '추가' }}</button>
+        <button type="button" @click="checkInfos" class="admBtn saveBtn">{{ '추가' }}</button>
           <button type="button" @click="closeXPop" class="admBtn">닫기</button>
         </div>
       </div>
@@ -45,11 +46,13 @@
 import axios from 'axios'
 import seleciconBgPopup from '@/components/popup/creChannel/Tal_selectChaniconBgPopup.vue'
 import confirmPop from '@/components/admPages/popUP/Adm_confirmPop.vue'
+import OkPop from '@/components/admPages/popUP/Adm_confirmOkPop.vue'
 
 export default {
   components: {
     seleciconBgPopup,
-    confirmPop
+    confirmPop,
+    OkPop
   },
   props: {
     pClosePop: Function,
@@ -85,6 +88,7 @@ export default {
     return {
       isAdmTrue: true,
       confirmPopYn: false,
+      okPopYn: false,
       mIconBgSelectPopYn: '',
       mSelectedIcon: { selectedId: '1', selectPath: '/resource/channeliconbg/CHAR01.png' },
       mSelectedBg: { selectedId: '11', selectPath: '/resource/channeliconbg/BG01.jpg' },
@@ -99,10 +103,26 @@ export default {
       mTypeOption: [
         { idx: 0, name: '채널', value: 'T' },
         { idx: 1, name: '주소록', value: 'B' }
-      ]
+      ],
+      okPopText: '저장되었습니다.'
     }
   },
   methods: {
+    checkInfos () {
+      if (this.infoGroupName === '' || this.infoGroupDesc === '') {
+        if (this.infoGroupName === '') {
+          this.okPopText = '조직명을 입력해주세요.'
+        } else if (this.infoGroupDesc === '') {
+          this.okPopText = '조직설명을 입력해주세요. '
+        }
+        this.okPopYn = true
+      } else {
+        this.confirmPopYn = true
+      }
+    },
+    closeOkPop () {
+      this.okPopYn = false
+    },
     getParamMap (urlString) {
       const splited = urlString.replace('?', '').split(/[=?&]/)
       const param = {}
@@ -172,6 +192,8 @@ export default {
       debugger
       if (result.data.result) {
         this.closeConfirmPop()
+        this.okPopText = '저장되었습니다.'
+        this.okPopYn = true
         console.log(this.mOtherParents)
         if (this.mOtherParents) {
           // alert(JSON.stringify(this.mOtherAppUserInfo))
@@ -281,7 +303,7 @@ export default {
     width:100% !important;
   }
   .inputs, select{
-    width:calc(100% - 60px);
+    width:calc(100% - 60px) !important;
   }
 }
 </style>

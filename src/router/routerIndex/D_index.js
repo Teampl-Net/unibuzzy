@@ -60,6 +60,12 @@ export const routes = [
         name: 'orgCard',
         props: true,
         component: () => import(/* webpackChunkName: "about" */ '@/components/admPages/adm_components/Adm_jojikCard.vue')
+      },
+      {
+        path: '/expertList/:orgKey',
+        name: 'expertList',
+        props: true,
+        component: () => import(/* webpackChunkName: "about" */ '@/components/admPages/adm_components/Adm_expertList.vue')
       }
     ]
   },

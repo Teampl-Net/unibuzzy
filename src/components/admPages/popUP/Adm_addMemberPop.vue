@@ -1,31 +1,33 @@
 <template>
   <userImgSelectCompo v-if="changeImageYn" :pSelectedIconPath="mDomainPath + mUserProfileImg" :parentSelectedIconFileKey="this.GE_USER.picMfilekey" :isAdmTrue="true" @no="closeChangeImg"/>
-
+  <confirmPop v-if="confirmPopYn" :pClosePop="closeConfirmPop" :pConfirmPopHeader="'유저 추가하기'" :pConfirmPopText="confirmPopText" @confirmOk="saveMember"/>
+  <okPop v-if="okPopYn" :pMovePage="true" @closeOkPop="closeOkPop" :pClosePop="closeOkPop" :pOkPopHeader="'유저 추가하기'" :pOkPopText="okPopText"/>
   <div id="admLayout" class="w100P alignCenter" style="flex-direction:column; gap:1rem; justify-content:space-between;">
     <div class="w100P alignCenter" style="flex-direction:column;">
       <div @click="openChangImg" class="profileImg cursorP" :style="'background-image: url(' + mUserProfileImg + ');'"></div>
       <!-- <div v-else @click="openChangImg" class="profileImg cursorP"  :style="'background-image: url('+ (GE_USER.domainPath ? GE_USER.domainPath + this.$changeUrlBackslash(GE_USER.userProfileImg) : GE_USER.userProfileImg) +');'"> </div>-->
 
       <div class="w100P infoFillArea">
-        <div class="w100P alignCenter" style="justify-content:space-between;">
-          <div class="infoName" style="width:70%;">
+        <div class="w100P alignCenter" style="justify-content:space-between; gap:1rem;">
+          <div class="infoName" style="width:65%;">
             <p>구성원명</p>
             <input type="text" class="inputs nameInput" v-model="newDispMText" :placeholder=mNamePlaceHolder />
           </div>
           <div class="infoType" style="width:25%;">
             <p>권한</p>
             <select v-model="selectedAuth" @change="changeTypeOption">
+              <option value="default">선택하세요.</option>
               <option v-for="(auth, index) in mAppDetail[0].authList" :key="index" :value="auth.authKey">{{auth.authName}}</option>
             </select>
           </div>
         </div>
         <div class="infoNumber w100P">
             <p>연락처</p>
-            <input type="text" class="inputs nameInput" v-model="newPhoneNoEnc" :placeholder=mNumberPlaceHolder />
+            <input type="text" class="inputs numberInput" v-model="newPhoneNoEnc" :placeholder=mNumberPlaceHolder />
           </div>
           <div class="infoMail w100P">
             <p>이메일</p>
-            <input type="text" class="inputs nameInput" v-model="newEmail" :placeholder=mMailPlaceHolder />
+            <input type="text" class="inputs mailInput" v-model="newEmail" :placeholder=mMailPlaceHolder />
           </div>
         <!-- <div class="w100P infoDesc">
           <p>조직설명</p>
@@ -35,7 +37,7 @@
     </div>
 
         <div class="w100P">
-        <button type="button" @click="saveMember" class="admBtn saveBtn">저장</button>
+        <button type="button" @click="checkInputs" class="admBtn saveBtn">저장</button>
           <button type="button" @click="closeXPop" class="admBtn">닫기</button>
         </div>
       </div>
@@ -44,9 +46,13 @@
 <script>
 import axios from 'axios'
 import userImgSelectCompo from '@/components/pageComponents/myPage/Tal_changeUserIcon.vue'
+import confirmPop from '@/components/admPages/popUP/Adm_confirmPop.vue'
+import okPop from '@/components/admPages/popUP/Adm_confirmOkPop.vue'
 export default {
   components: {
-    userImgSelectCompo
+    userImgSelectCompo,
+    confirmPop,
+    okPop
   },
   props: {
     pClosePop: Function,
@@ -57,6 +63,15 @@ export default {
     pMyOrgList: []
   },
   created () {
+    window.addEventListener('message', (e) => this.receiveMessage(e), false)
+    console.log('route params', this.$route.params.orgKey)
+    if (location.search) {
+      const urlParam = this.getParamMap(location.search)
+      console.log(urlParam)
+      if (urlParam.appToken) {
+        this.$APP_CONFIG.appToken = urlParam.appToken
+      }
+    }
     if (this.pSelectedOrgUser && this.pSelectedOrgUser.domainPath && this.pSelectedOrgUser.userProfileImg) { // 기존 유저 수정이면
       this.mDomainPath = this.pSelectedOrgUser.domainPath
       this.mUserProfileImg = this.pSelectedOrgUser.userProfileImg
@@ -84,18 +99,39 @@ export default {
       newAuthKey: '',
       newEmail: '',
       newDispMText: '',
-      newPhoneNoEnc: ''
+      newPhoneNoEnc: '',
+      selectedAuth: 'default',
+      confirmPopYn: false,
+      okPopYn: false,
+      movePage: false,
+      confirmPopText: '새로운 유저를 추가하시겠습니까?',
+      okPopText: '저장되었습니다.'
     }
   },
   methods: {
     closeXPop () {
-      // var history = this.$store.getters['D_HISTORY/hStack']
-      // var removePage = history[history.length - 1]
-      // console.log('history', history, 'removePage', removePage)
-      // history = history.filter((element, index) => index < history.length - 1)
-      // this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      // this.$store.commit('D_HISTORY/updateStack', history)
-      this.$router.push(`/orgDetail/${this.orgKey}`)
+      if (window.self !== window.top) {
+        window.parent.postMessage(JSON.stringify({ sender: 'Hb', type: 'close' }), this.mOtherParents)
+      } else {
+        this.$router.push('/admMain')
+      }
+    },
+    showConfirmPop () {
+      this.confirmPopYn = true
+    },
+    closeConfirmPop () {
+      this.confirmPopYn = false
+    },
+    showOkPop () {
+      this.okPopYn = true
+    },
+    closeOkPop (boolean) {
+      if (!boolean || boolean === false) {
+        this.okPopYn = false
+      } else {
+        this.okPopYn = false
+        this.$router.go(-1)
+      }
     },
     openChangImg () {
       this.changeImageYn = true
@@ -106,6 +142,22 @@ export default {
     changeTypeOption (value) {
       this.newAuthKey = this.selectedAuth
       console.log('this.newAuthKey', this.newAuthKey)
+    },
+    checkInputs () {
+      if (this.newDispMText === '' || this.newPhoneNoEnc === '' || this.newEmail === '') {
+        if (this.newDispMText === '') {
+          this.okPopText = '구성원명을 입력하세요.'
+        } else if (this.selectedAuth === 'default') {
+          this.okPopText = '권한을 선택하세요.'
+        } else if (this.newPhoneNoEnc === '') {
+          this.okPopText = '연락처를 입력하세요.'
+        } else if (this.newEmail === '') {
+          this.okPopText = '이메일을 입력하세요.'
+        }
+        this.showOkPop()
+      } else {
+        this.showConfirmPop()
+      }
     },
     async saveMember () {
       var paramSet = {}
@@ -118,14 +170,44 @@ export default {
         creUserKey: this.GE_USER.userKey,
         userNameMtext: this.newDispMText,
         orgKey: Number(this.orgKey)
-        // appToken: 'eyJhbGciOiJIUzI1NiJ9.eyJjcmVVc2VyS2V5IjoxOTIsImNyZURhdGUiOjE3MDUyODQzODUwMDAsImFwcE5hbWUiOiLrjZTslYzrprwiLCJhcHBUb2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUo5LmV5SmpjbVZWYzJWeVMyVjVJam94T1RJc0ltTnlaVVJoZEdVaU9qRTNNRFV5T0RRek9EVXdNREFzSW1Gd2NFNWhiV1VpT2lMcmpaVHNsWXpycHJ3aUxDSmhjSEJVYjJ0bGJpSTZJbVY1U21oaVIyTnBUMmxLU1ZWNlNURk9hVW81TG1WNVNtcGpiVlpXWXpKV2VWTXlWalZKYW05NFQxUkpjMGx0VG5sYVZWSm9aRWRWYVU5cVJUTk5SRlY1VDBSUmVrOUVWWGROUkVGelNXMUdkMk5GTldoaVYxVnBUMmxNY21wYVZITnNXWHB5Y0hKM2FVeERTbXBhV0Vvd1lWWkNiMkl5Tld4WFZ6UnBUMnBGYzBsdFJuZGpSWFJzWlZOSk5rMVRkMmxaTWxaNVpFZHNSbUpYUm5CaVJteDFTV3B2ZUV4RFNtdGFWM2hzWkVkV1dtSnBTVFpOUTNkcFdsaG9kMGxxYjNsTlJFbDNUbXBWTlU1cVZUVk1RMHAxWWpJMWFscFRTVFpKYlVrMVdXMVZNVnBFYkd0TVZFRXpXa1JaZEU1RVpHMU5VekExVDBSSk1VeFVhM2xPYW1NMFRsZFJkMDFVVlhoYVEwbHpTVzFHZFZwSVNuWmhWMUpLV2tOSk5rbHRUblppVXpVd1dWZDRabU5JU25aaGJWWnFaRU5LT1M1UVdIbFdYMUIwZFVkUlowSmZjMHRNVDNadE9XeDNPV2hvYmxoblJsQXhla2M1V0dGdFIxaFVVVGhWSWl3aVkyVnlkR2xRYUc5dVpWbHVJam94TENKaGNIQkxaWGtpT2pFc0ltTmxjblJwUlcxaGFXeFpiaUk2TVN3aVpHVnNaWFJsV1c0aU9qQXNJbVY0Y0NJNk1qQXlNRGt3TWpZM01Dd2libTl1WTJVaU9pSTVNVEprTTJabE1DMHhabVZrTFRRMllqa3RPREV3WkMwMU5qYzROVGN3TWpjMVpETWlMQ0poYm1SeWIybGtTV1FpT2lKamIyMHVkR0ZzWDNCeWIycGxZM1FpZlEuMUFGMkpoQzd6VG1wVTV2aHdvN0wxN2RSVlVSRzl0MFBzQ09rVFNGR1dHMCIsImNlcnRpUGhvbmVZbiI6MSwiYXBwS2V5IjoxLCJjZXJ0aUVtYWlsWW4iOjEsImRlbGV0ZVluIjowLCJleHAiOjIwMjA5MDI3NzQsIm5vbmNlIjoiNTlmMDYxMDItY2VhMS00NmE2LWEwMmYtNGUwODRhZWFlZjI1IiwiYW5kcm9pZElkIjoiY29tLnRhbF9wcm9qZWN0In0.irKKhHVeVbE5pvXAM69ytw0SCxYA6SMgXRPEDA_eCU8'
         // domainPath: this.GE_USER.domainPath,
         // userProfileImg: this.GE_USER.userProfileImg
       }
 
       console.log('paramSet', paramSet)
       var result = await axios.post('/sUniB/tp.saveMOrgUser', { mOrgUser: paramSet }, { withCredentials: true, headers: { DemoYn: true } })
-      console.log('result', result)
+      if (result && result.data) {
+        this.closeConfirmPop()
+        this.okPopText = '저장되었습니다.'
+        this.showOkPop()
+      } else {
+        this.okPopText = '유저 추가에 실패했습니다.'
+        this.showOkPop()
+      }
+    },
+    receiveMessage (event, callback) {
+      const basedUrl = 'http://192.168.0.78:9443'
+      if (event.origin.includes('mankik') || event.origin.includes('localhost') || event.origin.includes('192.168') || event.origin.includes('hybric') || event.origin.includes(basedUrl)) {
+        try {
+          if (event.data) {
+            const result = JSON.parse(event.data)
+            if (result.data) {
+              console.log(result.data)
+              this.mOtherAppUserInfo = result.data
+              this.$APP_CONFIG.appToken = result.data.appToken
+              this.mOtherParents = event.origin
+              console.log(this.mOtherParents)
+              console.log('durl')
+            }
+            if (callback) {
+              callback(result)
+            }
+          }
+          console.log(event)
+        } catch (error) {
+          console.log(error)
+        }
+      }
     }
   },
   computed: {
@@ -161,6 +243,7 @@ export default {
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+  background-color:#fff;
 }
 .infoFillArea{
   display:flex;
@@ -173,15 +256,18 @@ export default {
 .infoFillArea p {
   text-align:left;
   font-size:14px;
-  width:80px;
+  width:60px;
 }
 .infoName, .infoDesc, .infoType, .infoNumber, .infoMail{
   display:flex;
   align-items:center;
 }
+.infoType select{
+  min-width:120px;
+}
 .inputs, select {
-  width:calc(100% - 80px);
-  padding:10px 20px !important;
+  width:calc(100% - 60px);
+  padding:10px 10px !important;
   border-radius:10px !important;
   border:none !important;
   box-shadow:0 0 3px 1px rgba(0,0,0,0.1);
@@ -193,5 +279,22 @@ export default {
   background-color:#5F61BD;
   color:#fff;
   margin-right:1rem;
+}
+
+@media screen and (max-width:730px){
+  .infoFillArea > div:first-child{
+    flex-direction:column;
+    justify-content:start;
+    align-items:start;
+  }
+  .infoFillArea > div:first-child .infoName{
+    width:100% !important;
+  }
+  .infoFillArea > div:first-child .infoType{
+    width:auto !important;
+  }
+  .inputs, select{
+    width:calc(100% - 60px) !important;
+  }
 }
 </style>

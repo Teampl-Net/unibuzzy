@@ -2,10 +2,10 @@
   <div class="bgPop"></div>
   <div class="popupWrap">
     <div class="confirmPopHeader w100P">
-      <p class=" fontBold font20">{{ '조직 생성하기' }}</p>
+      <p class=" fontBold font20">{{ pOkPopHeader ? pOkPopHeader : '생성하기' }}</p>
     </div>
     <div class="confirmPopBody w100P">
-      {{ '저장되었습니다.' }}
+      <p>{{ pOkPopText ? pOkPopText :'저장되었습니다.' }}</p>
     </div>
     <div class="confirmPopBtns w100P">
       <button @click="pClosePop" class="admBtn closeBtn fontBold">닫기</button>
@@ -16,7 +16,10 @@
 <script>
 export default {
   props: {
-    pClosePop: Function
+    pClosePop: Function,
+    pOkPopText: String,
+    pOkPopHeader: String,
+    pMovePage: Boolean
   },
   data () {
     return {
@@ -24,8 +27,13 @@ export default {
     }
   },
   methods: {
-    confirmOK () {
-      this.$emit('confirmOk')
+    closePop () {
+      console.log('confirm OK pop close ???')
+      if (this.pMovePage === true) {
+        this.$emit('closeOkPop', true)
+      } else {
+        this.pClosePop()
+      }
     }
   }
 }
@@ -62,6 +70,9 @@ export default {
 }
 .confirmPopBody{
   padding:30px 0;
+}
+.confirmPopBody p{
+  font-size:15px;
 }
 .confirmPopBtns{
   display:flex;
