@@ -1,4 +1,6 @@
 <template>
+  <confirmPop v-if="mConfirmPopYn"/>
+  <OkPop v-if="mOkPop"/>
   <div v-if="mSelectedBranch" id="admLayout">
     <div v-if="!mIframeYn" class="w100P topArea">
       <div class="backBtn mRight-1 cursorP" @click="gotoBack">
@@ -23,7 +25,7 @@
       </div>
 
       <div class="detailInfos w100P">
-        <jojikDetailInfo v-if="mSelectedJojikTabIdx === 0" :orgKey="orgKey" @openPop="openPop" :pGE_USER="GE_USER" @openUserInfo="openUserInfo" :pPageData="pPageData" :pSelectedOrg="mSelectedBranch"/>
+        <jojikDetailInfo v-if="mSelectedJojikTabIdx === 0" :orgKey="orgKey" :pGE_USER="GE_USER" @openUserInfo="openUserInfo" :pOrgUesrs="mMOrgUserList" :pPageData="pPageData" :pSelectedOrg="mSelectedBranch"/>
         <jojikUesrInfo v-if="mSelectedJojikTabIdx === 1" :orgKey="orgKey" :pSelectedOrg="mSelectedBranch" :pFilteredPageData="filteredPageData" :pAddUser="addUserYn" :pCloseAddUser="closeAddUser"/>
       </div>
     </div>
@@ -33,11 +35,15 @@
 <script>
 import jojikDetailInfo from '@/components/admPages/adm_components/Adm_jojikDetailInfo.vue'
 import jojikUesrInfo from '@/components/admPages/adm_components/Adm_jojikUserInfo.vue'
+import confirmPop from '@/components/admPages/popUP/Adm_confirmPop.vue'
+import OkPop from '@/components/admPages/popUP/Adm_confirmOkPop.vue'
 // import axios from 'axios'
 export default {
   components: {
     jojikDetailInfo,
-    jojikUesrInfo
+    jojikUesrInfo,
+    confirmPop,
+    OkPop
   },
   props: {
     pPropParams: {},
@@ -91,13 +97,28 @@ export default {
       propParams: {},
       mMOrgUserList: [],
       mBranchList: [],
-      mAppDetail: {}
+      mAppDetail: {},
+      mMOrgUerCount: {},
+      mConfirmPopYn: false,
+      mOkPopYn: false
       // filteredPageData: {}
     }
   },
   mounted () {
   },
   methods: {
+    openConfirmPop () {
+      this.mConfirmPopYn = true
+    },
+    closeConfirmPop () {
+      this.mConfirmPopYn = false
+    },
+    openOkPop () {
+      this.mOkPopYn = true
+    },
+    closeOkPop () {
+      this.mOkPopYn = false
+    },
     receiveMessage (event, callback) {
       const basedUrl = 'http://192.168.0.78:9443'
       if (event.origin.includes('mankik') || event.origin.includes('localhost') || event.origin.includes('192.168') || event.origin.includes('hybric') || event.origin.includes(basedUrl)) {
@@ -108,6 +129,7 @@ export default {
               this.mOtherAppUserInfo = result.data
               // this.$APP_CONFIG.appToken = result.data.appToken
               this.getOrgList(Number(this.$route.params.orgKey))
+              this.getMOrgMemberList(Number(this.$route.params.orgKey))
             }
             if (callback) {
               callback(result)
@@ -163,13 +185,14 @@ export default {
       // this.filteredPageData(param)
       this.mSelectedJojikTabIdx = 1
     },
-    async getMOrgMemberList () {
+    async getMOrgMemberList (orgKey) {
       var paramSet = {}
       paramSet.creUserKey = this.GE_USER.userKey
-      paramSet.orgKey = this.mSelectedBranch.orgKey
+      paramSet.orgKey = this.mSelectedBranch.orgKey || orgKey
       var result = await this.$axios.post('/sUniB/tp.getMOrgUserList', paramSet, { withCredentials: true, headers: { UserAuthorization: this.$store.getters['D_USER/GE_USER'].userToken, Authorization: this.$APP_CONFIG.appToken } })
       if (result && result.data) {
         this.mMOrgUserList = result.data
+        console.log('this.mMOrgUserList', this.mMOrgUserList)
       }
     }
   },
@@ -230,7 +253,7 @@ export default {
 }
 
 .bottomArea{
-  padding-top:60px;
+  /* padding-top:60px; */
 }
 
 .jojikTab{

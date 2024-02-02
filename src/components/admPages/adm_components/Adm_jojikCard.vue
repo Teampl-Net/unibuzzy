@@ -9,8 +9,8 @@
         </div>
       </div>
       <div style="text-align:right;">
-        <p class="font13">{{ mSelectedBranch.orgType && mSelectedBranch.orgType === 'T' ? '채널' : mSelectedBranch.orgType === 'B' ? '주소록' : '채널' }}</p>
-        <p class="font12">🙍🏻‍♂️{{ mSelectedBranch.allCount ? mSelectedBranch.allCount : '미측정' }}</p>
+        <p class="font13">{{ mSelectedBranch.orgType && mSelectedBranch.orgType === 'T' ? '채널' : mSelectedBranch.orgType === 'B' ? '주소록' : '타입' }}</p>
+        <p class="font12">🙍🏻‍♂️{{ pOrgUesrs && pOrgUesrs.org ? pOrgUesrs.org.length : '미측정'}}</p>
       </div>
     </div>
 
@@ -40,7 +40,8 @@ export default {
     pSelectedOrg: Object,
     pMyOrgList: [],
     appKey: Number,
-    orgKey: Number
+    orgKey: Number,
+    pOrgUesrs: {}
   },
   created () {
     window.addEventListener('message', (e) => this.receiveMessage(e), false)
@@ -55,7 +56,7 @@ export default {
       if (this.orgDetails && this.orgDetails.length > 0) {
         this.mSelectedBranch = this.orgDetails[0].branch.filter(branch => branch.orgKey === Number(this.orgKey))
         this.mSelectedBranch = this.mSelectedBranch[0]
-        console.log('this.mSelectedBranch', this.mSelectedBranch)
+        console.log('jojikCard this.mSelectedBranch', this.mSelectedBranch)
       }
       if (location.search) {
         const urlParam = this.getParamMap(location.search)
@@ -68,6 +69,7 @@ export default {
         }
       }
     }
+    console.log('jojikCard mSelectedBranch', this.mSelectedBranch)
   },
   data () {
     return {
@@ -134,9 +136,10 @@ export default {
 <style scoped>
 
 .jojikInfoWrap{
-  border:1px solid #e0e0e0;
-  padding:15px;
+  /* border:1px solid #e0e0e0; */
+  padding:15px 10px;
   border-radius:10px;
+  background-color:#fff;
 }
 .defaultInfos{
   display:flex;
@@ -161,7 +164,7 @@ export default {
   flex-direction:column;
   align-items:start;
   justify-content:center;
-  padding-top:10px;
+  padding:10px 0 0 0;
 }
 
 </style>
