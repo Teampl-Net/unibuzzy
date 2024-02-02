@@ -64,6 +64,12 @@ export default {
   },
   created () {
     window.addEventListener('message', (e) => this.receiveMessage(e), false)
+    console.log('this.$route.from', this.$route)
+    if (this.$route.from &&
+      this.$route.from.path.startsWith('/expertList/')) {
+      this.fromExpertYn = true
+    } else this.fromExpertYn = false
+    console.log('fromExpertYn', this.fromExpertYn)
     console.log('route params', this.$route.params.orgKey)
     if (location.search) {
       const urlParam = this.getParamMap(location.search)
@@ -105,7 +111,8 @@ export default {
       okPopYn: false,
       movePage: false,
       confirmPopText: '새로운 유저를 추가하시겠습니까?',
-      okPopText: '저장되었습니다.'
+      okPopText: '저장되었습니다.',
+      fromExpertYn: false
     }
   },
   methods: {
