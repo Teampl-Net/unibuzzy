@@ -58,7 +58,10 @@ export default defineComponent({
       })
     }
   },
-  components: {
+  computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    }
   }
 })
 </script>
