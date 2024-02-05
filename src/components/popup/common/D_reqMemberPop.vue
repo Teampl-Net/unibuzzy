@@ -60,9 +60,9 @@ export default {
         typeParam.memberTypeKey = this.propMemberData.memberTypeKey
         this.$commonAxiosFunction({
 <<<<<<< .mine
-          url: '/sUniB/tp.saveFollower',
+          url: 'https://www.hybric.net:9443/service/tp.saveFollower',
 =======
-          url: '/sUniB/tp.saveFollower',
+          url: 'https://www.hybric.net:9443/service/tp.saveFollower',
 >>>>>>> .r1564
           param: { follower: typeParam }
         }).then(() => {
@@ -92,7 +92,7 @@ export default {
       var param = new Object()
       param.memberTypeKey = this.propMemberData.memberTypeKey
       var memberTypeItemList = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getMemberTypeItemList',
+        url: 'https://www.hybric.net:9443/service/tp.getMemberTypeItemList',
         param: param
       })
       if (memberTypeItemList.data.result) {
@@ -105,7 +105,7 @@ export default {
           }
           typeParam.memberTypeKey = this.propMemberData.memberTypeKey
           await this.$commonAxiosFunction({
-            url: '/sUniB/tp.saveFollower',
+            url: 'https://www.hybric.net:9443/service/tp.saveFollower',
             param: { follower: typeParam }
           })
           this.closeXPop(true)
@@ -147,7 +147,7 @@ export default {
       }
       param.memberInfoList = ansList
       var memberResult = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveFollowerMemberInfo',
+        url: 'https://www.hybric.net:9443/service/tp.saveFollowerMemberInfo',
         param: param
       })
       if (memberResult.data.result) {

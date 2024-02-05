@@ -8,7 +8,7 @@ var g_appInfo = null
 
 const HB_SSO = {
   registerFb: function (user, config) {
-    const basedUrl = 'http://192.168.0.78:9443'
+    const basedUrl = 'https://www.hybric.net:9443/service'
     const firebaseConfig = {
       apiKey: config.apiKey,
       authDomain: config.authDomain,
@@ -75,7 +75,7 @@ const HB_SSO = {
   },
   loginCheck: async function (appInfo, userInfo, config) {
     const param = {}
-    const basedUrl = 'http://192.168.0.78:9443'
+    const basedUrl = 'https://www.hybric.net:9443/service'
     param.app = appInfo
     param.user = userInfo
     let callback = null
@@ -90,7 +90,7 @@ const HB_SSO = {
   },
   sendPush: async function (push, config) {
     const param = {}
-    const basedUrl = 'http://192.168.0.78:9443'
+    const basedUrl = 'https://www.hybric.net:9443/service'
     param.app = appInfo
     param.user = userInfo
     let callback = null
@@ -108,9 +108,9 @@ const HB_SSO = {
     g_appInfo = data.appInfo
     if (config) {
       if (config.calllback) {
-        HB_SSO.createTargetIframe('HbSsoLogin', 'http://192.168.0.78:8080/ssoLogin', null, data, config.callback)
+        HB_SSO.createTargetIframe('HbSsoLogin', 'https://www.hybric.net', null, data, config.callback)
       } else if (config.redirectUrl) {
-        window.location = encodeURI('http://192.168.0.78:8080/ssoLogin?redirect=' + config.redirectUrl + '?appInfo=' + JSON.stringify(data.appInfo))
+        window.location = encodeURI('https://www.hybric.net/ssoLogin?redirect=' + config.redirectUrl + '?appInfo=' + JSON.stringify(data.appInfo))
       }
     }
   },
@@ -118,7 +118,7 @@ const HB_SSO = {
     function receiveMessage (event, callback) {
       console.log(event)
       debugger
-      const basedUrl = 'http://192.168.0.78:9443'
+      const basedUrl = 'https://www.hybric.net:9443/service'
       if (event.origin.includes('mankik') || event.origin.includes('localhost') || event.origin.includes('192.168') || event.origin.includes('hybric') || event.origin.includes(basedUrl)) {
         try {
           if (event.data) {

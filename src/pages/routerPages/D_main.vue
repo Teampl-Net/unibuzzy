@@ -418,7 +418,7 @@ export default {
       if (this.mAxiosQueue.length > 0 && this.mAxiosQueue.findIndex((item) => item === 'getMainBoard') !== -1) return
       this.mAxiosQueue.push('getMainBoard')
       var paramMap = new Map()
-      var response = await this.$axios.post('/sUniB/tp.getUnknownMainBoard', Object.fromEntries(paramMap)
+      var response = await this.$axios.post('https://www.hybric.net:9443/service/tp.getUnknownMainBoard', Object.fromEntries(paramMap)
       )
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
       this.mAxiosQueue.splice(queueIndex, 1)
@@ -499,7 +499,7 @@ export default {
     },
     openNotiHistoryPop () {
       console.log('hhh?')
-      // this.$commonAxiosFunction({ url: '/sUniB/tp.getAppList', param: {} })
+      // this.$commonAxiosFunction({ url: 'https://www.hybric.net:9443/service/tp.getAppList', param: {} })
       this.$emit('openNotiHistoryPop')
       // if (!(this.GE_USER.userKey === 255 || this.GE_USER.userKey === 123 || this.GE_USER.userKey === 104 || this.GE_USER.userKey === 192 || this.GE_USER.userKey === 228 || this.GE_USER.userKey === 1)) return
       // // eslint-disable-next-line no-new-object

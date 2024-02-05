@@ -11,8 +11,8 @@ import { commonAxiosFunction } from './Tal_axiosFunction'
 import { mapGetters, mapActions } from 'vuex'
 import { app } from '@/main'
 var g_axiosQueue = []
-const BASE_URL = 'http://192.168.0.78:9443'
-// const BASE_URL = 'https://hybric.net:9443'
+// const BASE_URL = 'http://192.168.0.78:9443'
+const BASE_URL = 'https://hybric.net:9443/service'
 export const ssoMethods = {
   async getUserProfile (userToken, refreshToken) {
     try {

@@ -118,7 +118,7 @@ export default {
       paramMap.set('adminYn', true)
       paramMap.set('pageSize', 1000)
       result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.getFollowerList',
+          url: 'https://www.hybric.net:9443/service/tp.getFollowerList',
           param: Object.fromEntries(paramMap)
       })
       this.managerList = result.data.content
@@ -168,7 +168,7 @@ export default {
       }
 
       result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.getFollowerList',
+          url: 'https://www.hybric.net:9443/service/tp.getFollowerList',
           param: Object.fromEntries(paramMap)
     })
         this.managerList = result.data.content
@@ -177,7 +177,7 @@ export default {
       var param = {}
       param.follower = follower
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveManager',
+        url: 'https://www.hybric.net:9443/service/tp.saveManager',
         param: param
       })
     },

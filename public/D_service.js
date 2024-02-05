@@ -56,7 +56,7 @@ const dService = {
       contentsParam.actorList = []
       param.contents = contentsParam
       // eslint-disable-next-line no-undef
-      fetch('/sUniB/tp.savePartnerContents', {
+      fetch('https://www.hybric.net:9443/service/tp.savePartnerContents', {
         method: 'POST',
         body: JSON.stringify(param),
         headers: { 'Content-type': 'application/json' }
@@ -71,8 +71,8 @@ const dService = {
             }
           }
         })
-      /* const result = await axios.post('/sUniB/tp.savePartnerContents', this.mRecvParams)
-      /* const result = await axios.post('/sUniB/tp.savePartnerContents', this.mRecvParams)
+      /* const result = await axios.post('https://www.hybric.net:9443/service/tp.savePartnerContents', this.mRecvParams)
+      /* const result = await axios.post('https://www.hybric.net:9443/service/tp.savePartnerContents', this.mRecvParams)
       console.log(result)
       if (result.result === true) {
         console.log(result)
@@ -122,7 +122,7 @@ const dService = {
     var setParam = {}
     setParam.user = param
     setParam.partner = coreParam
-    var result = await fetch('/sUniB/tp.saveUserAndAccess', {
+    var result = await fetch('https://www.hybric.net:9443/service/tp.saveUserAndAccess', {
       method: 'POST',
       body: JSON.stringify(setParam),
       headers: { 'Content-type': 'application/json' }

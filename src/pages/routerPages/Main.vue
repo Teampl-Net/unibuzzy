@@ -296,7 +296,7 @@ export default {
         updateYn: true
       }
       const result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveUser',
+        url: 'https://www.hybric.net:9443/service/tp.saveUser',
         param: param
       }, true)
       if (result.data) {
@@ -336,7 +336,7 @@ export default {
         this.openBoardPop()
       } else {
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.getBdAreaDetail',
+          url: 'https://www.hybric.net:9443/service/tp.getBdAreaDetail',
           param: param
         })
         if (result.data) {
@@ -364,7 +364,7 @@ export default {
         this.openBoardPop()
       } else if (area.priority !== 1) {
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.getBdAreaDetail',
+          url: 'https://www.hybric.net:9443/service/tp.getBdAreaDetail',
           param: param
         })
         if (result.data) {
@@ -426,7 +426,7 @@ export default {
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
       paramMap.set('mobileYn', isMobile)
       paramMap.set('fUserKey', this.GE_USER.userKey)
-      var response = await this.$axios.post('/sUniB/tp.UB_firstLoginCheck', Object.fromEntries(paramMap)
+      var response = await this.$axios.post('https://www.hybric.net:9443/service/tp.UB_firstLoginCheck', Object.fromEntries(paramMap)
       )
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
       this.mAxiosQueue.splice(queueIndex, 1)
@@ -805,7 +805,7 @@ export default {
       param.fUserKey = this.GE_USER.userKey
       param.userKey = this.GE_USER.userKey
       const result = await this.$getViewData(
-        { url: '/sUniB/tp.getTeamMenuList', param: param },
+        { url: 'https://www.hybric.net:9443/service/tp.getTeamMenuList', param: param },
         false
       )
       if (!result || !result.data) {

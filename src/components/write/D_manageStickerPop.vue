@@ -261,7 +261,7 @@ export default {
       param.stickerKey = this.selectedSticker.stickerKey
       param.deleteYn = true
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveSticker',
+        url: 'https://www.hybric.net:9443/service/tp.saveSticker',
         param: param
       })
       if (result.data.result) {
@@ -288,7 +288,7 @@ export default {
       console.log('saveSticker param', param)
       this.$emit('newSticker', param.nameMtext, param.picBgPath, param.stickerKey)
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveSticker',
+        url: 'https://www.hybric.net:9443/service/tp.saveSticker',
         param: param
       })
       if (result.data.result) {

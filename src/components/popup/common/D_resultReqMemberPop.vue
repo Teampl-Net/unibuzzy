@@ -56,7 +56,7 @@ export default {
       var param = new Object()
       param.memberTypeKey = this.propMemberData.memberTypeKey
       var memberTypeItemList = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getMemberTypeItemList',
+        url: 'https://www.hybric.net:9443/service/tp.getMemberTypeItemList',
         param: param
       })
       console.log(memberTypeItemList)
@@ -70,7 +70,7 @@ export default {
           }
           typeParam.memberTypeKey = this.propMemberData.memberTypeKey
           await this.$commonAxiosFunction({
-            url: '/sUniB/tp.saveFollower',
+            url: 'https://www.hybric.net:9443/service/tp.saveFollower',
             param: { follower: typeParam }
           })
           this.closeXPop(true)
@@ -108,7 +108,7 @@ export default {
       param.memberInfoList = ansList
       console.log(param.memberInfoList)
       var memberResult = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveFollowerMemberInfo',
+        url: 'https://www.hybric.net:9443/service/tp.saveFollowerMemberInfo',
         param: param
       })
       console.log(memberResult)

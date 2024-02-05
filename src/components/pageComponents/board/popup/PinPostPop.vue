@@ -66,7 +66,7 @@ export default {
       let result = {}
       if (pinYn) {
         result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.deleteTopview ',
+          url: 'https://www.hybric.net:9443/service/tp.deleteTopview ',
           param: {
             tvKey: board.tvKey
           }
@@ -86,7 +86,7 @@ export default {
           }
         }
         result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.saveTopview',
+          url: 'https://www.hybric.net:9443/service/tp.saveTopview',
           param: param
         })
         if (result && result.data && result.data.result) {

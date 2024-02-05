@@ -85,7 +85,7 @@ export default {
         memo.bodyFullStr = inputMemoArea.innerHTML
         memo.bodyMinStr = inputMemoArea.innerHTML
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.saveMemo',
+          url: 'https://www.hybric.net:9443/service/tp.saveMemo',
           param: { memo: memo }
         })
         if (result && result.data && result.data.result) {

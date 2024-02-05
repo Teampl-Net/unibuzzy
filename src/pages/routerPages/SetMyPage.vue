@@ -222,7 +222,7 @@ export default {
 
       var result = null
       var response = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveUser',
+        url: 'https://www.hybric.net:9443/service/tp.saveUser',
         param: param
       })
       result = response

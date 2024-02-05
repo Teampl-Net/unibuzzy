@@ -38,7 +38,7 @@ export default {
       var paramSet = {}
       paramSet = param
 
-      var result = await axios.post('/sUniB/tp.saveOrg', { org: paramSet }, { withCredentials: true, headers: { UserAuthorization: this.$store.getters['D_USER/GE_USER'].userToken, Authorization: this.$APP_CONFIG.appToken } })
+      var result = await axios.post('https://www.hybric.net:9443/service/tp.saveOrg', { org: paramSet }, { withCredentials: true, headers: { UserAuthorization: this.$store.getters['D_USER/GE_USER'].userToken, Authorization: this.$APP_CONFIG.appToken } })
       console.log('result', result)
       this.pClosePop()
     },
@@ -46,7 +46,7 @@ export default {
       var paramSet = {}
       paramSet = param
 
-      var result = await axios.post('/sUniB/tp.saveMOrgUser', { mOrgUser: paramSet }, { withCredentials: true, headers: { UserAuthorization: this.$store.getters['D_USER/GE_USER'].userToken, Authorization: this.$APP_CONFIG.appToken } })
+      var result = await axios.post('https://www.hybric.net:9443/service/tp.saveMOrgUser', { mOrgUser: paramSet }, { withCredentials: true, headers: { UserAuthorization: this.$store.getters['D_USER/GE_USER'].userToken, Authorization: this.$APP_CONFIG.appToken } })
       console.log('result', result)
       this.pClosePop()
     }

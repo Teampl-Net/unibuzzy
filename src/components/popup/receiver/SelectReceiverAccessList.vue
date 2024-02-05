@@ -84,7 +84,7 @@ export default {
       paramMap.set('cabinetKey', key)
       paramMap.set('jobkindId', 'USER')
       var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.getMCabContentsList',
+          url: 'https://www.hybric.net:9443/service/tp.getMCabContentsList',
           param: Object.fromEntries(paramMap)
       })
       this.memberList = {}

@@ -199,7 +199,7 @@ export default {
       }
 
       console.log('paramSet', paramSet)
-      var result = await this.$axios.post('/sUniB/tp.saveMOrgUser', { mOrgUser: paramSet }, { withCredentials: true, headers: { DemoYn: true } })
+      var result = await this.$axios.post('https://www.hybric.net:9443/service/tp.saveMOrgUser', { mOrgUser: paramSet }, { withCredentials: true, headers: { DemoYn: true } })
       if (result && result.data) {
         this.closeConfirmPop()
         this.okPopText = '저장되었습니다.'
@@ -212,7 +212,7 @@ export default {
       }
     },
     receiveMessage (event, callback) {
-      const basedUrl = 'http://192.168.0.78:9443'
+      const basedUrl = 'https://www.hybric.net:9443'
       if (event.origin.includes('mankik') || event.origin.includes('localhost') || event.origin.includes('192.168') || event.origin.includes('hybric') || event.origin.includes(basedUrl)) {
         try {
           if (event.data) {

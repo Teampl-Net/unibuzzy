@@ -174,7 +174,7 @@ export default {
       sample.creUserKey = this.$store.getters['UB_USER/GE_USER'].userKey
       param.sample = sample
       await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveSample',
+        url: 'https://www.hybric.net:9443/service/tp.saveSample',
         param: param
       })
       this.sampleTitleMtext = ''

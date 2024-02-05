@@ -132,7 +132,7 @@ export default {
     async getCateItemList () {
       if (!this.propBusinessItemList) {
         var cateItemList = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.getCateItemList',
+          url: 'https://www.hybric.net:9443/service/tp.getCateItemList',
           param: { cateGroupKey: 2 }
         })
         this.mBusinessItemList = cateItemList.data.cateItemList

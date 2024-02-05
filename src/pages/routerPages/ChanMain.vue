@@ -514,7 +514,7 @@ export default {
             userName: this.$changeText(this.GE_USER.userDispMtext)
           }
           const response = await this.$commonAxiosFunction({
-            url: '/sUniB/tp.saveUserDo',
+            url: 'https://www.hybric.net:9443/service/tp.saveUserDo',
             param: param
           })
           this.CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey = response.data.doKey
@@ -532,7 +532,7 @@ export default {
             userName: this.$changeText(this.GE_USER.userDispMtext)
           }
           await this.$commonAxiosFunction({
-            url: '/sUniB/tp.deleteUserDo',
+            url: 'https://www.hybric.net:9443/service/tp.deleteUserDo',
             param: param
           })
           this.CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey = null
@@ -579,7 +579,7 @@ export default {
       paramMap.set('pageSize', 100)
 
       result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getFollowerList',
+        url: 'https://www.hybric.net:9443/service/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       this.mManagerList = result.data.content
@@ -630,7 +630,7 @@ export default {
         typeParam.userKey = this.GE_USER.userKey
         typeParam.teamKey = this.CHANNEL_DETAIL.teamKey
         await this.$commonAxiosFunction({
-          url: '/sUniB/tp.saveFollower',
+          url: 'https://www.hybric.net:9443/service/tp.saveFollower',
           param: { follower: typeParam, appType: 'UB', doType: 'CR' }
         })
         this.CHANNEL_DETAIL.memberTypeKey = this.selectMemberObj.memberTypeKey
@@ -741,7 +741,7 @@ export default {
       param.userKey = this.GE_USER.userKey
       try {
         const result = await this.$getViewData(
-          { url: '/sUniB/tp.getChanMainBoard', param: param },
+          { url: 'https://www.hybric.net:9443/service/tp.getChanMainBoard', param: param },
           false
         )
         if (!result || !result.data || result.data.result !== 'OK') {
@@ -831,7 +831,7 @@ export default {
       param.teamKey = Number(this.$route.params.encodedTeamKey)
       var memberTypeList = await this.$commonAxiosFunction(
         {
-          url: '/sUniB/tp.getMemberTypeList',
+          url: 'https://www.hybric.net:9443/service/tp.getMemberTypeList',
           param: param
         },
         true

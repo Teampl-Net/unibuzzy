@@ -252,7 +252,7 @@ export default {
       }
       this.$emit('changeMemberItem', param)
       /* var saveItem = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveMemberTypeItem',
+        url: 'https://www.hybric.net:9443/service/tp.saveMemberTypeItem',
         param: { member: param }
       }) */
       // console.log(saveItem)

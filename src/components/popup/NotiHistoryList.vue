@@ -85,7 +85,7 @@ export default {
       var param = {}
       param.userKey = this.GE_USER.userKey
       const result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getLogList',
+        url: 'https://www.hybric.net:9443/service/tp.getLogList',
         param: param
       })
       this.mNotiList = result.data.log.content

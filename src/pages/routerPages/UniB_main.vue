@@ -160,7 +160,7 @@ export default {
         updateYn: true
       }
       const result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveUser',
+        url: 'https://www.hybric.net:9443/service/tp.saveUser',
         param: param
       })
       this.$emit('changePageHeader', this.$changeText(chanEle.nameMtext))

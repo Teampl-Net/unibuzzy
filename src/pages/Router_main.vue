@@ -104,7 +104,7 @@ export default {
   created () {
     let patchTime = null
     this.$commonAxiosFunction({
-      url: '/sUniB/tp.checkSystemSettingTime',
+      url: 'https://www.hybric.net:9443/service/tp.checkSystemSettingTime',
       param: {}
     }).then((result) => {
       if (localStorage.getItem('patchTime')) {
@@ -227,7 +227,7 @@ export default {
       param.teamKey = 824
       param.fUserKey = this.GE_USER.userKey
       param.userKey = this.GE_USER.userKey
-      const result = await this.$getViewData({ url: '/sUniB/tp.getChanMainBoard', param: param }, false)
+      const result = await this.$getViewData({ url: 'https://www.hybric.net:9443/service/tp.getChanMainBoard', param: param }, false)
       if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
         this.$showToastPop('Cannot find your campus!')
       } else {
@@ -264,7 +264,7 @@ export default {
         paramMap.set('ownUserKey', this.GE_USER.userKey)
         paramMap.set('subsUserKey', this.GE_USER.userKey)
         paramMap.set('userKey', this.GE_USER.userKey)
-        const response = await this.$axios.post('/sUniB/tp.getMyContentsList', Object.fromEntries(paramMap))
+        const response = await this.$axios.post('https://www.hybric.net:9443/service/tp.getMyContentsList', Object.fromEntries(paramMap))
         if (response.data && response.data.content) this.mAttachFileList = response.data.content[0].attachFileList
       }
 
@@ -454,7 +454,7 @@ export default {
       paramMap.set('sysCabinetCode', 'BOAR')
       paramMap.set('userKey', this.GE_USER.userKey)
       var response = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getCabinetDetail',
+        url: 'https://www.hybric.net:9443/service/tp.getCabinetDetail',
         param: Object.fromEntries(paramMap)
       })
       var mCabinet = response.data.mCabinet
@@ -488,7 +488,7 @@ export default {
         if (this.$route.fullPath !== '/') {
           nonLoadingYn = false
         }
-        const result = await this.$getViewData({ url: '/sUniB/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, nonLoadingYn)
+        const result = await this.$getViewData({ url: 'https://www.hybric.net:9443/service/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, nonLoadingYn)
         if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
           this.showCloudLoading(false)
           this.$showToastPop('Channel not found!')

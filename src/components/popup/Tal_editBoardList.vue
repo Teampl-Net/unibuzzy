@@ -263,7 +263,7 @@ export default {
       paramSet.teamMenuList = teamMenuList
       var result = await this.$commonAxiosFunction(
         {
-          url: '/sUniB/tp.changePosTeamMenu',
+          url: 'https://www.hybric.net:9443/service/tp.changePosTeamMenu',
           param: paramSet
         }
       )

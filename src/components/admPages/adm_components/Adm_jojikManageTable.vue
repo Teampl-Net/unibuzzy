@@ -154,7 +154,7 @@ export default {
       }
       console.log('paramSet', paramSet)
 
-      const result = await axios.post('/sUniB/tp.saveOrgAuth', { orgAuth: paramSet }, { withCredentials: true, headers: { UserAuthorization: this.GE_USER.userToken, Authorization: this.$APP_CONFIG.appToken } })
+      const result = await axios.post('https://www.hybric.net:9443/service/tp.saveOrgAuth', { orgAuth: paramSet }, { withCredentials: true, headers: { UserAuthorization: this.GE_USER.userToken, Authorization: this.$APP_CONFIG.appToken } })
       console.log('result', result)
       if (!auth && !type) {
         location.reload()

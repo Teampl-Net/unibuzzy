@@ -101,7 +101,7 @@ export default defineComponent({
   //     }
   //     setParam.user = user
   //     var result = await commonAxiosFunction({
-  //       url: '/sUniB/tp.saveUser',
+  //       url: 'https://www.hybric.net:9443/service/tp.saveUser',
   //       param: setParam,
   //       firstYn: true
   //     })

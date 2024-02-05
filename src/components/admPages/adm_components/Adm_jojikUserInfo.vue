@@ -83,7 +83,7 @@ export default {
     async getMOrgUserList () {
       var paramSet = {}
       paramSet.orgKey = Number(this.orgKey)
-      var result = await axios.post('/sUniB/tp.getMOrgUserList', paramSet, { withCredentials: true, headers: { UserAuthorization: this.$store.getters['D_USER/GE_USER'].userToken, Authorization: this.$APP_CONFIG.appToken } })
+      var result = await axios.post('https://www.hybric.net:9443/service/tp.getMOrgUserList', paramSet, { withCredentials: true, headers: { UserAuthorization: this.$store.getters['D_USER/GE_USER'].userToken, Authorization: this.$APP_CONFIG.appToken } })
       if (result && result.data) {
         this.isLoading = true
         this.mMOrgUserList = result.data

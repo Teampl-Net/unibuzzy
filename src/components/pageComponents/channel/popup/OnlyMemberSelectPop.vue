@@ -61,7 +61,7 @@ export default {
       paramMap.set('teamKey', this.propData.currentTeamKey)
       paramMap.set('pageSize', 1000)
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getFollowerList',
+        url: 'https://www.hybric.net:9443/service/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       this.memberList = result.data.content
@@ -138,7 +138,7 @@ export default {
         if (userKeyList && userKeyList.length > 0) {
           param.userKeyList = userKeyList
           result = await this.$commonAxiosFunction({
-            url: '/sUniB/tp.saveManager',
+            url: 'https://www.hybric.net:9443/service/tp.saveManager',
             param: param
           })
         }
@@ -156,7 +156,7 @@ export default {
             follower.userName = this.$changeText(this.directAddMemList[u].userDispMtext || this.directAddMemList[u].userNameMtext)
             param.follower = follower
             result = await this.$commonAxiosFunction({
-              url: '/sUniB/tp.saveManager',
+              url: 'https://www.hybric.net:9443/service/tp.saveManager',
               param: param
             })
           }

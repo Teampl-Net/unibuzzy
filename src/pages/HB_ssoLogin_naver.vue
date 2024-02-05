@@ -24,7 +24,7 @@ export default defineComponent({
     console.log(param)
     this.aToken = param.code
     this.redirectUrl = localStorage.getItem('redirectUrl')
-    this.$axios.post('/sUniB/tp.getUserInfoNaver', { code: param.code }).then((res) => {
+    this.$axios.post('https://www.hybric.net:9443/service/tp.getUserInfoNaver', { code: param.code }).then((res) => {
       console.log(res)
       console.log(res.name)
       console.log(res.nickname)

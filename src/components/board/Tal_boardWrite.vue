@@ -262,7 +262,7 @@ export default {
       paramMap.set('userKey', this.GE_USER.userKey)
       // console.log(paramMap)
       var response = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getCabinetDetail',
+        url: 'https://www.hybric.net:9443/service/tp.getCabinetDetail',
         param: Object.fromEntries(paramMap)
       })
       var mCabinet = response.data.mCabinet
@@ -282,7 +282,7 @@ export default {
       // paramMap.set('userKey', this.GE_USER.userKey)
       // // console.log(paramMap)
       // var response = await this.$commonAxiosFunction({
-      //   url: '/sUniB/tp.getCabinetDetail',
+      //   url: 'https://www.hybric.net:9443/service/tp.getCabinetDetail',
       //   param: Object.fromEntries(paramMap)
       // })
       var mCabinet = await this.getCabinetDetail(data.cabinetKey)

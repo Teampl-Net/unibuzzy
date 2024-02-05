@@ -218,7 +218,7 @@ export default {
       typeParam.userKey = this.GE_USER.userKey
       typeParam.teamKey = this.chanElement.teamKey
       await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveFollower',
+        url: 'https://www.hybric.net:9443/service/tp.saveFollower',
         param: { follower: typeParam, appType: 'UB', doType: 'CR' }
       })
       this.CHANNEL_DETAIL.memberTypeKey = this.selectMemberObj.memberTypeKey

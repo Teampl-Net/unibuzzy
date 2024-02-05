@@ -103,7 +103,7 @@ export default ({
       // paramSet.creUserKey = this.GE_USER.userKey
       paramSet.orgKey = orgKey
       paramSet.sSub = 'E'
-      var result = await this.$axios.post('/sUniB/tp.getMOrgUserList', paramSet, { withCredentials: true, headers: { UserAuthorization: this.$store.getters['D_USER/GE_USER'].userToken, Authorization: this.$APP_CONFIG.appToken } })
+      var result = await this.$axios.post('https://www.hybric.net:9443/service/tp.getMOrgUserList', paramSet, { withCredentials: true, headers: { UserAuthorization: this.$store.getters['D_USER/GE_USER'].userToken, Authorization: this.$APP_CONFIG.appToken } })
       if (result) {
         console.log('result?', result)
         this.mMOrgExpertList = result.data.org
@@ -111,7 +111,7 @@ export default ({
       }
     },
     receiveMessage (event, callback) {
-      const basedUrl = 'http://192.168.0.78:9443'
+      const basedUrl = 'https://www.hybric.net:9443'
       if (event.origin.includes('mankik') || event.origin.includes('localhost') || event.origin.includes('192.168') || event.origin.includes('hybric') || event.origin.includes(basedUrl)) {
         try {
           if (event.data && !event.data.type) {

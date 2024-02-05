@@ -144,7 +144,7 @@ export default {
         param.targetKey = this.boardDetail.contentsKey
       }
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveMCabContents',
+        url: 'https://www.hybric.net:9443/service/tp.saveMCabContents',
         param: { mCabContents: param }
       })
       if (result && result.data && result.data.result) {

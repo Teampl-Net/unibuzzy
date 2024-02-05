@@ -101,7 +101,7 @@ export default {
       paramMap.set('soEmail', this.GE_USER.soEmail)
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
       paramMap.set('mobileYn', isMobile)
-      var response = await this.$axios.post('/sUniB/tp.UB_firstLoginCheck', Object.fromEntries(paramMap))
+      var response = await this.$axios.post('https://www.hybric.net:9443/service/tp.UB_firstLoginCheck', Object.fromEntries(paramMap))
       if (response && (response.status === 200 || response.status === '200')) {
         this.mFTeamList = response.data.fTeamList
         this.sortList()

@@ -271,7 +271,7 @@ export default {
       paramMap.set('pageSize', 10)
       paramMap.set('offsetInt', this.offsetInt)
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getMyFileList',
+        url: 'https://www.hybric.net:9443/service/tp.getMyFileList',
         param: Object.fromEntries(paramMap)
       }, nonLoadingYn)
       return result

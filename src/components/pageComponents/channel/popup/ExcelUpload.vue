@@ -175,7 +175,7 @@ export default {
           this.isUploading = true
 
           this.$axios
-            .post('/sUniB/tp.uploadTpUserRequireListExcelFile', form, {
+            .post('https://www.hybric.net:9443/service/tp.uploadTpUserRequireListExcelFile', form, {
               headers: {
                 'Content-Type': 'multipart/form-data'
               }
@@ -251,7 +251,7 @@ export default {
     },
     async saveList () {
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveMUserFromExcelFile',
+        url: 'https://www.hybric.net:9443/service/tp.saveMUserFromExcelFile',
         param: {
           bookType: this.bookType,
           excelList: this.excelFileList,

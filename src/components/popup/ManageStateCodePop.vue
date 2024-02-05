@@ -260,7 +260,7 @@ export default {
           param.contentsKey = this.contentsKey
           param.creTeamKey = this.teamKey
           var result = await this.$commonAxiosFunction({
-            url: '/sUniB/tp.updateWorkStat',
+            url: 'https://www.hybric.net:9443/service/tp.updateWorkStat',
             param: param
           })
           if (result.data.result === true) {

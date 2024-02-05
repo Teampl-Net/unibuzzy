@@ -257,7 +257,7 @@ export default {
       var param = {}
       param.cateGroupKey = 2
       var cateItemList = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getCateItemList',
+        url: 'https://www.hybric.net:9443/service/tp.getCateItemList',
         param: param
       })
       this.mBusinessItemList = cateItemList.data.cateItemList
@@ -386,7 +386,7 @@ export default {
           this.mPageType = '삭제'
           if (gParam.teamKey) {
             var res = await this.$commonAxiosFunction({
-              url: '/sUniB/tp.deleteTeam',
+              url: 'https://www.hybric.net:9443/service/tp.deleteTeam',
               param: { teamKey: gParam.teamKey }
             })
             if (res.data && res.data.result) {
@@ -402,7 +402,7 @@ export default {
         }
 
         var response = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.UB_createTeamAndBuilding',
+          url: 'https://www.hybric.net:9443/service/tp.UB_createTeamAndBuilding',
           param: { teamRequest: gParam }
         })
 

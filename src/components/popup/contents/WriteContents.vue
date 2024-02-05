@@ -386,7 +386,7 @@ export default {
     async sendAlimToMember () {
       this.mContentsParams.allRecvYn = true
       const res = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.sendContentsPush',
+        url: 'https://www.hybric.net:9443/service/tp.sendContentsPush',
         param: this.mContentsParams
       })
       if (res.data && res.data.result) {
@@ -435,7 +435,7 @@ export default {
       paramMap.set('shareType', 'W')
       paramMap.set('userKey', this.GE_USER.userKey)
       var response = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getCabinetListForMyShareType',
+        url: 'https://www.hybric.net:9443/service/tp.getCabinetListForMyShareType',
         param: Object.fromEntries(paramMap)
       }, true)
       var mCabinet = response.data.mCabinet

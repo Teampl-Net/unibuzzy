@@ -197,7 +197,7 @@ export default {
         }
       }
       var response = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.UB_createBuildingAndCabinet',
+        url: 'https://www.hybric.net:9443/service/tp.UB_createBuildingAndCabinet',
         param: param
       })
       if (response) {

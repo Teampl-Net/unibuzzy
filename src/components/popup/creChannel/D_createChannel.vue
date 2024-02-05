@@ -237,7 +237,7 @@ export default {
       var param = new Object()
       param.cateGroupKey = 2
       var cateItemList = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getCateItemList',
+        url: 'https://www.hybric.net:9443/service/tp.getCateItemList',
         param: param
       })
       console.log('#################')

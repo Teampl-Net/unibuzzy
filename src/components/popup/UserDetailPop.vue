@@ -207,7 +207,7 @@ export default {
         paramMap.set('userKey', this.propData.userKey)
         paramMap.set('adminYn', true)
         var result = await this.$commonAxiosFunction({
-            url: '/sUniB/tp.getFollowerList',
+            url: 'https://www.hybric.net:9443/service/tp.getFollowerList',
             param: Object.fromEntries(paramMap)
         })
         if (result.data.content) this.mUserInfo = result.data.content[0]

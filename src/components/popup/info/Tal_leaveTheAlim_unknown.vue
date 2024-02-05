@@ -326,7 +326,7 @@ export default {
     },
     async saveActAxiosFunc (param) {
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveActLog',
+        url: 'https://www.hybric.net:9443/service/tp.saveActLog',
         param: param
       })
       if (result.data.result === true) {

@@ -341,7 +341,7 @@ export default {
     },
     async saveActAxiosFunc () {
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.deleteUser',
+        url: 'https://www.hybric.net:9443/service/tp.deleteUser',
         param: {
           userKey: this.GE_USER.userKey
         }

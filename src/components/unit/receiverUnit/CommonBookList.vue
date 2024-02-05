@@ -120,7 +120,7 @@ export default {
       param.menuType = data.menuType
       try {
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.deleteCabinet',
+          url: 'https://www.hybric.net:9443/service/tp.deleteCabinet',
           param: param
         })
         if (result.data === 'true' || result.data === true) {
@@ -193,7 +193,7 @@ export default {
       paramSet.teamMenuList = [...tempList]
       await this.$commonAxiosFunction(
         {
-          url: '/sUniB/tp.changePosTeamMenu',
+          url: 'https://www.hybric.net:9443/service/tp.changePosTeamMenu',
           param: paramSet
         }
       )

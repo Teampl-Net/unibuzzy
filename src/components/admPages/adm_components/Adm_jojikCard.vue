@@ -107,13 +107,13 @@ export default {
     },
     async getOrgList (orgKey) {
       var paramSet = { orgKey: orgKey }
-      var result = await this.$axios.post('/sUniB/tp.getOrgList', paramSet, { withCredentials: true, headers: { UserAuthorization: this.GE_USER.userToken, Authorization: this.$APP_CONFIG.appToken } })
+      var result = await this.$axios.post('https://www.hybric.net:9443/service/tp.getOrgList', paramSet, { withCredentials: true, headers: { UserAuthorization: this.GE_USER.userToken, Authorization: this.$APP_CONFIG.appToken } })
       if (result && result.data) {
         this.mSelectedBranch = result.data.org[0]
       }
     },
     receiveMessage (event, callback) {
-      const basedUrl = 'http://192.168.0.78:9443'
+      const basedUrl = 'https://www.hybric.net:9443'
       if (event.origin.includes('mankik') || event.origin.includes('localhost') || event.origin.includes('192.168') || event.origin.includes('hybric') || event.origin.includes(basedUrl)) {
         try {
           if (event.data && !event.data.type) {

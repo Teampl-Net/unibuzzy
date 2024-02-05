@@ -124,7 +124,7 @@ export default {
       params = { follower: param, doType: 'RQ' }
       console.log(params)
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveFollower',
+        url: 'https://www.hybric.net:9443/service/tp.saveFollower',
         param: params
       })
       if (result.data.result === true) {

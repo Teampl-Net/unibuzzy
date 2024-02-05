@@ -48,7 +48,7 @@ export default {
       var deleteParam = {}
       deleteParam.memberTypeKey = deleteData.memberTypeKey
       var deleteResult = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.deteteMemberType',
+        url: 'https://www.hybric.net:9443/service/tp.deteteMemberType',
         param: deleteParam
       })
       console.log(deleteResult)
@@ -68,7 +68,7 @@ export default {
       saveParam.sampleYn = false
       saveParam.creUserKey = this.GE_USER.userKey
       var saveMemberType = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveMemberType',
+        url: 'https://www.hybric.net:9443/service/tp.saveMemberType',
         param: { member: saveParam }
       })
       console.log(saveMemberType)
@@ -80,7 +80,7 @@ export default {
       var param = new Object()
       param.teamKey = this.propData.teamKey
       var memberTypeList = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getMemberTypeList',
+        url: 'https://www.hybric.net:9443/service/tp.getMemberTypeList',
         param: param
       }, true)
       if (memberTypeList.data.result) {

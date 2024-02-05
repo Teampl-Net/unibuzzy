@@ -371,7 +371,7 @@ export default {
     async saveActAxiosFunc (param, toastText) {
       try {
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.saveClaimLog',
+          url: 'https://www.hybric.net:9443/service/tp.saveClaimLog',
           param: param
         })
         if (result) {
@@ -407,7 +407,7 @@ export default {
       memo.memoKey = this.mTempData.memoKey
       try {
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.deleteMemo',
+          url: 'https://www.hybric.net:9443/service/tp.deleteMemo',
           param: memo
         })
         if (result.data.result === true) {
