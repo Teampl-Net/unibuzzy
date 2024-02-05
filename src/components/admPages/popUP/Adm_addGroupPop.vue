@@ -1,6 +1,6 @@
 <template>
   <confirmPop v-if="confirmPopYn" @confirmOk="saveGroup" :pConfirmPopHeader="'조직 생성하기'" :pConfirmPopText="'새 조직을 생성하시겠습니까?'" :pClosePop="closeConfirmPop"/>
-  <OkPop v-if="okPopYn" :pClosePop="closeOkPop" :pOkPopText="okPopText" :pOkPopHeader="'조직 생성하기'"/>
+  <OkPop v-if="okPopYn" :pMovePage="movePage" @closeOkPopError="closeOkPopError" :pClosePop="closeOkPop" :pOkPopText="okPopText" :pOkPopHeader="'조직 생성하기'"/>
   <seleciconBgPopup v-if="mIconBgSelectPopYn=='iconPop' || mIconBgSelectPopYn=='bgPop'" :isAdmTrue="true" :selectIcon="this.mSelectedIcon" :selectBg="this.mSelectedBg" @no='mIconBgSelectPopYn=false' @makeParam='setIconOrBGData' :opentype="mIconBgSelectPopYn" />
 
   <div id="admLayout" class="w100P alignCenter" style="flex-direction:column; gap:1rem; justify-content:space-between;">
@@ -104,7 +104,8 @@ export default {
         { idx: 0, name: '채널', value: 'T' },
         { idx: 1, name: '주소록', value: 'B' }
       ],
-      okPopText: '저장되었습니다.'
+      okPopText: '저장되었습니다.',
+      movePage: false
     }
   },
   methods: {
@@ -115,12 +116,19 @@ export default {
         } else if (this.infoGroupDesc === '') {
           this.okPopText = '조직설명을 입력해주세요. '
         }
+        this.movePage = false
         this.okPopYn = true
       } else {
         this.confirmPopYn = true
       }
     },
     closeOkPop () {
+      console.log('꺼짐')
+      this.okPopYn = false
+      this.$router.go(-1)
+    },
+    closeOkPopError () {
+      console.log('안꺼짐')
       this.okPopYn = false
     },
     getParamMap (urlString) {
@@ -193,7 +201,9 @@ export default {
       if (result.data.result) {
         this.closeConfirmPop()
         this.okPopText = '저장되었습니다.'
+        this.movePage = true
         this.okPopYn = true
+        // this.getOrgList()
         console.log(this.mOtherParents)
         if (this.mOtherParents) {
           // alert(JSON.stringify(this.mOtherAppUserInfo))

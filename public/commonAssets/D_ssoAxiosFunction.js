@@ -18,7 +18,7 @@ export const ssoMethods = {
     try {
       // eslint-disable-next-line no-debugger
       debugger
-      const response = await commonAxiosFunction({ url: `${BASE_URL}/sso/tp.getUserProfile`, param: { userToken: userToken, refreshToken: refreshToken, appToken: this.$APP_CONFIG.appToken } })
+      const response = await commonAxiosFunction({ url: `${BASE_URL}/tp.getUserProfile`, param: { userToken: userToken, refreshToken: refreshToken, appToken: this.$APP_CONFIG.appToken } })
       const result = response.data
       console.log(result)
       // eslint-disable-next-line no-debugger

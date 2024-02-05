@@ -130,7 +130,7 @@ export async function saveUser (userProfile, loginYn) {
     setParam.app = JSON.parse(localStorage.getItem('appInfo'))
   }
   var result = await commonAxiosFunction({
-    url: '/sUniB/sso/tp.saveUser',
+    url: '/sUniB/tp.saveUser',
     param: setParam,
     firstYn: true
   })

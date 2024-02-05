@@ -8,7 +8,7 @@
       <p>{{ pOkPopText ? pOkPopText :'저장되었습니다.' }}</p>
     </div>
     <div class="confirmPopBtns w100P">
-      <button @click="pClosePop" class="admBtn closeBtn fontBold">닫기</button>
+      <button @click="closePop" class="admBtn closeBtn fontBold">닫기</button>
     </div>
   </div>
 </template>
@@ -19,7 +19,10 @@ export default {
     pClosePop: Function,
     pOkPopText: String,
     pOkPopHeader: String,
-    pMovePage: Boolean
+    pMovePage: {}
+  },
+  created () {
+    console.log('pMovePagepMovePage', this.pMovePage)
   },
   data () {
     return {
@@ -28,10 +31,11 @@ export default {
   },
   methods: {
     closePop () {
-      console.log('confirm OK pop close ???')
-      if (this.pMovePage === true) {
-        this.$emit('closeOkPop', true)
+      if (!this.pMovePage) {
+        console.log('안꺼짐')
+        this.$emit('closeOkPopError')
       } else {
+        console.log('꺼짐')
         this.pClosePop()
       }
     }

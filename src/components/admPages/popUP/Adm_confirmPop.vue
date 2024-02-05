@@ -43,6 +43,7 @@ export default {
   width:100%;
   height:100%;
   position:absolute;
+  z-index:98;
 }
 .popupWrap{
   width:80%;
@@ -54,6 +55,7 @@ export default {
   transform:translate(-50%, -50%);
   background-color:#fff;
   border-radius:20px;
+  z-index:99;
 }
 .confirmPopHeader{
   text-align:left;

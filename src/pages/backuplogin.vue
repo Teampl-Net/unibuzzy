@@ -92,7 +92,7 @@ export default {
       var param = new Object()
       param.fcmKey = 123456
       param.userKey = 1
-      var result = await this.$axios.post('sso/loginPl.loginCheck', param)
+      var result = await this.$axios.post('/loginPl.loginCheck', param)
       console.log(result)
       return result
     },

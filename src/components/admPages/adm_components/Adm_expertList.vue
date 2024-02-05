@@ -1,14 +1,33 @@
 <template>
+  <confirmPop v-if="confirmPopYn" @confirmOk="deleteExpert" :pClosePop="closeConfirmPop" :pConfirmPopHeader="'전문가 삭제'" :pConfirmPopText="'해당 전문가를 삭제하시겠습니까?'"/>
+  <okPop v-if="okPopYn" />
   <!-- <addExpertPop v-if="addExpertPopYn" :pClosePop="closeAddExpertPop" @addExpertOK="undefined"/> -->
+  <!-- <header class="w100P">
+    <div class="w100P">
+      <img :src="require(`@/assets/images/common/icon_back.png`)" :alt="뒤로가기" class="cursorP" @click.stop="closePop"/>
+    </div>
+  </header> -->
   <div class="w100P experListWrap" id="admLayout">
     <div>
-      <p class="orgName">{{ mSelectedBranch ? mSelectedBranch.orgName : '조직명' }}</p>
+      <p class="orgName fontBold">{{ mSelectedBranch ? mSelectedBranch.orgName : '조직명' }}</p>
     </div>
 
     <ul class="expertWrap w100P">
-      <li @click="openAddExpertPop" class="eachExpert cursorP">+ 추가하기</li>
+      <li @click="openAddExpertPop" class="eachExpert cursorP fontBold addNew">➕ 추가하기</li>
       <li v-for="(user, index) in mMOrgExpertList" :key="index" class="eachExpert">
-        <p class="font14">{{ $changeText(user.userNameMtext) }}</p>
+        <div class="alignCenter" style="gap:0.5rem;">
+          <img :src="user.profileImgPath ? user.profileImgPath : require(`@/assets/images/todo/defaultImg.png`)" class="profileImg"/>
+          <p class="font14 fontBold">{{ $changeText(user.userNameMtext) }}
+            <span v-if="GE_USER.userKey === user.userKey" class="userMe">{{ '(나)' }}</span>
+            <span v-else class="userOrNot">{{ '(미가입)' }}</span>
+            <span v-if="GE_USER.userKey !== user.userKey" class="cursorP sendMsgBtn">✉️</span>
+          </p>
+        </div>
+        <div class="infos">
+          <p class="email font14">연락처: {{ user.userEmail ? user.userEmail : '없음' }}</p>
+          <p class="number font14">메일: {{ user.phoneNoEnc ? user.phoneNoEnc : '없음' }}</p>
+        </div>
+        <span class="cursorP delExpert font13" @click.stop="confirmPopYn = true">✖️</span>
       </li>
     </ul>
   </div>
@@ -16,9 +35,13 @@
 
 <script>
 // import addExpertPop from '@/components/admPages/popUP/Adm_addExpertPop.vue'
+import confirmPop from '@/components/admPages/popUP/Adm_confirmPop.vue'
+import okPop from '@/components/admPages/popUP/Adm_confirmOkPop.vue'
 export default ({
   components: {
     // addExpertPop
+    confirmPop,
+    okPop
   },
   props: {
     orgKey: Number,
@@ -26,14 +49,14 @@ export default ({
   },
   created () {
     window.addEventListener('message', (e) => this.receiveMessage(e), false)
-    console.log('orgKey', this.orgKey)
-    console.log('pMyOrgList', this.pMyOrgList)
+    // console.log('orgKey', this.orgKey)
+    // console.log('pMyOrgList', this.pMyOrgList)
     this.getMOrgMemberList(this.orgKey)
     if (this.orgKey && this.pMyOrgList) {
       this.mAppDetail = this.pMyOrgList.filter(org => org.orgKey === Number(this.orgKey))
-      console.log('this.mAppDetail', this.mAppDetail)
+      // console.log('this.mAppDetail', this.mAppDetail)
       this.mSelectedBranch = this.mAppDetail[0]
-      console.log('this.mSelectedBranch', this.mSelectedBranch)
+      // console.log('this.mSelectedBranch', this.mSelectedBranch)
     }
   },
   data () {
@@ -43,15 +66,37 @@ export default ({
       mAppDetail: {},
       mSelectedBranch: null,
       addExpertPopYn: false,
-      expertYn: 'true'
+      expertYn: 'true',
+      confirmPopYn: false,
+      okPopYn: false
     }
   },
   methods: {
+    closePop () {
+      this.$router.go(-1)
+    },
+    openConfirmPop () {
+      this.confirmPopYn = true
+    },
+    closeConfirmPop () {
+      this.confirmPopYn = false
+    },
+    openOkPop () {
+      this.okPopYn = true
+    },
+    closeOkPop () {
+      this.okPopYn = false
+    },
     openAddExpertPop () {
-      this.$router.push(`/addMember/${this.orgKey}`)
+      this.$router.push({
+        path: `/addMember/${this.orgKey}`,
+        query: { expertYn: true }
+      })
     },
     closeAddExpertPop () {
       this.addExpertPopYn = false
+    },
+    deleteExpert () {
     },
     async getMOrgMemberList (orgKey) {
       var paramSet = {}
@@ -62,7 +107,7 @@ export default ({
       if (result) {
         console.log('result?', result)
         this.mMOrgExpertList = result.data.org
-        console.log('this.mMOrgExpertList', this.mMOrgExpertList)
+        // console.log('this.mMOrgExpertList', this.mMOrgExpertList)
       }
     },
     receiveMessage (event, callback) {
@@ -109,9 +154,14 @@ export default ({
 </script>
 
 <style scoped>
+header{
+  padding:0.5rem 1rem;
+  text-align:left;
+}
 .orgName{
   padding:10px 15px;
-  border-bottom:2px solid #ececec;
+  border-bottom:2px solid #fff;
+  color:#222;
 }
 .expertWrap{
   margin-bottom:0;
@@ -122,15 +172,56 @@ export default ({
   gap:1rem;
   padding:10px;
 }
+.addNew{
+  height:40px !important;
+  line-height:40px !important;
+  padding:0 15px !important;
+  background-color:#fff !important;
+}
 .eachExpert{
-  width:calc(50% - 1rem);
+  text-align:left;
+  width:100%;
   border-radius:10px;
   list-style-type:none;
-  height:40px;
+  height:auto;
   font-size:14px;
   line-height:40px;
   background-color:#fff;
   box-shadow:0 1px 3px rgba(0,0,0,0.1);
+  position:relative;
+  padding:15px;
+}
+.sendMsgBtn{
+  display:inline-block;
+  padding:0 10px;
+  border-radius:15px;
+  box-shadow:0 1px 3px rgba(0,0,0,0.1);
+  background-color:#fbfbfd;
+  height:20px;
+  line-height:20px;
+}
+.infos{
+  text-align:left;
+  line-height:20px;
+}
+.profileImg{
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  background-size:100%;
+  box-shadow:0 2px 5px rgba(0,0,0,0.2);
+}
+.userOrNot{
+  margin:0 3px;
+  color:red;
+}
+.userMe{
+  margin:0 3px;
+}
+.delExpert{
+  position:absolute;
+  right:5px;
+  top:-7px;
 }
 
 </style>

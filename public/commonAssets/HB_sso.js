@@ -50,7 +50,7 @@ const HB_SSO = {
                   localStorage.setItem('fcmKey', token)
                   console.log(token)
                   user.user.fcmKey = token
-                  sendAjax(`${basedUrl}/sso/tp.saveUser`, user)
+                  sendAjax(`${basedUrl}/tp.saveUser`, user)
                   console.log('token: ' + token)
                   return token
                 // 토큰을 서버에 전달...

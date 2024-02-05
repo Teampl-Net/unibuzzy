@@ -1,8 +1,14 @@
 <template>
   <userImgSelectCompo v-if="changeImageYn" :pSelectedIconPath="mDomainPath + mUserProfileImg" :parentSelectedIconFileKey="this.GE_USER.picMfilekey" :isAdmTrue="true" @no="closeChangeImg"/>
   <confirmPop v-if="confirmPopYn" :pClosePop="closeConfirmPop" :pConfirmPopHeader="'유저 추가하기'" :pConfirmPopText="confirmPopText" @confirmOk="saveMember"/>
-  <okPop v-if="okPopYn" :pMovePage="true" @closeOkPop="closeOkPop" :pClosePop="closeOkPop" :pOkPopHeader="'유저 추가하기'" :pOkPopText="okPopText"/>
-  <div id="admLayout" class="w100P alignCenter" style="flex-direction:column; gap:1rem; justify-content:space-between;">
+  <okPop v-if="okPopYn" :pMovePage="movePage" @closeOkPopError="closeOkPopError" :pClosePop="closeOkPop" :pOkPopHeader="'유저 추가하기'" :pOkPopText="okPopText"/>
+  <div id="admLayout" class="w100P alignCenter" style="flex-direction:column; gap:1rem;">
+    <!-- <header class="w100P">
+    <div class="w100P" style="text-align:left;">
+      <img :src="require(`@/assets/images/common/icon_back.png`)" :alt="뒤로가기" class="cursorP" @click.stop="closeXPop"/>
+    </div>
+  </header> -->
+  <div class="alignCenter w100P h100P" style="flex-direction:column; justify-content:space-between;">
     <div class="w100P alignCenter" style="flex-direction:column;">
       <div @click="openChangImg" class="profileImg cursorP" :style="'background-image: url(' + mUserProfileImg + ');'"></div>
       <!-- <div v-else @click="openChangImg" class="profileImg cursorP"  :style="'background-image: url('+ (GE_USER.domainPath ? GE_USER.domainPath + this.$changeUrlBackslash(GE_USER.userProfileImg) : GE_USER.userProfileImg) +');'"> </div>-->
@@ -10,7 +16,7 @@
       <div class="w100P infoFillArea">
         <div class="w100P alignCenter" style="justify-content:space-between; gap:1rem;">
           <div class="infoName" style="width:65%;">
-            <p>구성원명</p>
+            <p>{{ fromExpertYn ?  '전문가명' : '구성원명' }}</p>
             <input type="text" class="inputs nameInput" v-model="newDispMText" :placeholder=mNamePlaceHolder />
           </div>
           <div class="infoType" style="width:25%;">
@@ -36,15 +42,15 @@
       </div>
     </div>
 
-        <div class="w100P">
+      <div class="w100P">
         <button type="button" @click="checkInputs" class="admBtn saveBtn">저장</button>
           <button type="button" @click="closeXPop" class="admBtn">닫기</button>
-        </div>
       </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import axios from 'axios'
 import userImgSelectCompo from '@/components/pageComponents/myPage/Tal_changeUserIcon.vue'
 import confirmPop from '@/components/admPages/popUP/Adm_confirmPop.vue'
 import okPop from '@/components/admPages/popUP/Adm_confirmOkPop.vue'
@@ -64,12 +70,12 @@ export default {
   },
   created () {
     window.addEventListener('message', (e) => this.receiveMessage(e), false)
-    console.log('this.$route.from', this.$route)
-    if (this.$route.from &&
-      this.$route.from.path.startsWith('/expertList/')) {
+    console.log('this.$route', this.$route.query.expertYn)
+    if (this.$route.query && this.$route.query.expertYn === 'true') {
       this.fromExpertYn = true
-    } else this.fromExpertYn = false
-    console.log('fromExpertYn', this.fromExpertYn)
+      this.confirmPopText = '전문가를 추가하시겠습니까?'
+    } else { this.fromExpertYn = false }
+    console.log('fromExpertYnfromExpertYn', this.fromExpertYn)
     console.log('route params', this.$route.params.orgKey)
     if (location.search) {
       const urlParam = this.getParamMap(location.search)
@@ -95,7 +101,7 @@ export default {
     return {
       isAdmTrue: true,
       mAppDetail: {},
-      mNamePlaceHolder: '구성원명을 입력하세요.',
+      mNamePlaceHolder: '이름을 입력하세요.',
       mNumberPlaceHolder: '01000000000 형식으로 입력해주세요.',
       mMailPlaceHolder: '메일을 입력하세요.',
       selectedOption: 'none',
@@ -132,13 +138,14 @@ export default {
     showOkPop () {
       this.okPopYn = true
     },
-    closeOkPop (boolean) {
-      if (!boolean || boolean === false) {
-        this.okPopYn = false
-      } else {
-        this.okPopYn = false
-        this.$router.go(-1)
-      }
+    closeOkPop () {
+      console.log('꺼짐')
+      this.okPopYn = false
+      this.$router.go(-1)
+    },
+    closeOkPopError () {
+      console.log('안꺼짐')
+      this.okPopYn = false
     },
     openChangImg () {
       this.changeImageYn = true
@@ -161,10 +168,19 @@ export default {
         } else if (this.newEmail === '') {
           this.okPopText = '이메일을 입력하세요.'
         }
+        this.movePage = false
         this.showOkPop()
       } else {
         this.showConfirmPop()
       }
+    },
+    getParamMap (urlString) {
+      const splited = urlString.replace('?', '').split(/[=?&]/)
+      const param = {}
+      for (let i = 0; i < splited.length; i++) {
+        param[splited[i]] = splited[++i]
+      }
+      return param
     },
     async saveMember () {
       var paramSet = {}
@@ -177,19 +193,22 @@ export default {
         creUserKey: this.GE_USER.userKey,
         userNameMtext: this.newDispMText,
         orgKey: Number(this.orgKey)
-        // domainPath: this.GE_USER.domainPath,
-        // userProfileImg: this.GE_USER.userProfileImg
+      }
+      if (this.fromExpertYn === true) {
+        paramSet.sSub = 'E'
       }
 
       console.log('paramSet', paramSet)
-      var result = await axios.post('/sUniB/tp.saveMOrgUser', { mOrgUser: paramSet }, { withCredentials: true, headers: { DemoYn: true } })
+      var result = await this.$axios.post('/sUniB/tp.saveMOrgUser', { mOrgUser: paramSet }, { withCredentials: true, headers: { DemoYn: true } })
       if (result && result.data) {
         this.closeConfirmPop()
         this.okPopText = '저장되었습니다.'
+        this.movePage = true
         this.showOkPop()
       } else {
-        this.okPopText = '유저 추가에 실패했습니다.'
+        this.okPopText = '추가에 실패했습니다.'
         this.showOkPop()
+        this.movePage = false
       }
     },
     receiveMessage (event, callback) {
