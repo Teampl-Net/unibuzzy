@@ -1,4 +1,5 @@
 <template>
+  <addMemberPop v-if="addExpertYn" :pMOrgExpertList="mMOrgExpertList" :pClosePop="addExpertYn = false"/>
   <confirmPop v-if="confirmPopYn" @confirmOk="deleteExpert" :pClosePop="closeConfirmPop" :pConfirmPopHeader="'전문가 삭제'" :pConfirmPopText="'해당 전문가를 삭제하시겠습니까?'"/>
   <okPop v-if="okPopYn" />
   <!-- <addExpertPop v-if="addExpertPopYn" :pClosePop="closeAddExpertPop" @addExpertOK="undefined"/> -->
@@ -24,8 +25,8 @@
           </p>
         </div>
         <div class="infos">
-          <p class="email font14">연락처: {{ user.userEmail ? user.userEmail : '없음' }}</p>
-          <p class="number font14">메일: {{ user.phoneNoEnc ? user.phoneNoEnc : '없음' }}</p>
+          <p class="number font14">연락처: {{ user.phoneNoEnc ? user.phoneNoEnc : '없음' }}</p>
+          <p class="email font14">메일: {{ user.userEmail ? user.userEmail : '없음' }}</p>
         </div>
         <span class="cursorP delExpert font13" @click.stop="confirmPopYn = true">✖️</span>
       </li>
@@ -37,11 +38,13 @@
 // import addExpertPop from '@/components/admPages/popUP/Adm_addExpertPop.vue'
 import confirmPop from '@/components/admPages/popUP/Adm_confirmPop.vue'
 import okPop from '@/components/admPages/popUP/Adm_confirmOkPop.vue'
+import addMemberPop from '@/components/admPages/popUP/Adm_addMemberPop.vue'
 export default ({
   components: {
     // addExpertPop
     confirmPop,
-    okPop
+    okPop,
+    addMemberPop
   },
   props: {
     orgKey: Number,
@@ -68,7 +71,8 @@ export default ({
       addExpertPopYn: false,
       expertYn: 'true',
       confirmPopYn: false,
-      okPopYn: false
+      okPopYn: false,
+      addExpertYn: false
     }
   },
   methods: {
@@ -88,10 +92,18 @@ export default ({
       this.okPopYn = false
     },
     openAddExpertPop () {
-      this.$router.push({
-        path: `/addMember/${this.orgKey}`,
-        query: { expertYn: true }
-      })
+      this.addExpertYn = true
+      // if (window.self !== window.top) {
+      //   window.parent.postMessage(JSON.stringify({ sender: 'Hb', type: 'openPop' }), this.mOtherParents)
+      // } else {
+      //   this.$router.push({
+      //     path: `/addMember/${this.orgKey}/0`,
+      //     query: { expertYn: true }
+      //   })
+      // }
+    },
+    closeAddPop () {
+      this.addExpertYn = false
     },
     closeAddExpertPop () {
       this.addExpertPopYn = false
