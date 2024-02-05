@@ -17,6 +17,7 @@
     <div class="w100P detailInfos">
       <div class="w100P alignCenter" style="justify-content:space-between;">
         <p class="font13" style="width:calc(100% - 20px)' text-align:left;">{{ mSelectedBranch.orgDesc ? mSelectedBranch.orgDesc : '안녕하세요, 우리 조직을 소개합니다.' }}</p>
+        <p @click="gotoEditOrg" class="font16 cursorP" style="width:20px;">⚙️</p>
         <!-- <div v-if="moreOpen===false" class="cursorP" @click="showMore" style="width:20px;">➕</div>
         <div v-if="moreOpen===true" class="cursorP" @click="showMore" style="width:20px;">➖</div> -->
       </div>
@@ -45,11 +46,12 @@ export default {
   },
   created () {
     window.addEventListener('message', (e) => this.receiveMessage(e), false)
+    console.log('orgKeyorgKeyorgKey', this.orgKey)
     if (this.pSelectedOrg) {
       this.mSelectedBranch = this.pSelectedOrg
     } else {
       console.log('jojikCard Props', this.pSelectedOrg, this.pMyOrgList, this.appKey, this.orgKey)
-      if (this.appKey && this.orgKey && this.pMyOrgList) {
+      if (this.orgKey && this.pMyOrgList) {
         this.orgDetails = this.pMyOrgList.filter(app => app.appKey === Number(this.appKey))
         console.log('this.orgDetails', this.orgDetails)
       }
@@ -89,6 +91,9 @@ export default {
     }
   },
   methods: {
+    gotoEditOrg () {
+      this.$router.push(`/addOrg/${this.orgKey}`)
+    },
     getParamMap (urlString) {
       const splited = urlString.replace('?', '').split(/[=?&]/)
       const param = {}

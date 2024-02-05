@@ -58,10 +58,14 @@ export default {
     pClosePop: Function,
     pSelectedOrg: {},
     pGetOrgList: Function,
-    pPropParams: {}
+    pPropParams: {},
+    orgKey: Number,
+    pMyOrgList: []
   },
   created () {
     window.addEventListener('message', (e) => this.receiveMessage(e), false)
+    console.log('orgKeyorgKey', this.orgKey)
+    console.log('pMyOrgListpMyOrgListpMyOrgList', this.pMyOrgList)
     console.log('route params', this.$route.params.orgKey)
     if (location.search) {
       const urlParam = this.getParamMap(location.search)

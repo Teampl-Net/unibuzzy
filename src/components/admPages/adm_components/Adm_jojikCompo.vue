@@ -10,7 +10,7 @@
       </div>
     </div>
     <div>
-      <p class="font14">{{ pBranch.orgType ? pBranch.orgType : pBranch.type }}</p>
+      <p v-if="pBranch.orgType" class="font14">{{ pBranch.orgType === 'T' ? '채널' : '주소록' }}</p>
       <p class="font13">🙍🏻‍♂️{{ pBranch.allCount }}</p>
    </div>
   </div>
