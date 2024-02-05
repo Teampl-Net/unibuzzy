@@ -1078,16 +1078,24 @@ export default {
               dataList = chanDetail.ELEMENTS.alimList
             } else if (jobkindId === 'BOAR') {
               dataList = chanDetail.ELEMENTS.boardList
+            } else if (jobkindId === 'TODO') {
+              dataList = chanDetail.ELEMENTS.todoList
+            } else if (jobkindId === 'MEMO') {
+              dataList = chanDetail.ELEMENTS.memoList
             }
-            idx2 = dataList.findIndex((item) => item.contentsKey === this_.mAllContentsList[i].contentsKey)
-            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-            // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
-            if (idx2 !== -1) {
-              // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-              this.mAllContentsList[i] = dataList[idx2]
-              returnAllList.push(dataList[idx2])
-            } else {
+            if (!dataList) {
               returnAllList.push(this_.mAllContentsList[i])
+            } else {
+              idx2 = dataList.findIndex((item) => item.contentsKey === this_.mAllContentsList[i].contentsKey)
+              // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+              // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
+              if (idx2 !== -1) {
+              // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+                this.mAllContentsList[i] = dataList[idx2]
+                returnAllList.push(dataList[idx2])
+              } else {
+                returnAllList.push(this_.mAllContentsList[i])
+              }
             }
           }
         } else {
@@ -1096,16 +1104,24 @@ export default {
             dataList = chanDetail.ELEMENTS.alimList
           } else if (this.mAllContentsList[i].jobkindId === 'BOAR') {
             dataList = chanDetail.ELEMENTS.boardList
+          } else if (this.mAllContentsList[i].jobkindId === 'TODO') {
+            dataList = chanDetail.ELEMENTS.todoList
+          } else if (this.mAllContentsList[i].jobkindId === 'MEMO') {
+            dataList = chanDetail.ELEMENTS.memoList
           }
-          idx2 = dataList.findIndex((item) => item.contentsKey === this.mAllContentsList[i].contentsKey)
-          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-          // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
-          if (idx2 !== -1) {
-            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-            this.mAllContentsList[i] = dataList[idx2]
-            returnAllList.push(dataList[idx2])
-          } else {
+          if (!dataList) {
             returnAllList.push(this.mAllContentsList[i])
+          } else {
+            idx2 = dataList.findIndex((item) => item.contentsKey === this.mAllContentsList[i].contentsKey)
+            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+            // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
+            if (idx2 !== -1) {
+            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+              this.mAllContentsList[i] = dataList[idx2]
+              returnAllList.push(dataList[idx2])
+            } else {
+              returnAllList.push(this.mAllContentsList[i])
+            }
           }
         }
       }
