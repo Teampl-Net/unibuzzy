@@ -1,4 +1,5 @@
 <template>
+  <addMemberPop v-if="addExpertYn" :pMOrgExpertList="mMOrgExpertList" :pClosePop="addExpertYn = false"/>
   <confirmPop v-if="confirmPopYn" @confirmOk="deleteExpert" :pClosePop="closeConfirmPop" :pConfirmPopHeader="'전문가 삭제'" :pConfirmPopText="'해당 전문가를 삭제하시겠습니까?'"/>
   <okPop v-if="okPopYn" />
   <!-- <addExpertPop v-if="addExpertPopYn" :pClosePop="closeAddExpertPop" @addExpertOK="undefined"/> -->
@@ -24,8 +25,8 @@
           </p>
         </div>
         <div class="infos">
-          <p class="email font14">연락처: {{ user.userEmail ? user.userEmail : '없음' }}</p>
-          <p class="number font14">메일: {{ user.phoneNoEnc ? user.phoneNoEnc : '없음' }}</p>
+          <p class="number font14">연락처: {{ user.phoneNoEnc ? user.phoneNoEnc : '없음' }}</p>
+          <p class="email font14">메일: {{ user.userEmail ? user.userEmail : '없음' }}</p>
         </div>
         <span class="cursorP delExpert font13" @click.stop="confirmPopYn = true">✖️</span>
       </li>
@@ -37,11 +38,13 @@
 // import addExpertPop from '@/components/admPages/popUP/Adm_addExpertPop.vue'
 import confirmPop from '@/components/admPages/popUP/Adm_confirmPop.vue'
 import okPop from '@/components/admPages/popUP/Adm_confirmOkPop.vue'
+import addMemberPop from '@/components/admPages/popUP/Adm_addMemberPop.vue'
 export default ({
   components: {
     // addExpertPop
     confirmPop,
-    okPop
+    okPop,
+    addMemberPop
   },
   props: {
     orgKey: Number,
@@ -68,7 +71,8 @@ export default ({
       addExpertPopYn: false,
       expertYn: 'true',
       confirmPopYn: false,
-      okPopYn: false
+      okPopYn: false,
+      addExpertYn: false
     }
   },
   methods: {
@@ -88,10 +92,18 @@ export default ({
       this.okPopYn = false
     },
     openAddExpertPop () {
-      this.$router.push({
-        path: `/addMember/${this.orgKey}`,
-        query: { expertYn: true }
-      })
+      this.addExpertYn = true
+      // if (window.self !== window.top) {
+      //   window.parent.postMessage(JSON.stringify({ sender: 'Hb', type: 'openPop' }), this.mOtherParents)
+      // } else {
+      //   this.$router.push({
+      //     path: `/addMember/${this.orgKey}/0`,
+      //     query: { expertYn: true }
+      //   })
+      // }
+    },
+    closeAddPop () {
+      this.addExpertYn = false
     },
     closeAddExpertPop () {
       this.addExpertPopYn = false
@@ -103,7 +115,8 @@ export default ({
       // paramSet.creUserKey = this.GE_USER.userKey
       paramSet.orgKey = orgKey
       paramSet.sSub = 'E'
-      var result = await this.$axios.post('/sUniB/tp.getMOrgUserList', paramSet, { withCredentials: true, headers: { UserAuthorization: this.$store.getters['D_USER/GE_USER'].userToken, Authorization: this.$APP_CONFIG.appToken } })
+      paramSet.appToken = 'eyJhbGciOiJIUzI1NiJ9.eyJjcmVVc2VyS2V5IjoxOTIsImNyZURhdGUiOjE3MDUyODQzODUwMDAsImFwcE5hbWUiOiLrjZTslYzrprwiLCJhcHBUb2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUo5LmV5SmpjbVZWYzJWeVMyVjVJam94T1RJc0ltTnlaVVJoZEdVaU9qRTNNRFV5T0RRek9EVXdNREFzSW1Gd2NFNWhiV1VpT2lMcmpaVHNsWXpycHJ3aUxDSmhjSEJVYjJ0bGJpSTZJbVY1U21oaVIyTnBUMmxLU1ZWNlNURk9hVW81TG1WNVNtcGpiVlpXWXpKV2VWTXlWalZKYW05NFQxUkpjMGx0VG5sYVZWSm9aRWRWYVU5cVJUTk5SRlY1VDBSUmVrOUVWWGROUkVGelNXMUdkMk5GTldoaVYxVnBUMmxNY21wYVZITnNXWHB5Y0hKM2FVeERTbXBhV0Vvd1lWWkNiMkl5Tld4WFZ6UnBUMnBGYzBsdFJuZGpSWFJzWlZOSk5rMVRkMmxaTWxaNVpFZHNSbUpYUm5CaVJteDFTV3B2ZUV4RFNtdGFWM2hzWkVkV1dtSnBTVFpOUTNkcFdsaG9kMGxxYjNsTlJFbDNUbXBWTlU1cVZUVk1RMHAxWWpJMWFscFRTVFpKYlVrMVdXMVZNVnBFYkd0TVZFRXpXa1JaZEU1RVpHMU5VekExVDBSSk1VeFVhM2xPYW1NMFRsZFJkMDFVVlhoYVEwbHpTVzFHZFZwSVNuWmhWMUpLV2tOSk5rbHRUblppVXpVd1dWZDRabU5JU25aaGJWWnFaRU5LT1M1UVdIbFdYMUIwZFVkUlowSmZjMHRNVDNadE9XeDNPV2hvYmxoblJsQXhla2M1V0dGdFIxaFVVVGhWSWl3aVkyVnlkR2xRYUc5dVpWbHVJam94TENKaGNIQkxaWGtpT2pFc0ltTmxjblJwUlcxaGFXeFpiaUk2TVN3aVpHVnNaWFJsV1c0aU9qQXNJbVY0Y0NJNk1qQXlNRGt3TWpZM01Dd2libTl1WTJVaU9pSTVNVEprTTJabE1DMHhabVZrTFRRMllqa3RPREV3WkMwMU5qYzROVGN3TWpjMVpETWlMQ0poYm1SeWIybGtTV1FpT2lKamIyMHVkR0ZzWDNCeWIycGxZM1FpZlEuMUFGMkpoQzd6VG1wVTV2aHdvN0wxN2RSVlVSRzl0MFBzQ09rVFNGR1dHMCIsImNlcnRpUGhvbmVZbiI6MSwiYXBwS2V5IjoxLCJjZXJ0aUVtYWlsWW4iOjEsImRlbGV0ZVluIjowLCJleHAiOjIwMjA5MDI3NzQsIm5vbmNlIjoiNTlmMDYxMDItY2VhMS00NmE2LWEwMmYtNGUwODRhZWFlZjI1IiwiYW5kcm9pZElkIjoiY29tLnRhbF9wcm9qZWN0In0.irKKhHVeVbE5pvXAM69ytw0SCxYA6SMgXRPEDA_eCU8'
+      var result = await this.$axios.post('/sUniB/tp.getMOrgUserList', paramSet, { withCredentials: true, headers: { UserAuthorization: this.GE_USER.userToken, Authorization: this.$APP_CONFIG.appToken } })
       if (result) {
         console.log('result?', result)
         this.mMOrgExpertList = result.data.org

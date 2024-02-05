@@ -1,6 +1,6 @@
 <template>
-  <confirmPop v-if="confirmPopYn" @confirmOk="saveGroup" :pConfirmPopHeader="'조직 생성하기'" :pConfirmPopText="'새 조직을 생성하시겠습니까?'" :pClosePop="closeConfirmPop"/>
-  <OkPop v-if="okPopYn" :pMovePage="movePage" @closeOkPopError="closeOkPopError" :pClosePop="closeOkPop" :pOkPopText="okPopText" :pOkPopHeader="'조직 생성하기'"/>
+  <confirmPop v-if="confirmPopYn" @confirmOk="saveGroup" :pConfirmPopHeader="popHeader" :pConfirmPopText="confirmPopText" :pClosePop="closeConfirmPop"/>
+  <OkPop v-if="okPopYn" :pMovePage="movePage" @closeOkPopError="closeOkPopError" :pClosePop="closeOkPop" :pOkPopText="okPopText" :pOkPopHeader="popHeader"/>
   <seleciconBgPopup v-if="mIconBgSelectPopYn=='iconPop' || mIconBgSelectPopYn=='bgPop'" :isAdmTrue="true" :selectIcon="this.mSelectedIcon" :selectBg="this.mSelectedBg" @no='mIconBgSelectPopYn=false' @makeParam='setIconOrBGData' :opentype="mIconBgSelectPopYn" />
 
   <div id="admLayout" class="w100P alignCenter" style="flex-direction:column; gap:1rem; justify-content:space-between;">
@@ -36,7 +36,8 @@
     </div>
 
         <div class="w100P">
-        <button type="button" @click="checkInfos" class="admBtn saveBtn">{{ '추가' }}</button>
+        <button type="button" @click="checkInfos" class="admBtn saveBtn">{{ saveBtn }}</button>
+        <button type="button" @click="sendMessageToParent" class="admBtn saveBtn">오모?</button>
           <button type="button" @click="closeXPop" class="admBtn">닫기</button>
         </div>
       </div>
@@ -66,6 +67,17 @@ export default {
     window.addEventListener('message', (e) => this.receiveMessage(e), false)
     console.log('orgKeyorgKey', this.orgKey)
     console.log('pMyOrgListpMyOrgListpMyOrgList', this.pMyOrgList)
+    if (this.orgKey && this.orgKey > 0 && this.pMyOrgList) { // 수정하기
+      this.mAppDetail = this.pMyOrgList.filter(org => org.orgKey === Number(this.orgKey))
+      this.mSelectedBranch = this.mAppDetail[0]
+      console.log('this.mSelectedBranch', this.mSelectedBranch)
+      this.infoGroupName = this.mSelectedBranch.orgName
+      this.selectedoOption = this.mSelectedBranch.orgType
+      this.infoGroupDesc = this.mSelectedBranch.orgDesc
+      this.saveBtn = '수정'
+      this.popHeader = '조직 수정하기'
+      this.confirmPopText = '조직을 수정하시겠습니까?'
+    }
     console.log('route params', this.$route.params.orgKey)
     if (location.search) {
       const urlParam = this.getParamMap(location.search)
@@ -90,6 +102,8 @@ export default {
   },
   data () {
     return {
+      mAppDetail: {},
+      mSelectedBranch: {},
       isAdmTrue: true,
       confirmPopYn: false,
       okPopYn: false,
@@ -109,7 +123,10 @@ export default {
         { idx: 1, name: '주소록', value: 'B' }
       ],
       okPopText: '저장되었습니다.',
-      movePage: false
+      movePage: false,
+      saveBtn: '추가',
+      popHeader: '조직 생성하기',
+      confirmPopText: '새 조직을 생성하시겠습니까?'
     }
   },
   methods: {
@@ -195,6 +212,10 @@ export default {
       paramSet.creUserKey = this.GE_USER.userKey
       paramSet.orgImgFilekey = this.mSelectedIcon.selectedId
       paramSet.orgBgFilekey = this.mSelectedBg.selectedId
+      if (this.orgKey && this.orgKey >= 1) { // 수정
+        paramSet.orgKey = this.orgKey
+      }
+
       // if (this.pPropParams.popType && this.pPropParams.popType === 'editGroup') { // 수정이면
       //   paramSet.orgKey = this.pPropParams.orgKey
       // }

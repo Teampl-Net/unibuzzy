@@ -11,7 +11,8 @@
             <span v-if="addManagerTypeYn === false" @click="addManage" class="btnAdd cursorP font12">추가</span>
             <span v-if="addManagerTypeYn === true" @click="saveAuths(null, null)" class="btnAdd cursorP font12">저장</span>
             <span class="btnDel cursorP font12">삭제</span>
-            <span class="btnEdit cursorP font12">수정</span>
+            <span v-if="mEditAuth === false" @click.stop="editManage" class="btnEdit cursorP font12">수정</span>
+            <span v-if="mEditAuth === true" @click.stop="saveAuths(pSelectedOrg.authList[selectedItemsIdx], 'name')" class="btnEdit cursorP font12">저장</span>
           </div>
         </div>
       </div>
@@ -29,10 +30,13 @@
     <tbody>
         <tr v-for="(auth, index) in pSelectedOrg.authList" :key="index">
             <td>
-              <input type="checkbox" />
+              <input type="checkbox"  @change="handleCheckboxChange(auth, index)"/>
             </td>
             <td>{{ index + 1 }}</td>
-            <td class="name" @click="openUserInfo(auth.authName)">{{ auth.authName ? auth.authName : ''}} ({{ countAuthNumber(auth.authKey) + '명' }})</td>
+            <td class="name" v-if="mEditAuth === true && selectedItemsIdx === index">
+              <input type="text"  v-model="mEditAuthName" style="width:50%; min-width:70px;"/>
+            </td>
+            <td v-else class="name" @click="openUserInfo(auth.authName)">{{ auth.authName ? auth.authName : ''}} ({{ countAuthNumber(auth.authKey) + '명' }})</td>
             <td>
               <input type="checkbox" class="mngUser" @click="saveAuths(auth, 'user')" :checked="auth.mngUserYn"/>
             </td>
@@ -45,7 +49,7 @@
         </tr>
         <tr v-if="addManagerTypeYn === true">
             <td>
-              <p class="cursorP" @click="closeAddManage">X</p>
+              <p class="cursorP font14" @click="closeAddManage">✖️</p>
             </td>
             <td>{{ pSelectedOrg.authList.length + 1 }}</td>
             <td class="name">
@@ -89,10 +93,22 @@ export default {
       mNewExpert: false,
       mExpert: false,
       dispName: '회원님',
-      newAuthName: ''
+      newAuthName: '',
+      selectedItems: {},
+      selectedItemsIdx: 0,
+      mEditAuth: false,
+      mEditAuthName: ''
     }
   },
   methods: {
+    handleCheckboxChange (auth, index) {
+      if (this.mEditAuth === true) {
+        this.mEditAuth = false
+      }
+      this.selectedItems = auth
+      this.selectedItemsIdx = index
+      console.log('selectedItems', this.selectedItems)
+    },
     countAuthNumber (authKey) {
       if (this.pSelectedOrg && this.pSelectedOrg.authList && authKey !== null) {
         const count = this.pSelectedOrg.authList.filter(item => item.authKey === authKey).length
@@ -102,6 +118,10 @@ export default {
     addManage () {
       this.addManagerTypeYn = true
     },
+    editManage () {
+      this.mEditAuth = true
+      this.mEditAuthName = this.selectedItems.authName
+    },
     closeAddManage () {
       this.addManagerTypeYn = false
     },
@@ -109,45 +129,48 @@ export default {
       this.$emit('openUserInfo', param)
     },
     async saveAuths (auth, type) {
+      console.log('auth', auth)
       const paramSet = {}
-      if (!auth && !type) { // 새 조직
+      paramSet.orgKey = this.pSelectedOrg.orgKey
+      paramSet.creUserKey = this.GE_USER.userKey
+      paramSet.authDispName = this.dispName
+
+      if (!auth && !type) { // 새 조직 추가면
         if (this.newAuthName === '') return
         console.log('새 조직을 만듭니다.')
-        paramSet.orgKey = this.pSelectedOrg.orgKey
         paramSet.authName = this.newAuthName
-        paramSet.authDispName = this.dispName
         paramSet.mngOrgYn = this.mNewMngOrg
         paramSet.mngUserYn = this.mNewMngUser
-        paramSet.creUserKey = this.GE_USER.userKey
         if (this.mExpert === true) {
           paramSet.ssub = 'E'
         }
-      } else if (auth && type) {
+      } else if (auth && type) { // 수정이면
         console.log('기존 조직을 수정합니다.')
-        if (auth.authKey) { // 수정이면
+        paramSet.authName = auth.authName
+        if (auth && type === 'name') {
+          console.log('이름을 수정합니다...')
+          paramSet.authName = this.mEditAuthName
+        }
+        if (auth.authKey) {
           paramSet.authKey = auth.authKey
         }
-        paramSet.orgKey = this.pSelectedOrg.orgKey
-        paramSet.authName = auth.authName
-        paramSet.authDispName = this.dispName
-        paramSet.creUserKey = this.GE_USER.userKey
+
         if (auth && type === 'user') { // 유저 권한 수정
+          paramSet.mngUserYn = !auth.mngUserYn
           if (auth.mngUserYn === true || auth.mngUserYn === 1) {
             paramSet.mngUserYn = false
           } else if (auth.mngUserYn === false || auth.mngUserYn === 0) {
             paramSet.mngUserYn = true
           }
         } else if (auth && type === 'org') { // 조직 권한 수정
-          paramSet.mngOrgYn = !auth.mngOrgY
+          paramSet.mngOrgYn = !auth.mngOrgYn
           if (auth.mngOrgYn === true || auth.mngOrgYn === 1) {
             paramSet.mngOrgYn = false
           } else if (auth.mngOrgYn === false || auth.mngOrgYn === 0) {
             paramSet.mngOrgYn = true
           }
         } else if (auth && type === 'expert') { // 전문가 여부 수정
-          console.log('전문가를 수정합니다.')
           if (paramSet.ssub && paramSet.ssub === 'E') {
-            console.log('원래 전문가였다.')
             paramSet.ssub = null
           } else { console.log('원래 전문가가 아니었다.'); paramSet.ssub = 'E' }
         }

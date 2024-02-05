@@ -44,7 +44,7 @@ export const routes = [
         component: () => import(/* webpackChunkName: "about" */ '@/components/admPages/adm_components/Adm_jojikUserInfo.vue')
       },
       {
-        path: '/addMember/:orgKey',
+        path: '/addMember/:orgKey/:mouKey',
         name: 'addMember',
         props: true,
         component: () => import(/* webpackChunkName: "about" */ '../../components/admPages/popUP/Adm_addMemberPop.vue')

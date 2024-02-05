@@ -155,7 +155,6 @@ const HB_SSO = {
       if (targetId) {
         target = document.getElementById(targetId)
       }
-
       target.appendChild(tcIframe)
       const popList = document.getElementsByClassName('hybricCommonPop')
       let popLength = 0

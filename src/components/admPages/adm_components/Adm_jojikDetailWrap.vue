@@ -142,7 +142,7 @@ export default {
       }
     },
     gotoAddMember () {
-      this.$router.push(`/addMember/${this.orgKey}`)
+      this.$router.push(`/addMember/${this.orgKey}/0`)
     },
     getParamMap (urlString) {
       const splited = urlString.replace('?', '').split(/[=?&]/)

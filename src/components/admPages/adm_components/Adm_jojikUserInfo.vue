@@ -24,7 +24,7 @@
 
     <tbody v-if="isLoading===true" >
         <tr v-for="(user, index) in mMOrgUserList.org" :key="index">
-            <jojikManagerOption :pModiYn="modiYn" :pUser="user" :pIndex="index" :pMOrgUserList="mMOrgUserList" :pFilteredPageData="pFilteredPageData" :pSelectedOrg="pSelectedOrg"/>
+            <jojikManagerOption @selectUser="selectedUser" :pModiYn="modiYn" :pUser="user" :pIndex="index" :pMOrgUserList="mMOrgUserList" :pFilteredPageData="pFilteredPageData" :pSelectedOrg="pSelectedOrg"/>
         </tr>
     </tbody>
   </table>
@@ -34,7 +34,7 @@
   <div class="btnWraps alignCenter">
     <span @click="gotoAddMember" class="btnAdd cursorP h100P">추가</span>
     <span class="btnDel cursorP h100P">삭제</span>
-    <span class="btnAdd cursorP h100P">{{ modiYn === false ? '편집' : '취소' }}</span>
+    <span @click="gotoEditMember" class="btnAdd cursorP h100P">{{ modiYn === false ? '편집' : '취소' }}</span>
   </div>
 </template>
 
@@ -66,16 +66,24 @@ export default {
       isLoading: false,
       mSearchData: '',
       selectedManage: 'all',
-      modiYn: false
+      modiYn: false,
+      mSelectedUser: ''
     }
   },
   methods: {
+    selectedUser (user) {
+      this.mSelectedUser = user
+      console.log('this.mSelectedUser', this.mSelectedUser)
+    },
     handleSelectAuth (value) {
       this.mSelectedManage = this.selectedManage
       console.log('this.mSelectedManage', this.mSelectedManage)
     },
     gotoAddMember () {
-      this.$router.push(`/addMember/${this.orgKey}`)
+      this.$router.push(`/addMember/${this.orgKey}/0`)
+    },
+    gotoEditMember () {
+      this.$router.push(`/addMember/${this.orgKey}/${this.mSelectedUser}`)
     },
     setToModi () {
       this.modiYn = !this.modiYn

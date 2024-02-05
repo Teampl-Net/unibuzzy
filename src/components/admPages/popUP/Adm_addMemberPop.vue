@@ -1,14 +1,14 @@
 <template>
   <userImgSelectCompo v-if="changeImageYn" :pSelectedIconPath="mDomainPath + mUserProfileImg" :parentSelectedIconFileKey="this.GE_USER.picMfilekey" :isAdmTrue="true" @no="closeChangeImg"/>
-  <confirmPop v-if="confirmPopYn" :pClosePop="closeConfirmPop" :pConfirmPopHeader="'유저 추가하기'" :pConfirmPopText="confirmPopText" @confirmOk="saveMember"/>
-  <okPop v-if="okPopYn" :pMovePage="movePage" @closeOkPopError="closeOkPopError" :pClosePop="closeOkPop" :pOkPopHeader="'유저 추가하기'" :pOkPopText="okPopText"/>
+  <confirmPop v-if="confirmPopYn" :pClosePop="closeConfirmPop" :pConfirmPopHeader="popHeader" :pConfirmPopText="confirmPopText" @confirmOk="saveMember"/>
+  <okPop v-if="okPopYn" :pMovePage="movePage" @closeOkPopError="closeOkPopError" :pClosePop="closeOkPop" :pOkPopHeader="popHeader" :pOkPopText="okPopText"/>
   <div id="admLayout" class="w100P alignCenter" style="flex-direction:column; gap:1rem;">
     <!-- <header class="w100P">
     <div class="w100P" style="text-align:left;">
       <img :src="require(`@/assets/images/common/icon_back.png`)" :alt="뒤로가기" class="cursorP" @click.stop="closeXPop"/>
     </div>
   </header> -->
-  <div class="alignCenter w100P h100P" style="flex-direction:column; justify-content:space-between;">
+  <div class="alignCenter w100P" style="flex-direction:column; justify-content:space-between; height:calc(100% - 60px);">
     <div class="w100P alignCenter" style="flex-direction:column;">
       <div @click="openChangImg" class="profileImg cursorP" :style="'background-image: url(' + mUserProfileImg + ');'"></div>
       <!-- <div v-else @click="openChangImg" class="profileImg cursorP"  :style="'background-image: url('+ (GE_USER.domainPath ? GE_USER.domainPath + this.$changeUrlBackslash(GE_USER.userProfileImg) : GE_USER.userProfileImg) +');'"> </div>-->
@@ -23,7 +23,7 @@
             <p>권한</p>
             <select v-model="selectedAuth" @change="changeTypeOption">
               <option value="default">선택하세요.</option>
-              <option v-for="(auth, index) in mAppDetail[0].authList" :key="index" :value="auth.authKey">{{auth.authName}}</option>
+              <!-- <option v-for="(auth, index) in mAppDetail[0].authList" :key="index" :value="auth.authKey">{{auth.authName}}</option> -->
             </select>
           </div>
         </div>
@@ -43,8 +43,8 @@
     </div>
 
       <div class="w100P">
-        <button type="button" @click="checkInputs" class="admBtn saveBtn">저장</button>
-          <button type="button" @click="closeXPop" class="admBtn">닫기</button>
+        <button type="button" @click="checkInputs" class="admBtn saveBtn">{{ mouKey && mouKey > 0 ? '수정' : '저장' }}</button>
+          <button type="button" @click.stop="closeXPop" class="admBtn">닫기</button>
       </div>
     </div>
   </div>
@@ -66,17 +66,24 @@ export default {
     pPropParams: [],
     pSelectedOrgUser: {},
     orgKey: Number,
-    pMyOrgList: []
+    pMyOrgList: [],
+    pMOrgExpertList: [],
+    mouKey: Number
   },
   created () {
     window.addEventListener('message', (e) => this.receiveMessage(e), false)
-    console.log('this.$route', this.$route.query.expertYn)
-    if (this.$route.query && this.$route.query.expertYn === 'true') {
+    console.log('pMOrgExpertList', this.pMOrgExpertList)
+    // if (this.mouKey && this.mouKey > 0) { // 유저 수정일 경우
+    //   this.popHeader = '유저 수정하기'
+    //   this.confirmPopText = '유저를 수정하시겠습니까?'
+    //   this.fetchData()
+    // }
+    console.log('this.$route.query.expertYn ??', this.$route.query.expertYn)
+    if (this.$route.query && this.$route.query.expertYn === 'true') { // 전문가 추가일 경우
       this.fromExpertYn = true
       this.confirmPopText = '전문가를 추가하시겠습니까?'
     } else { this.fromExpertYn = false }
-    console.log('fromExpertYnfromExpertYn', this.fromExpertYn)
-    console.log('route params', this.$route.params.orgKey)
+
     if (location.search) {
       const urlParam = this.getParamMap(location.search)
       console.log(urlParam)
@@ -84,11 +91,7 @@ export default {
         this.$APP_CONFIG.appToken = urlParam.appToken
       }
     }
-    if (this.pSelectedOrgUser && this.pSelectedOrgUser.domainPath && this.pSelectedOrgUser.userProfileImg) { // 기존 유저 수정이면
-      this.mDomainPath = this.pSelectedOrgUser.domainPath
-      this.mUserProfileImg = this.pSelectedOrgUser.userProfileImg
-    }
-    if (this.orgKey && this.pMyOrgList) {
+    if (this.orgKey && this.pMyOrgList) { // 넘겨받은 orgKey로 org찾기
       this.mAppDetail = this.pMyOrgList.filter(org => org.orgKey === Number(this.orgKey))
       console.log('this.mAppDetail', this.mAppDetail)
     }
@@ -100,6 +103,8 @@ export default {
   data () {
     return {
       isAdmTrue: true,
+      mOtherParents: null,
+      popHeader: '유저 추가하기',
       mAppDetail: {},
       mNamePlaceHolder: '이름을 입력하세요.',
       mNumberPlaceHolder: '01000000000 형식으로 입력해주세요.',
@@ -118,7 +123,9 @@ export default {
       movePage: false,
       confirmPopText: '새로운 유저를 추가하시겠습니까?',
       okPopText: '저장되었습니다.',
-      fromExpertYn: false
+      fromExpertYn: false,
+      mUserList: [],
+      mSelectedUser: {}
     }
   },
   methods: {
@@ -168,7 +175,7 @@ export default {
         } else if (this.newEmail === '') {
           this.okPopText = '이메일을 입력하세요.'
         }
-        this.movePage = false
+        this.movePage = false // 꺼질 때 화면이동 없이 꺼짐
         this.showOkPop()
       } else {
         this.showConfirmPop()
@@ -185,7 +192,8 @@ export default {
     async saveMember () {
       var paramSet = {}
       paramSet = {
-        authKey: this.newAuthKey,
+        // authKey: this.newAuthKey,
+        authKey: 469,
         userName: this.newDispMText,
         userEmail: this.newEmail,
         userDispMtext: this.newDispMText,
@@ -197,7 +205,6 @@ export default {
       if (this.fromExpertYn === true) {
         paramSet.sSub = 'E'
       }
-
       console.log('paramSet', paramSet)
       var result = await this.$axios.post('/sUniB/tp.saveMOrgUser', { mOrgUser: paramSet }, { withCredentials: true, headers: { DemoYn: true } })
       if (result && result.data) {
@@ -206,9 +213,9 @@ export default {
         this.movePage = true
         this.showOkPop()
       } else {
-        this.okPopText = '추가에 실패했습니다.'
-        this.showOkPop()
+        this.okPopText = '실패했습니다. 다시 시도해주세요.'
         this.movePage = false
+        this.showOkPop()
       }
     },
     receiveMessage (event, callback) {
@@ -233,6 +240,28 @@ export default {
         } catch (error) {
           console.log(error)
         }
+      }
+    },
+    async getMOrgMemberList () {
+      var paramSet = {}
+      paramSet.orgKey = this.orgKey
+      var result = await this.$axios.post('/sUniB/tp.getMOrgUserList', paramSet, { withCredentials: true, headers: { UserAuthorization: this.$store.getters['D_USER/GE_USER'].userToken, Authorization: this.$APP_CONFIG.appToken } })
+      if (result) {
+        this.mUserList = result.data.org
+      }
+    },
+    async fetchData () {
+      console.log('fetchData 실행됨.')
+      try {
+        await this.getMOrgMemberList()
+        this.mSelectedUser = this.mUserList.filter(user => user.mouKey === Number(this.mouKey))
+        console.log('mSelectedUser ...', this.mSelectedUser)
+        this.newDispMText = this.$changeText(this.mSelectedUser[0].userDispMtext)
+        this.selectedAuth = this.mSelectedUser[0].authKey
+        this.newPhoneNoEnc = this.mSelectedUser[0].phoneNoEnc
+        this.newEmail = this.mSelectedUser[0].userEmail
+      } catch (error) {
+        console.log('error', error)
       }
     }
   },
