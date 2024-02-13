@@ -64,8 +64,13 @@ export default {
     },
     setSelectOption () {
       const index = this.pSelectedOrg.authList.findIndex(org => org.authKey === this.pUser.authKey)
-      this.mSelectedManage = this.pSelectedOrg.authList[index].authName
-      console.log('this.mSelectedManage', this.mSelectedManage)
+      console.log('index???', index)
+      if (index === -1) {
+        this.mSelectedManage = '일반'
+      } else {
+        this.mSelectedManage = this.pSelectedOrg.authList[index].authName
+        console.log('this.mSelectedManage', this.mSelectedManage)
+      }
     }
   },
   watch: {

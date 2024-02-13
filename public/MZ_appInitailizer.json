@@ -41,7 +41,7 @@
       "deepLink": {
         "login": "https://hybric.page.link/LOGIN"
       },
-      "apiPath": "https://192.168.0.78:9443/service",
+      "apiPath": "https://www.hybric.net:9443/service",
       "firebaseConfig": {
         "apiKey": "AIzaSyD-q9VEB5WHCd1OUDzuqSSWt-yRWMAtfNk",
         "authDomain": "hybric-aac41.firebaseapp.com",

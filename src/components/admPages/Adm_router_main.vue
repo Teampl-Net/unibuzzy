@@ -3,7 +3,7 @@
   <gAdmPopWrap v-if="popUpShow" @dataUpdated="dataUpdated" :pPropParams="propParams" :pClosePop="closePop" :pOrgList="myOrgList"/>
   <gAdmPageWrap v-if="pageShow" @changeBranch="changeBranch" @openPop="openPop" :pPropParams="propParams" :pPageData="pageData" :pClosePage="closePage" :pOrgList="myOrgList"/>
   <!-- <commonHeader /> -->
-  <router-view v-if="dataLoaded" style="overflow:hidden auto;" @openPage="openPage" @openPop="openPop" :pSelectedOrg="mSelectedApp" :pMyOrgList="myAppList"></router-view>
+  <router-view v-if="dataLoaded" style="overflow:hidden auto;" :pReceiveMessage="receiveMessage" @openPage="openPage" @openPop="openPop" :pSelectedOrg="mSelectedApp" :pMyOrgList="myAppList"></router-view>
   <commonFooter v-if="footer" />
   </div>
 </template>
@@ -48,6 +48,30 @@ export default {
     }
   },
   methods: {
+    receiveMessage (event, callback) {
+      console.log('==receiveMessage==')
+      const basedUrl = 'https://www.hybric.net:9443'
+      if (event.origin.includes('mankik') || event.origin.includes('localhost') || event.origin.includes('192.168') || event.origin.includes('hybric') || event.origin.includes(basedUrl)) {
+        try {
+          if (event.data && !event.data.type) {
+            const result = JSON.parse(event.data)
+            if (result.data) {
+              this.appInfoWrap = result
+              this.mOtherAppUserInfo = result.data
+              this.$APP_CONFIG.appToken = result.data.appToken
+              this.getOrgList(Number(this.$route.params.orgKey))
+              this.getMOrgMemberList(Number(this.$route.params.orgKey))
+            }
+            if (callback) {
+              callback(result)
+            }
+          }
+          console.log(event)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+    },
     async getOrgList () {
       console.log('실행되었음. ')
       var paramSet = {}

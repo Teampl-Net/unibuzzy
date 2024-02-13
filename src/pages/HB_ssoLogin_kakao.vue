@@ -22,7 +22,7 @@ export default defineComponent({
     }
     console.log(param)
     this.redirectUrl = localStorage.getItem('redirectUrl')
-    this.$axios.post('/sUniB/sso/tp.getUserInfoKakao', { code: param.code }).then((res) => {
+    this.$axios.post('https://www.hybric.net:9443/service/tp.getUserInfoKakao', { code: param.code }).then((res) => {
       console.log(res.data)
       this.saveUser(res.data, res.data.accessToken)
     })

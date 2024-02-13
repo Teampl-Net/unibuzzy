@@ -23,7 +23,7 @@
       <th style="width:25px;">No</th>
       <th style="width:48%'">권한명</th>
       <th style="width:17%;">유저관리</th>
-      <th style="width:15%;">조직관리</th>
+      <th style="width:15%;">채널관리</th>
       <th style="width:15%;">전문가</th>
     </thead>
 
@@ -77,11 +77,13 @@ export default {
   props: {
     pPageData: {},
     pSelectedOrg: {},
-    pGE_USER: {}
+    pGE_USER: {},
+    pAppInfoWrap: []
   },
   created () {
     console.log('jojikManageTable pPageData', this.pPageData)
     console.log('jojikManageTable pSelectedOrg', this.pSelectedOrg)
+    console.log('jojikManageTable pAppInfoWrap', this.pAppInfoWrap)
   },
   data () {
     return {
@@ -132,12 +134,12 @@ export default {
       console.log('auth', auth)
       const paramSet = {}
       paramSet.orgKey = this.pSelectedOrg.orgKey
-      paramSet.creUserKey = this.GE_USER.userKey
+      paramSet.creUserKey = this.pAppInfoWrap.userKey
       paramSet.authDispName = this.dispName
 
-      if (!auth && !type) { // 새 조직 추가면
+      if (!auth && !type) { // 새 채널 추가면
         if (this.newAuthName === '') return
-        console.log('새 조직을 만듭니다.')
+        console.log('새 채널을 만듭니다.')
         paramSet.authName = this.newAuthName
         paramSet.mngOrgYn = this.mNewMngOrg
         paramSet.mngUserYn = this.mNewMngUser
@@ -145,7 +147,7 @@ export default {
           paramSet.ssub = 'E'
         }
       } else if (auth && type) { // 수정이면
-        console.log('기존 조직을 수정합니다.')
+        console.log('기존 채널을 수정합니다.')
         paramSet.authName = auth.authName
         if (auth && type === 'name') {
           console.log('이름을 수정합니다...')
@@ -162,7 +164,7 @@ export default {
           } else if (auth.mngUserYn === false || auth.mngUserYn === 0) {
             paramSet.mngUserYn = true
           }
-        } else if (auth && type === 'org') { // 조직 권한 수정
+        } else if (auth && type === 'org') { // 채널 권한 수정
           paramSet.mngOrgYn = !auth.mngOrgYn
           if (auth.mngOrgYn === true || auth.mngOrgYn === 1) {
             paramSet.mngOrgYn = false
@@ -170,14 +172,16 @@ export default {
             paramSet.mngOrgYn = true
           }
         } else if (auth && type === 'expert') { // 전문가 여부 수정
+          console.log('전문가를 수정합니다.')
           if (paramSet.ssub && paramSet.ssub === 'E') {
-            paramSet.ssub = null
+            console.log('원래 전문가였다.')
+            paramSet.ssub = ''
           } else { console.log('원래 전문가가 아니었다.'); paramSet.ssub = 'E' }
         }
       }
       console.log('paramSet', paramSet)
 
-      const result = await axios.post('https://www.hybric.net:9443/service/tp.saveOrgAuth', { orgAuth: paramSet }, { withCredentials: true, headers: { UserAuthorization: this.GE_USER.userToken, Authorization: this.$APP_CONFIG.appToken } })
+      const result = await axios.post('https://www.hybric.net:9443/service/tp.saveOrgAuth', { orgAuth: paramSet }, { withCredentials: true, headers: { UserAuthorization: this.pAppInfoWrap.userToken, Authorization: this.pAppInfoWrap.appToken } })
       console.log('result', result)
       if (!auth && !type) {
         location.reload()

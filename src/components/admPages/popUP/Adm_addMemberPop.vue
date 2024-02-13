@@ -1,14 +1,14 @@
 <template>
   <userImgSelectCompo v-if="changeImageYn" :pSelectedIconPath="mDomainPath + mUserProfileImg" :parentSelectedIconFileKey="this.GE_USER.picMfilekey" :isAdmTrue="true" @no="closeChangeImg"/>
-  <confirmPop v-if="confirmPopYn" :pClosePop="closeConfirmPop" :pConfirmPopHeader="popHeader" :pConfirmPopText="confirmPopText" @confirmOk="saveMember"/>
   <okPop v-if="okPopYn" :pMovePage="movePage" @closeOkPopError="closeOkPopError" :pClosePop="closeOkPop" :pOkPopHeader="popHeader" :pOkPopText="okPopText"/>
+  <confirmPop v-if="confirmPopYn" :pClosePop="closeConfirmPop" :pConfirmPopHeader="popHeader" :pConfirmPopText="confirmPopText" @confirmOk="saveMember"/>
   <div id="admLayout" class="w100P alignCenter" style="flex-direction:column; gap:1rem;">
     <!-- <header class="w100P">
     <div class="w100P" style="text-align:left;">
       <img :src="require(`@/assets/images/common/icon_back.png`)" :alt="뒤로가기" class="cursorP" @click.stop="closeXPop"/>
     </div>
   </header> -->
-  <div class="alignCenter w100P" style="flex-direction:column; justify-content:space-between; height:calc(100% - 60px);">
+  <div class="alignCenter w100P" style="flex-direction:column; gap:20px; height:calc(100% - 60px);">
     <div class="w100P alignCenter" style="flex-direction:column;">
       <div @click="openChangImg" class="profileImg cursorP" :style="'background-image: url(' + mUserProfileImg + ');'"></div>
       <!-- <div v-else @click="openChangImg" class="profileImg cursorP"  :style="'background-image: url('+ (GE_USER.domainPath ? GE_USER.domainPath + this.$changeUrlBackslash(GE_USER.userProfileImg) : GE_USER.userProfileImg) +');'"> </div>-->
@@ -16,14 +16,14 @@
       <div class="w100P infoFillArea">
         <div class="w100P alignCenter" style="justify-content:space-between; gap:1rem;">
           <div class="infoName" style="width:65%;">
-            <p>{{ fromExpertYn ?  '전문가명' : '구성원명' }}</p>
+            <p>{{ pExpertYn ?  '전문가명' : '구성원명' }}</p>
             <input type="text" class="inputs nameInput" v-model="newDispMText" :placeholder=mNamePlaceHolder />
           </div>
           <div class="infoType" style="width:25%;">
             <p>권한</p>
             <select v-model="selectedAuth" @change="changeTypeOption">
               <option value="default">선택하세요.</option>
-              <!-- <option v-for="(auth, index) in mAppDetail[0].authList" :key="index" :value="auth.authKey">{{auth.authName}}</option> -->
+              <option v-for="(auth, index) in pSelectedBranch.authList" :key="index" :value="auth.authKey">{{auth.authName}}</option>
             </select>
           </div>
         </div>
@@ -36,7 +36,7 @@
             <input type="text" class="inputs mailInput" v-model="newEmail" :placeholder=mMailPlaceHolder />
           </div>
         <!-- <div class="w100P infoDesc">
-          <p>조직설명</p>
+          <p>채널설명</p>
           <textarea class="inputs descInput" v-model="infoGroupDesc" :placeholder=mDescPlaceHolder ></textarea>
         </div> -->
       </div>
@@ -44,7 +44,7 @@
 
       <div class="w100P">
         <button type="button" @click="checkInputs" class="admBtn saveBtn">{{ mouKey && mouKey > 0 ? '수정' : '저장' }}</button>
-          <button type="button" @click.stop="closeXPop" class="admBtn">닫기</button>
+          <!-- <button type="button" @click.stop="closeXPop" class="admBtn">닫기</button> -->
       </div>
     </div>
   </div>
@@ -68,11 +68,17 @@ export default {
     orgKey: Number,
     pMyOrgList: [],
     pMOrgExpertList: [],
-    mouKey: Number
+    mouKey: Number,
+    pExpertYn: Boolean,
+    pSelectedBranch: {},
+    pAppInfoWrap: [],
+    pAppEventWrap: String
   },
   created () {
-    window.addEventListener('message', (e) => this.receiveMessage(e), false)
+    // window.addEventListener('message', (e) => this.receiveMessage(e), false)
+    console.log('pAppInfoWrap', this.pAppInfoWrap)
     console.log('pMOrgExpertList', this.pMOrgExpertList)
+    console.log('orgKeyorgKey', this.orgKey)
     // if (this.mouKey && this.mouKey > 0) { // 유저 수정일 경우
     //   this.popHeader = '유저 수정하기'
     //   this.confirmPopText = '유저를 수정하시겠습니까?'
@@ -103,6 +109,7 @@ export default {
   data () {
     return {
       isAdmTrue: true,
+      mOtherAppUserInfo: null,
       mOtherParents: null,
       popHeader: '유저 추가하기',
       mAppDetail: {},
@@ -131,7 +138,7 @@ export default {
   methods: {
     closeXPop () {
       if (window.self !== window.top) {
-        window.parent.postMessage(JSON.stringify({ sender: 'Hb', type: 'close' }), this.mOtherParents)
+        window.parent.postMessage(JSON.stringify({ sender: 'Hb', type: 'close' }), this.pAppEventWrap)
       } else {
         this.$router.push('/admMain')
       }
@@ -148,6 +155,7 @@ export default {
     closeOkPop () {
       console.log('꺼짐')
       this.okPopYn = false
+      // this.closeXPop()
       this.$router.go(-1)
     },
     closeOkPopError () {
@@ -192,33 +200,35 @@ export default {
     async saveMember () {
       var paramSet = {}
       paramSet = {
-        // authKey: this.newAuthKey,
-        authKey: 469,
+        authKey: this.selectedAuth,
         userName: this.newDispMText,
         userEmail: this.newEmail,
         userDispMtext: this.newDispMText,
         phoneNoEnc: this.newPhoneNoEnc,
-        creUserKey: this.GE_USER.userKey,
+        creUserKey: this.pAppInfoWrap.userKey,
         userNameMtext: this.newDispMText,
-        orgKey: Number(this.orgKey)
+        orgKey: Number(this.pSelectedBranch.orgKey)
       }
-      if (this.fromExpertYn === true) {
+      if (this.pExpertYn === true) {
         paramSet.sSub = 'E'
       }
       console.log('paramSet', paramSet)
-      var result = await this.$axios.post('https://www.hybric.net:9443/service/tp.saveMOrgUser', { mOrgUser: paramSet }, { withCredentials: true, headers: { DemoYn: true } })
+      var result = await this.$axios.post('https://www.hybric.net:9443/service/tp.saveMOrgUser', { mOrgUser: paramSet }, { withCredentials: true, headers: { UserAuthorization: this.pAppInfoWrap.userToken, Authorization: this.pAppInfoWrap.appToken } })
       if (result && result.data) {
         this.closeConfirmPop()
         this.okPopText = '저장되었습니다.'
         this.movePage = true
+        this.closeConfirmPop()
         this.showOkPop()
       } else {
         this.okPopText = '실패했습니다. 다시 시도해주세요.'
         this.movePage = false
+        this.closeConfirmPop()
         this.showOkPop()
       }
     },
     receiveMessage (event, callback) {
+      console.log('=receiveMessage=')
       const basedUrl = 'https://www.hybric.net:9443'
       if (event.origin.includes('mankik') || event.origin.includes('localhost') || event.origin.includes('192.168') || event.origin.includes('hybric') || event.origin.includes(basedUrl)) {
         try {
@@ -229,8 +239,9 @@ export default {
               this.mOtherAppUserInfo = result.data
               this.$APP_CONFIG.appToken = result.data.appToken
               this.mOtherParents = event.origin
-              console.log(this.mOtherParents)
-              console.log('durl')
+              console.log('this.mOtherParents', this.mOtherParents)
+              console.log('this.$APP_CONFIG.appToken', this.$APP_CONFIG.appToken)
+              console.log('this.mOtherParents', this.mOtherParents)
             }
             if (callback) {
               callback(result)
@@ -245,7 +256,7 @@ export default {
     async getMOrgMemberList () {
       var paramSet = {}
       paramSet.orgKey = this.orgKey
-      var result = await this.$axios.post('/sUniB/tp.getMOrgUserList', paramSet, { withCredentials: true, headers: { UserAuthorization: this.$store.getters['D_USER/GE_USER'].userToken, Authorization: this.$APP_CONFIG.appToken } })
+      var result = await this.$axios.post('https://www.hybric.net:9443/service/tp.getMOrgUserList', paramSet, { withCredentials: true, headers: { UserAuthorization: this.$store.getters['D_USER/GE_USER'].userToken, Authorization: this.$APP_CONFIG.appToken } })
       if (result) {
         this.mUserList = result.data.org
       }
@@ -267,7 +278,11 @@ export default {
   },
   computed: {
     GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
+      if (this.mOtherAppUserInfo !== null && this.mOtherAppUserInfo.userKey !== null) {
+        return this.mOtherAppUserInfo
+      } else {
+        return this.$store.getters['D_USER/GE_USER']
+      }
     },
     historyStack () {
       return this.$store.getters['D_HISTORY/hRPage']

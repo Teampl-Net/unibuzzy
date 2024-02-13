@@ -8,7 +8,7 @@
       </div>
       <div v-if="mAppDetail && mAppDetail.length > 0" class="myInfoArea">
         <select v-model="mSelectedBranch" @change="changeSelectedBranch" style="height:30px;">
-          <option v-for="(branch, index) in pMyOrgList" :key="index" :value="branch">{{ branch.orgName ? branch.orgName : '새 조직' }}</option>
+          <option v-for="(branch, index) in pMyOrgList" :key="index" :value="branch">{{ branch.orgName ? branch.orgName : '새 채널' }}</option>
         </select>
         <!-- <p class="font30" style="padding-left:10px;">IN {{ pPropParams.myApps ? pPropParams.myApps.title : '' }}</p> -->
         <p class="font30" style="padding-left:10px;">관리자 페이지</p>
@@ -25,8 +25,8 @@
       </div>
 
       <div class="detailInfos w100P">
-        <jojikDetailInfo v-if="mSelectedJojikTabIdx === 0" :orgKey="orgKey" :pGE_USER="GE_USER" @openUserInfo="openUserInfo" :pOrgUesrs="mMOrgUserList" :pPageData="pPageData" :pSelectedOrg="mSelectedBranch"/>
-        <jojikUesrInfo v-if="mSelectedJojikTabIdx === 1" :orgKey="orgKey" :pSelectedOrg="mSelectedBranch" :pFilteredPageData="filteredPageData" :pAddUser="addUserYn" :pCloseAddUser="closeAddUser"/>
+        <jojikDetailInfo v-if="mSelectedJojikTabIdx === 0" :pAppInfoWrap="appInfoWrap" :orgKey="orgKey" :pGE_USER="GE_USER" @openUserInfo="openUserInfo" :pOrgUesrs="mMOrgUserList" :pPageData="pPageData" :pSelectedOrg="mSelectedBranch"/>
+        <jojikUesrInfo v-if="mSelectedJojikTabIdx === 1" :pAppEventWrap="appEventWrap" :pAppInfoWrap="appInfoWrap" :pMOrgUserList="mMOrgUserList" :orgKey="orgKey" :pSelectedOrg="mSelectedBranch" :pFilteredPageData="filteredPageData" :pAddUser="addUserYn" :pCloseAddUser="closeAddUser"/>
       </div>
     </div>
   </div>
@@ -37,7 +37,7 @@ import jojikDetailInfo from '@/components/admPages/adm_components/Adm_jojikDetai
 import jojikUesrInfo from '@/components/admPages/adm_components/Adm_jojikUserInfo.vue'
 import confirmPop from '@/components/admPages/popUP/Adm_confirmPop.vue'
 import OkPop from '@/components/admPages/popUP/Adm_confirmOkPop.vue'
-// import axios from 'axios'
+import axios from 'axios'
 export default {
   components: {
     jojikDetailInfo,
@@ -86,7 +86,7 @@ export default {
       selectedAppName: '',
       mSelectedJojikTabIdx: 0,
       jojikTabs: [
-        { idx: 1, tabName: '조직 정보' },
+        { idx: 1, tabName: '채널 정보' },
         { idx: 1, tabName: '유저 정보' }
       ],
       mSearchData: '',
@@ -100,7 +100,9 @@ export default {
       mAppDetail: {},
       mMOrgUerCount: {},
       mConfirmPopYn: false,
-      mOkPopYn: false
+      mOkPopYn: false,
+      appInfoWrap: [],
+      appEventWrap: {}
       // filteredPageData: {}
     }
   },
@@ -120,14 +122,17 @@ export default {
       this.mOkPopYn = false
     },
     receiveMessage (event, callback) {
+      console.log('==receiveMessage==')
       const basedUrl = 'https://www.hybric.net:9443'
       if (event.origin.includes('mankik') || event.origin.includes('localhost') || event.origin.includes('192.168') || event.origin.includes('hybric') || event.origin.includes(basedUrl)) {
         try {
           if (event.data && !event.data.type) {
             const result = JSON.parse(event.data)
             if (result.data) {
+              this.appInfoWrap = result.data
               this.mOtherAppUserInfo = result.data
-              // this.$APP_CONFIG.appToken = result.data.appToken
+              this.appEventWrap = event.origin
+              this.$APP_CONFIG.appToken = result.data.appToken
               this.getOrgList(Number(this.$route.params.orgKey))
               this.getMOrgMemberList(Number(this.$route.params.orgKey))
             }
@@ -154,7 +159,7 @@ export default {
     },
     async getOrgList (orgKey) {
       var paramSet = { orgKey: orgKey }
-      var result = await this.$axios.post('https://www.hybric.net:9443/service/tp.getOrgList', paramSet, { withCredentials: true, headers: { UserAuthorization: this.GE_USER.userToken, Authorization: this.$APP_CONFIG.appToken } })
+      var result = await axios.post('https://www.hybric.net:9443/service/tp.getOrgList', paramSet, { withCredentials: true, headers: { UserAuthorization: this.mOtherAppUserInfo.userToken, Authorization: this.$APP_CONFIG.appToken } })
       if (result && result.data) {
         this.mSelectedBranch = result.data.org[0]
       }
@@ -185,13 +190,17 @@ export default {
       // this.filteredPageData(param)
       this.mSelectedJojikTabIdx = 1
     },
+
     async getMOrgMemberList (orgKey) {
       var paramSet = {}
-      paramSet.creUserKey = this.GE_USER.userKey
-      paramSet.orgKey = this.mSelectedBranch.orgKey || orgKey
-      var result = await this.$axios.post('https://www.hybric.net:9443/service/tp.getMOrgUserList', paramSet, { withCredentials: true, headers: { UserAuthorization: this.$store.getters['D_USER/GE_USER'].userToken, Authorization: this.$APP_CONFIG.appToken } })
-      if (result && result.data) {
-        this.mMOrgUserList = result.data
+      // paramSet.creUserKey = this.GE_USER.userKey
+      paramSet.orgKey = Number(this.$route.params.orgKey)
+      // paramSet.sSub = 'E'
+      // paramSet.appToken = 'eyJhbGciOiJIUzI1NiJ9.eyJjcmVVc2VyS2V5IjoxOTIsImNyZURhdGUiOjE3MDUyODQzODUwMDAsImFwcE5hbWUiOiLrjZTslYzrprwiLCJhcHBUb2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUo5LmV5SmpjbVZWYzJWeVMyVjVJam94T1RJc0ltTnlaVVJoZEdVaU9qRTNNRFV5T0RRek9EVXdNREFzSW1Gd2NFNWhiV1VpT2lMcmpaVHNsWXpycHJ3aUxDSmhjSEJVYjJ0bGJpSTZJbVY1U21oaVIyTnBUMmxLU1ZWNlNURk9hVW81TG1WNVNtcGpiVlpXWXpKV2VWTXlWalZKYW05NFQxUkpjMGx0VG5sYVZWSm9aRWRWYVU5cVJUTk5SRlY1VDBSUmVrOUVWWGROUkVGelNXMUdkMk5GTldoaVYxVnBUMmxNY21wYVZITnNXWHB5Y0hKM2FVeERTbXBhV0Vvd1lWWkNiMkl5Tld4WFZ6UnBUMnBGYzBsdFJuZGpSWFJzWlZOSk5rMVRkMmxaTWxaNVpFZHNSbUpYUm5CaVJteDFTV3B2ZUV4RFNtdGFWM2hzWkVkV1dtSnBTVFpOUTNkcFdsaG9kMGxxYjNsTlJFbDNUbXBWTlU1cVZUVk1RMHAxWWpJMWFscFRTVFpKYlVrMVdXMVZNVnBFYkd0TVZFRXpXa1JaZEU1RVpHMU5VekExVDBSSk1VeFVhM2xPYW1NMFRsZFJkMDFVVlhoYVEwbHpTVzFHZFZwSVNuWmhWMUpLV2tOSk5rbHRUblppVXpVd1dWZDRabU5JU25aaGJWWnFaRU5LT1M1UVdIbFdYMUIwZFVkUlowSmZjMHRNVDNadE9XeDNPV2hvYmxoblJsQXhla2M1V0dGdFIxaFVVVGhWSWl3aVkyVnlkR2xRYUc5dVpWbHVJam94TENKaGNIQkxaWGtpT2pFc0ltTmxjblJwUlcxaGFXeFpiaUk2TVN3aVpHVnNaWFJsV1c0aU9qQXNJbVY0Y0NJNk1qQXlNRGt3TWpZM01Dd2libTl1WTJVaU9pSTVNVEprTTJabE1DMHhabVZrTFRRMllqa3RPREV3WkMwMU5qYzROVGN3TWpjMVpETWlMQ0poYm1SeWIybGtTV1FpT2lKamIyMHVkR0ZzWDNCeWIycGxZM1FpZlEuMUFGMkpoQzd6VG1wVTV2aHdvN0wxN2RSVlVSRzl0MFBzQ09rVFNGR1dHMCIsImNlcnRpUGhvbmVZbiI6MSwiYXBwS2V5IjoxLCJjZXJ0aUVtYWlsWW4iOjEsImRlbGV0ZVluIjowLCJleHAiOjIwMjA5MDI3NzQsIm5vbmNlIjoiNTlmMDYxMDItY2VhMS00NmE2LWEwMmYtNGUwODRhZWFlZjI1IiwiYW5kcm9pZElkIjoiY29tLnRhbF9wcm9qZWN0In0.irKKhHVeVbE5pvXAM69ytw0SCxYA6SMgXRPEDA_eCU8'
+      var result = await axios.post('https://www.hybric.net:9443/service/tp.getMOrgUserList', paramSet, { withCredentials: true, headers: { UserAuthorization: this.GE_USER.userToken, Authorization: this.$APP_CONFIG.appToken } })
+      if (result) {
+        console.log('result?', result)
+        this.mMOrgUserList = result.data.org
         console.log('this.mMOrgUserList', this.mMOrgUserList)
       }
     }
@@ -238,6 +247,9 @@ export default {
 </script>
 
 <style scoped>
+#admLayout{
+  overflow:auto scroll;
+}
 .topArea{
   display:flex;
   align-items:center;
@@ -294,6 +306,7 @@ export default {
   background-color:#fff;
   height:auto;
   padding:10px;
+  margin-bottom:100px;
 }
 
 </style>

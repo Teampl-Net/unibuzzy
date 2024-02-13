@@ -1,5 +1,5 @@
 <template>
-  <addMemberPop v-if="addExpertYn" :pMOrgExpertList="mMOrgExpertList" :pClosePop="addExpertYn = false"/>
+  <addMemberPop v-if="addExpertYn" :pAppInfoWrap="appInfoWrap" :pExpertYn="true" :pSelectedBranch="mSelectedBranch" :pMOrgExpertList="mMOrgExpertList" :pClosePop="closeAddPop"/>
   <confirmPop v-if="confirmPopYn" @confirmOk="deleteExpert" :pClosePop="closeConfirmPop" :pConfirmPopHeader="'전문가 삭제'" :pConfirmPopText="'해당 전문가를 삭제하시겠습니까?'"/>
   <okPop v-if="okPopYn" />
   <!-- <addExpertPop v-if="addExpertPopYn" :pClosePop="closeAddExpertPop" @addExpertOK="undefined"/> -->
@@ -10,7 +10,7 @@
   </header> -->
   <div class="w100P experListWrap" id="admLayout">
     <div>
-      <p class="orgName fontBold">{{ mSelectedBranch ? mSelectedBranch.orgName : '조직명' }}</p>
+      <p class="orgName fontBold">{{ mSelectedBranch ? mSelectedBranch.orgName : '채널명' }}</p>
     </div>
 
     <ul class="expertWrap w100P">
@@ -48,13 +48,16 @@ export default ({
   },
   props: {
     orgKey: Number,
-    pMyOrgList: {}
+    pMyOrgList: []
   },
   created () {
     window.addEventListener('message', (e) => this.receiveMessage(e), false)
-    // console.log('orgKey', this.orgKey)
+    console.log('orgKey', this.orgKey)
     // console.log('pMyOrgList', this.pMyOrgList)
-    this.getMOrgMemberList(this.orgKey)
+    if (this.mOtherAppUserInfo !== null && this.mOtherAppUserInfo.userKey !== null) {
+    } else {
+      this.getMOrgMemberList(this.orgKey)
+    }
     if (this.orgKey && this.pMyOrgList) {
       this.mAppDetail = this.pMyOrgList.filter(org => org.orgKey === Number(this.orgKey))
       // console.log('this.mAppDetail', this.mAppDetail)
@@ -72,7 +75,8 @@ export default ({
       expertYn: 'true',
       confirmPopYn: false,
       okPopYn: false,
-      addExpertYn: false
+      addExpertYn: false,
+      appInfoWrap: []
     }
   },
   methods: {
@@ -110,28 +114,39 @@ export default ({
     },
     deleteExpert () {
     },
+    async getOrgList (orgKey) {
+      var paramSet = { orgKey: orgKey }
+      var result = await this.$axios.post('https://www.hybric.net:9443/service/tp.getOrgList', paramSet, { withCredentials: true, headers: { UserAuthorization: this.GE_USER.userToken, Authorization: this.$APP_CONFIG.appToken } })
+      if (result && result.data) {
+        this.mSelectedBranch = result.data.org[0]
+        console.log('this.mSelectedBranch', this.mSelectedBranch)
+      }
+    },
     async getMOrgMemberList (orgKey) {
       var paramSet = {}
       // paramSet.creUserKey = this.GE_USER.userKey
       paramSet.orgKey = orgKey
       paramSet.sSub = 'E'
-      var result = await this.$axios.post('https://www.hybric.net:9443/service/tp.getMOrgUserList', paramSet, { withCredentials: true, headers: { UserAuthorization: this.$store.getters['D_USER/GE_USER'].userToken, Authorization: this.$APP_CONFIG.appToken } })
+      // paramSet.appToken = 'eyJhbGciOiJIUzI1NiJ9.eyJjcmVVc2VyS2V5IjoxOTIsImNyZURhdGUiOjE3MDUyODQzODUwMDAsImFwcE5hbWUiOiLrjZTslYzrprwiLCJhcHBUb2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUo5LmV5SmpjbVZWYzJWeVMyVjVJam94T1RJc0ltTnlaVVJoZEdVaU9qRTNNRFV5T0RRek9EVXdNREFzSW1Gd2NFNWhiV1VpT2lMcmpaVHNsWXpycHJ3aUxDSmhjSEJVYjJ0bGJpSTZJbVY1U21oaVIyTnBUMmxLU1ZWNlNURk9hVW81TG1WNVNtcGpiVlpXWXpKV2VWTXlWalZKYW05NFQxUkpjMGx0VG5sYVZWSm9aRWRWYVU5cVJUTk5SRlY1VDBSUmVrOUVWWGROUkVGelNXMUdkMk5GTldoaVYxVnBUMmxNY21wYVZITnNXWHB5Y0hKM2FVeERTbXBhV0Vvd1lWWkNiMkl5Tld4WFZ6UnBUMnBGYzBsdFJuZGpSWFJzWlZOSk5rMVRkMmxaTWxaNVpFZHNSbUpYUm5CaVJteDFTV3B2ZUV4RFNtdGFWM2hzWkVkV1dtSnBTVFpOUTNkcFdsaG9kMGxxYjNsTlJFbDNUbXBWTlU1cVZUVk1RMHAxWWpJMWFscFRTVFpKYlVrMVdXMVZNVnBFYkd0TVZFRXpXa1JaZEU1RVpHMU5VekExVDBSSk1VeFVhM2xPYW1NMFRsZFJkMDFVVlhoYVEwbHpTVzFHZFZwSVNuWmhWMUpLV2tOSk5rbHRUblppVXpVd1dWZDRabU5JU25aaGJWWnFaRU5LT1M1UVdIbFdYMUIwZFVkUlowSmZjMHRNVDNadE9XeDNPV2hvYmxoblJsQXhla2M1V0dGdFIxaFVVVGhWSWl3aVkyVnlkR2xRYUc5dVpWbHVJam94TENKaGNIQkxaWGtpT2pFc0ltTmxjblJwUlcxaGFXeFpiaUk2TVN3aVpHVnNaWFJsV1c0aU9qQXNJbVY0Y0NJNk1qQXlNRGt3TWpZM01Dd2libTl1WTJVaU9pSTVNVEprTTJabE1DMHhabVZrTFRRMllqa3RPREV3WkMwMU5qYzROVGN3TWpjMVpETWlMQ0poYm1SeWIybGtTV1FpT2lKamIyMHVkR0ZzWDNCeWIycGxZM1FpZlEuMUFGMkpoQzd6VG1wVTV2aHdvN0wxN2RSVlVSRzl0MFBzQ09rVFNGR1dHMCIsImNlcnRpUGhvbmVZbiI6MSwiYXBwS2V5IjoxLCJjZXJ0aUVtYWlsWW4iOjEsImRlbGV0ZVluIjowLCJleHAiOjIwMjA5MDI3NzQsIm5vbmNlIjoiNTlmMDYxMDItY2VhMS00NmE2LWEwMmYtNGUwODRhZWFlZjI1IiwiYW5kcm9pZElkIjoiY29tLnRhbF9wcm9qZWN0In0.irKKhHVeVbE5pvXAM69ytw0SCxYA6SMgXRPEDA_eCU8'
+      var result = await this.$axios.post('https://www.hybric.net:9443/service/tp.getMOrgUserList', paramSet, { withCredentials: true, headers: { UserAuthorization: this.GE_USER.userToken, Authorization: this.$APP_CONFIG.appToken } })
       if (result) {
         console.log('result?', result)
         this.mMOrgExpertList = result.data.org
-        // console.log('this.mMOrgExpertList', this.mMOrgExpertList)
+        console.log('this.mMOrgExpertList', this.mMOrgExpertList)
       }
     },
     receiveMessage (event, callback) {
+      console.log('==receiveMessage==')
       const basedUrl = 'https://www.hybric.net:9443'
       if (event.origin.includes('mankik') || event.origin.includes('localhost') || event.origin.includes('192.168') || event.origin.includes('hybric') || event.origin.includes(basedUrl)) {
         try {
           if (event.data && !event.data.type) {
             const result = JSON.parse(event.data)
             if (result.data) {
+              this.appInfoWrap = result.data
               this.mOtherAppUserInfo = result.data
               this.$APP_CONFIG.appToken = result.data.appToken
-              // this.getOrgList(Number(this.$route.params.orgKey))
+              this.getOrgList(Number(this.$route.params.orgKey))
               this.getMOrgMemberList(Number(this.$route.params.orgKey))
             }
             if (callback) {
@@ -166,6 +181,9 @@ export default ({
 </script>
 
 <style scoped>
+.experListWrap{
+  overflow:hidden auto;
+}
 header{
   padding:0.5rem 1rem;
   text-align:left;

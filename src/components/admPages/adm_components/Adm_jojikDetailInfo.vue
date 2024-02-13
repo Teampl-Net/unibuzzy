@@ -1,12 +1,12 @@
 <template>
   <p class="font12" style="text-align:right;"> 최종 업데이트 : {{ pSelectedOrg.upDated ? pSelectedOrg.upDated : '오늘' }}</p>
 
-  <!-- 조직 기본 데이터들 -->
+  <!-- 채널 기본 데이터들 -->
   <jojikCard :orgKey="orgKey" :pSelectedOrg="pSelectedOrg" :pOrgUesrs="pOrgUesrs"/>
 
-  <!-- 조직 권한 설정 -->
+  <!-- 채널 권한 설정 -->
   <div class="w100P manageTable">
-    <jojikManageTable :pGE_USER="pGE_USER" :pPageData="pPageData" @openUserInfo="openUserInfo" :pSelectedOrg="pSelectedOrg" :pCloseAddManage="closeAddManage" :pAddManagerTypeYn="addManagerTypeYn"/>
+    <jojikManageTable :pGE_USER="pGE_USER" :pAppInfoWrap="pAppInfoWrap" :pPageData="pPageData" @openUserInfo="openUserInfo" :pSelectedOrg="pSelectedOrg" :pCloseAddManage="closeAddManage" :pAddManagerTypeYn="addManagerTypeYn"/>
   </div>
 
 </template>
@@ -24,7 +24,8 @@ export default {
     pGE_USER: {},
     pPageData: {},
     pOrgUesrs: {},
-    orgKey: Number
+    orgKey: Number,
+    pAppInfoWrap: []
   },
   created () {
     console.log('jojikDetailInfo pSelectedOrg', this.pSelectedOrg)

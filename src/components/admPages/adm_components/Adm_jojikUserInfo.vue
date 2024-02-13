@@ -1,4 +1,5 @@
 <template>
+  <addMemberPop v-if="addExpertPop" :pExpertYn="true" :pSelectedBranch="mSelectedBranch" :pMOrgExpertList="mMOrgExpertList" :pClosePop="closeExpertPop"/>
     <div class="searchArea">
      <div class="inputWrap">
         <input type="text" v-model="mSearchData" class="w100P searchInput" style="cursor:auto;"/>
@@ -10,7 +11,9 @@
       </select>
       <div class="sendMsg cursorP">✉️</div>
     </div>
-
+    <div class="w100P" style="padding:0 10px; display:flex; align-items:center; justify-content:flex-end;">
+      <div @click.stop="postMessage({cmd: 'openExpert'})" class="addExpert font12 cursorP" style="text-align:center; margin-bottom:10px;">전문가 추가</div>
+    </div>
   <div class="detailInfos w100P">
     <table class="w100P manageTable">
     <thead>
@@ -23,27 +26,29 @@
     </thead>
 
     <tbody v-if="isLoading===true" >
-        <tr v-for="(user, index) in mMOrgUserList.org" :key="index">
-            <jojikManagerOption @selectUser="selectedUser" :pModiYn="modiYn" :pUser="user" :pIndex="index" :pMOrgUserList="mMOrgUserList" :pFilteredPageData="pFilteredPageData" :pSelectedOrg="pSelectedOrg"/>
+        <tr v-for="(user, index) in pMOrgUserList" :key="index">
+            <jojikManagerOption @selectUser="selectedUser" :pMOrgUserList="pMOrgUserList" :pModiYn="modiYn" :pUser="user" :pIndex="index" :pFilteredPageData="pFilteredPageData" :pSelectedOrg="pSelectedOrg"/>
         </tr>
     </tbody>
   </table>
 
   </div>
-
+<!--
   <div class="btnWraps alignCenter">
     <span @click="gotoAddMember" class="btnAdd cursorP h100P">추가</span>
     <span class="btnDel cursorP h100P">삭제</span>
     <span @click="gotoEditMember" class="btnAdd cursorP h100P">{{ modiYn === false ? '편집' : '취소' }}</span>
-  </div>
+  </div> -->
 </template>
 
 <script>
 import axios from 'axios'
 import jojikManagerOption from '@/components/admPages/adm_components/Adm_jojikManagerOption.vue'
+import addMemberPop from '@/components/admPages/popUP/Adm_addMemberPop.vue'
 export default {
   components: {
-    jojikManagerOption
+    jojikManagerOption,
+    addMemberPop
   },
   props: {
     pSelectedOrg: Object,
@@ -52,25 +57,39 @@ export default {
     pCloseAddUser: Function,
     pFromWhere: String,
     pFilterBySelectedManage: {},
-    orgKey: Number
+    orgKey: Number,
+    pAppInfoWrap: [],
+    pMOrgUserList: [],
+    pAppEventWrap: {}
   },
   created () {
     console.log('orgKey', this.orgKey)
     this.getMOrgUserList()
     console.log('pFilteredPageData', this.pFilteredPageData)
     console.log('pSelectedOrg', this.pSelectedOrg)
+    console.log('pAppEventWrappAppEventWrap', this.pAppEventWrap)
   },
   data () {
     return {
+      mMOrgExpertList: [],
       mSelectedManage: '',
       isLoading: false,
       mSearchData: '',
       selectedManage: 'all',
       modiYn: false,
-      mSelectedUser: ''
+      mSelectedUser: '',
+      addExpertPop: false,
+      expertYn: false,
+      isIframe: window.location !== window.parent.location
     }
   },
   methods: {
+    postMessage (data) {
+      if (this.isIframe) {
+        const serialized = JSON.stringify(data)
+        window.parent.postMessage(serialized, '*')
+      }
+    },
     selectedUser (user) {
       this.mSelectedUser = user
       console.log('this.mSelectedUser', this.mSelectedUser)
@@ -82,6 +101,13 @@ export default {
     gotoAddMember () {
       this.$router.push(`/addMember/${this.orgKey}/0`)
     },
+    openExpertPop () {
+      this.addExpertPop = true
+      this.expertYn = true
+    },
+    closeExpertPop () {
+      this.addExpertPop = false
+    },
     gotoEditMember () {
       this.$router.push(`/addMember/${this.orgKey}/${this.mSelectedUser}`)
     },
@@ -90,8 +116,8 @@ export default {
     },
     async getMOrgUserList () {
       var paramSet = {}
-      paramSet.orgKey = Number(this.orgKey)
-      var result = await axios.post('https://www.hybric.net:9443/service/tp.getMOrgUserList', paramSet, { withCredentials: true, headers: { UserAuthorization: this.$store.getters['D_USER/GE_USER'].userToken, Authorization: this.$APP_CONFIG.appToken } })
+      paramSet.orgKey = Number(this.$route.params.orgKey)
+      var result = await axios.post('https://www.hybric.net:9443/service/tp.getMOrgUserList', paramSet, { withCredentials: true, headers: { UserAuthorization: this.pAppInfoWrap.userToken, Authorization: this.pAppInfoWrap.appToken } })
       if (result && result.data) {
         this.isLoading = true
         this.mMOrgUserList = result.data
@@ -167,6 +193,13 @@ export default {
 .sendMsg{
   width:50px;
   min-width:50px;
+  border-radius:20px;
+  height:33px;
+  line-height:33px;
+  box-shadow:0 0 3px rgba(0,0,0,0.3);
+}
+.addExpert{
+  width:100px;
   border-radius:20px;
   height:33px;
   line-height:33px;

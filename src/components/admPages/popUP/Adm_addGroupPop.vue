@@ -3,12 +3,12 @@
   <OkPop v-if="okPopYn" :pMovePage="movePage" @closeOkPopError="closeOkPopError" :pClosePop="closeOkPop" :pOkPopText="okPopText" :pOkPopHeader="popHeader"/>
   <seleciconBgPopup v-if="mIconBgSelectPopYn=='iconPop' || mIconBgSelectPopYn=='bgPop'" :isAdmTrue="true" :selectIcon="this.mSelectedIcon" :selectBg="this.mSelectedBg" @no='mIconBgSelectPopYn=false' @makeParam='setIconOrBGData' :opentype="mIconBgSelectPopYn" />
 
-  <div id="admLayout" class="w100P alignCenter" style="flex-direction:column; gap:1rem; justify-content:space-between;">
+  <div id="admLayout" class="w100P alignCenter" style="flex-direction:column; gap:1rem;">
 
     <div class="w100P alignCenter" style="flex-direction:column;">
 
       <!-- <header class="w100P">
-      <div class="w100P font30 fontBold " style="color:#5F61BD; text-align:center; padding-bottom:20px;">{{ '조직 추가' }}</div>
+      <div class="w100P font30 fontBold " style="color:#5F61BD; text-align:center; padding-bottom:20px;">{{ '채널 추가' }}</div>
       </header> -->
 
       <div @click="mIconBgSelectPopYn='bgPop'" :style="'background: url(' + mSelectedBg.selectPath + ');'" class="w100P cursorP" style="height:230px; background-repeat: no-repeat;background-size: cover;"></div>
@@ -17,19 +17,19 @@
 
       <div class="w100P infoFillArea">
         <div class="w100P alignCenter" style="justify-content:space-between; gap:10px;">
-          <div class="infoName" style="width:70%;">
-            <p>조직명</p>
+          <div class="infoName" style="width:100%;">
+            <p>채널명</p>
             <input type="text" class="inputs nameInput" v-model="infoGroupName" :placeholder=mNamePlaceHolder />
           </div>
-          <div class="infoType" style="width:25%; min-width:235px;">
-            <p>조직타입</p>
+          <!-- <div class="infoType" style="width:25%; min-width:235px;">
+            <p>채널타입</p>
             <select v-model="selectedOption" @change="changeTypeOption">
               <option v-for="(type, index) in mTypeOption" :key="index" :value="type.value">{{type.name}}</option>
             </select>
-          </div>
+          </div> -->
         </div>
         <div class="w100P infoDesc">
-          <p>조직설명</p>
+          <p>채널설명</p>
           <textarea class="inputs descInput" v-model="infoGroupDesc" :placeholder=mDescPlaceHolder ></textarea>
         </div>
       </div>
@@ -37,7 +37,7 @@
 
         <div class="w100P">
         <button type="button" @click="checkInfos" class="admBtn saveBtn">{{ saveBtn }}</button>
-        <button type="button" @click="sendMessageToParent" class="admBtn saveBtn">오모?</button>
+        <!-- <button type="button" @click="sendMessageToParent" class="admBtn saveBtn">오모?</button> -->
           <button type="button" @click="closeXPop" class="admBtn">닫기</button>
         </div>
       </div>
@@ -72,11 +72,11 @@ export default {
       this.mSelectedBranch = this.mAppDetail[0]
       console.log('this.mSelectedBranch', this.mSelectedBranch)
       this.infoGroupName = this.mSelectedBranch.orgName
-      this.selectedoOption = this.mSelectedBranch.orgType
+      // this.selectedoOption = this.mSelectedBranch.orgType
       this.infoGroupDesc = this.mSelectedBranch.orgDesc
       this.saveBtn = '수정'
-      this.popHeader = '조직 수정하기'
-      this.confirmPopText = '조직을 수정하시겠습니까?'
+      this.popHeader = '채널 수정하기'
+      this.confirmPopText = '채널을 수정하시겠습니까?'
     }
     console.log('route params', this.$route.params.orgKey)
     if (location.search) {
@@ -113,8 +113,8 @@ export default {
       infoGroupName: '',
       infoGroupDesc: '',
       infoGroupType: 'T',
-      mNamePlaceHolder: '조직명을 입력하세요.',
-      mDescPlaceHolder: '조직 설명을 입력하세요.',
+      mNamePlaceHolder: '채널명을 입력하세요.',
+      mDescPlaceHolder: '채널 설명을 입력하세요.',
       selectedOption: 'T',
       mOtherAppUserInfo: null,
       mOtherParents: null,
@@ -125,17 +125,17 @@ export default {
       okPopText: '저장되었습니다.',
       movePage: false,
       saveBtn: '추가',
-      popHeader: '조직 생성하기',
-      confirmPopText: '새 조직을 생성하시겠습니까?'
+      popHeader: '채널 생성하기',
+      confirmPopText: '새 채널을 생성하시겠습니까?'
     }
   },
   methods: {
     checkInfos () {
       if (this.infoGroupName === '' || this.infoGroupDesc === '') {
         if (this.infoGroupName === '') {
-          this.okPopText = '조직명을 입력해주세요.'
+          this.okPopText = '채널명을 입력해주세요.'
         } else if (this.infoGroupDesc === '') {
-          this.okPopText = '조직설명을 입력해주세요. '
+          this.okPopText = '채널설명을 입력해주세요. '
         }
         this.movePage = false
         this.okPopYn = true
@@ -208,7 +208,8 @@ export default {
       var paramSet = {}
       paramSet.orgName = this.infoGroupName
       paramSet.orgDesc = this.infoGroupDesc
-      paramSet.orgType = this.infoGroupType
+      // paramSet.orgType = this.infoGroupType
+      paramSet.orgType = 'T'
       paramSet.creUserKey = this.GE_USER.userKey
       paramSet.orgImgFilekey = this.mSelectedIcon.selectedId
       paramSet.orgBgFilekey = this.mSelectedBg.selectedId

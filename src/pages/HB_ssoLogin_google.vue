@@ -24,7 +24,7 @@ export default defineComponent({
     this.redirectUrl = localStorage.getItem('redirectUrl')
     console.log(param)
     this.aToken = param.code
-    this.$axios.post('/sUniB/sso/tp.getUserInfoGoogle', { code: param.code }).then((res) => {
+    this.$axios.post('https://www.hybric.net:9443/service/tp.getUserInfoGoogle', { code: param.code }).then((res) => {
       console.log(res)
       this.saveUser(res.data, res.data.accessToken)
     })

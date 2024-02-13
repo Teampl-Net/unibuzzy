@@ -2,22 +2,24 @@
   <div v-if="mSelectedBranch" class="jojikInfoWrap w100P">
     <div class="defaultInfos w100P">
       <div style="display:flex; align-items:center;">
-        <div class="imgInfo"></div>
+        <div class="imgInfo">
+          <img :src="require(`@/assets/images/MKMainIcon.png`)" />
+        </div>
         <div class="textInfo">
-          <p class="font13">{{ mSelectedBranch.orgName ? mSelectedBranch.orgName : '새 조직' }}</p>
+          <p class="font15">{{ mSelectedBranch.orgName ? mSelectedBranch.orgName : '새 채널' }}</p>
           <!-- <p class="font13">{{ mSelectedBranch.orgKey ? mSelectedBranch.orgKey : '00' }}</p> -->
         </div>
       </div>
-      <div style="text-align:right;">
-        <p class="font13">{{ mSelectedBranch.orgType && mSelectedBranch.orgType === 'T' ? '채널' : mSelectedBranch.orgType === 'B' ? '주소록' : '타입' }}</p>
-        <p class="font12">🙍🏻‍♂️{{ pOrgUesrs && pOrgUesrs.org ? pOrgUesrs.org.length : '미측정'}}</p>
-      </div>
+      <!-- <div style="text-align:right;">
+        <p class="font14">{{ mSelectedBranch.orgType && mSelectedBranch.orgType === 'T' ? '채널' : mSelectedBranch.orgType === 'B' ? '주소록' : '타입' }}</p>
+        <p class="font14">🙍🏻‍♂️{{ pOrgUesrs && pOrgUesrs.org ? pOrgUesrs.org.length : '미측정'}}</p>
+      </div> -->
     </div>
 
     <div class="w100P detailInfos">
       <div class="w100P alignCenter" style="justify-content:space-between;">
-        <p class="font13" style="width:calc(100% - 20px)' text-align:left;">{{ mSelectedBranch.orgDesc ? mSelectedBranch.orgDesc : '안녕하세요, 우리 조직을 소개합니다.' }}</p>
-        <p @click="gotoEditOrg" class="font16 cursorP" style="width:20px;">⚙️</p>
+        <p class="font15" style="width:calc(100%); text-align:left;">{{ mSelectedBranch.orgDesc ? mSelectedBranch.orgDesc : '안녕하세요, 우리 채널을 소개합니다.' }}</p>
+        <!-- <p @click="gotoEditOrg" class="font16 cursorP" style="width:20px;">⚙️</p> -->
         <!-- <div v-if="moreOpen===false" class="cursorP" @click="showMore" style="width:20px;">➕</div>
         <div v-if="moreOpen===true" class="cursorP" @click="showMore" style="width:20px;">➖</div> -->
       </div>
@@ -140,6 +142,9 @@ export default {
 
 <style scoped>
 
+p{
+  color:#222 !important;
+}
 .jojikInfoWrap{
   /* border:1px solid #e0e0e0; */
   padding:15px 10px;
@@ -154,10 +159,16 @@ export default {
   border-bottom:1px solid #ececec;
 }
 .imgInfo{
-  width:50px;
-  height:50px;
+  width:45px;
+  min-width:45px;
+  height:45px;
   border-radius:50%;
-  background-color:pink;
+  overflow:hidden;
+  padding:10px;
+  box-shadow: 0 0 4px 3px rgba(212, 212, 212, 0.3);
+}
+.imgInfo img{
+  width:100%;
 }
 .textInfo{
   text-align:left;

@@ -3,7 +3,7 @@
     <div class="topArea w100P">
       <div class="myInfoArea">
 
-        <!-- <p class="font30" style="padding-right:10px;">내 조직 IN </p>
+        <!-- <p class="font30" style="padding-right:10px;">내 채널 IN </p>
         <select v-model="mSelectedApp" @change="setSelectedApp" style="height:30px;">
           <option v-for="(apps, index) in mGetOrgList" :key="index" :value="apps" :selected="index === mSelectedAppIdx">{{ apps.title }}</option>
         </select> -->
@@ -20,7 +20,7 @@
       </template>
       <div class="jojikAddBtn cursorP" @click="gotoAddOrg">
         <div style="width:50px; height:50px; border-radius:50%; background-color:#ebebeb; font-size:30px; line-height:50px;">+</div>
-        <p class="font15" style="margin-left:0.5rem;">조직 추가</p>
+        <p class="font15" style="margin-left:0.5rem;">채널 추가</p>
       </div>
     </div>
   </div>
@@ -65,8 +65,8 @@ export default {
     },
     gotoOrgDetail (branch) {
       // console.log('branch', branch)
-      // this.$router.push(`/orgDetail/${branch.orgKey}`)
-      this.$router.push(`/expertList/${branch.orgKey}`)
+      this.$router.push(`/orgDetail/${branch.orgKey}`)
+      // this.$router.push(`/expertList/${branch.orgKey}`)
     },
     openPop (popType) {
       this.propParams.popType = popType
