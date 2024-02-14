@@ -435,7 +435,8 @@
                   class="font12 fl mleft-01 CDeepColor"
                   style="line-height: 1; margin-top: 1px"
                 >
-                  {{ CONT_DETAIL.rUserCount }}
+                  <!-- {{ CONT_DETAIL.rUserCount }} -->
+                  {{ CONT_DETAIL.actorList ? CONT_DETAIL.actorList.length : CONT_DETAIL.rUserCount }}
                 </p>
               </template>
               </div>
