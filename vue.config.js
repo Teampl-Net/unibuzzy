@@ -19,7 +19,7 @@ module.exports = {
         // target: 'http://192.168.0.46:9090',
         // target: 'http://192.168.0.78:9443',
         // target: 'http://localhost:9443',
-        // target: 'http://192.168.219.103:19090',
+        // target: 'http://192.168.219.103:19090',z
         // https://mo.d-alim.com:10443
         changeOrigin: true,
         secure: false,

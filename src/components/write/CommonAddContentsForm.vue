@@ -1718,6 +1718,7 @@ export default defineComponent({
         console.log('index?', index)
         if (index !== -1) {
           tempFileList[index].addYn = false
+          // tempFileList[index].attachYn = false
         } else {
           index = tempFileList.findIndex(f => f.attachKey === val.attachKey)
 
@@ -1741,21 +1742,14 @@ export default defineComponent({
       for (let i = tempFileList.length - 1; i > -1; i--) {
         const tempFile = tempFileList[i]
         for (let j = 0; addFalseAttachTrueFileList.length; j++) {
-          // console.log('addFalseAttachTrueFileList ???', addFalseAttachTrueFileList)
+          console.log('addFalseAttachTrueFileList ???', addFalseAttachTrueFileList)
           const propAttachFile = addFalseAttachTrueFileList[j]
-          // let deleteYn = true
           if (!propAttachFile) break
           if (tempFile.fileKey && tempFile.fileKey === propAttachFile.file) {
             // tempFileList[i].addYn = false
             delYn = false
             tempFile.deleteYn = true
           }
-          /*
-          if (deleteYn) {
-            tempFileList[i].addYn = false
-            delFileList.push(tempFileList[i])
-            tempFileList.splice(i, 1)
-          } */
         }
         console.log('iList', iList)
         for (let s = 0; s < iList.length; s++) {
@@ -2138,7 +2132,6 @@ export default defineComponent({
     }
     // ------ 파일 서버에 업로드
     const fileDataUploadToServer = async () => {
-      console.log('??')
       if (tempFileList.length > 0) {
         let iList = document.querySelectorAll('.formCard .addTrue')
         let form = new FormData()
@@ -2271,6 +2264,7 @@ export default defineComponent({
           }
           await setAttachFileList()
           params.attachFileList = handleFileListForUpload()
+          console.log('최종 attachFile 확인하기:::', params.attachFileList)
 
           // formEditor 작성 내용 추출
           boardDataCheck()

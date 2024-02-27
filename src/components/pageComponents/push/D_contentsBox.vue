@@ -449,14 +449,20 @@
               <span class="mleft-03 mright-03"> {{ this.$changeText(CONT_DETAIL.creUserName) }}</span>
               <span>{{ this.$changeDateFormat(CONT_DETAIL.creDate) }}</span>
             </div> -->
-            <span v-if="CONT_DETAIL.jobkindId !== 'TODO'">{{ this.$changeDateFormat(CONT_DETAIL.creDate) }}</span>
+            <div class="contentsDate h100P">
+              <span style="white-space:nowrap;">{{ CONT_DETAIL.jobkindId !== 'TODO' ? this.$changeDateFormat(CONT_DETAIL.creDate) : '' }}</span>
+            </div>
             <div @click.stop="clickFileDownload()" v-if="CONT_DETAIL.fileCount" class="cursorP" style="margin-left:0.6rem;">
-              <img src="../../../assets/images/push/contentsClipIcon.svg" style="width:15px;" class="" alt=""/>
-              <span v-if="propDetailYn===true" class="font15" style="margin-left:0.1rem;"> {{ CONT_DETAIL.attachFileList ? CONT_DETAIL.attachFileList.length : '0' }} file</span>
-              <template v-if="propDetailYn===false">
-              <span v-if="mFileDownData && mFileDownData.attachFileList && mFileDownData.attachFileList.length === 1" class="font15" style="margin-left:0.1rem;">
-                {{ fileName }}</span>
-              <span v-else class="font15" style="margin-left:0.1rem;">
+              <img src="../../../assets/images/push/contentsClipIcon.svg" style="width:15px;" alt="" :style="propDetailYn === true && CONT_DETAIL && CONT_DETAIL.attachFileList && CONT_DETAIL.attachFileList.length === 1 ? 'margin-top:-14px;' : '0'"/>
+              <template v-if="propDetailYn===true">
+                <span v-if="CONT_DETAIL && CONT_DETAIL.attachFileList && CONT_DETAIL.attachFileList.length > 1" class="font15" style="display:inline-block; margin-left:0.1rem;"> {{ CONT_DETAIL.attachFileList ? CONT_DETAIL.attachFileList.length : '0' }} files</span>
+                <span class="fileCounts font15" v-if="CONT_DETAIL && CONT_DETAIL.attachFileList && CONT_DETAIL.attachFileList.length === 1"  style="white-space:nowrap; margin-left:0.1rem; display:inline-block; overflow:hidden; text-overflow:ellipsis;"> {{ CONT_DETAIL.attachFileList[0].fileName }} </span>
+              </template>
+              <template v-if="propDetailYn===false"> <!-- 콘텐츠 상세가 아니면 (ex.메인의 모아보기) -->
+              <!-- <span v-if="mFileDownData && mFileDownData.attachFileList && mFileDownData.attachFileList.length === 1" class="font15" style="margin-left:0.1rem;">
+                {{ fileName }}
+                </span> -->
+              <span class="font15" style="margin-left:0.1rem;">
                 {{ '1 + files' }}
               </span>
               <!-- <span v-if="CONT_DETAIL && CONT_DETAIL.attachFileList && CONT_DETAIL.attachFileList.length > 1" class="font15" style="margin-left:0.1rem;"> 1+ files</span> -->
@@ -1285,9 +1291,9 @@ export default {
     pNoAuthYn: {}
   },
   created () {
-    this.getContentsDetail()
-    // console.log('contentsBox this.CONT_DETAIL', this.CONT_DETAIL)
-    // console.log('contentsElecontentsElecontentsElecontentsEle', this.contentsEle)
+    if (this.CONT_DETAIL && this.CONT_DETAIL.fileCount && this.CONT_DETAIL.fileCount !== 0) {
+      // this.getContentsDetail()
+    }
     this.checkUserRef()
     // this.saveStickerList()
     if (this.pFadeNotShowYn) this.mFadeNotShowYn = true
@@ -3515,6 +3521,12 @@ export default {
     }
     .todoImportantInfoMemo{
     font-size:14px;
+  }
+  .fileCounts{
+    max-width:200px !important;
+  }
+  .contentsDate {
+    max-width:90px !important;
   }
   }
 
