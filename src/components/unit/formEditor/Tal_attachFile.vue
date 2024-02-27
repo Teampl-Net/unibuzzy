@@ -31,8 +31,8 @@
           <input class="attachFile" hidden  type="file" :title ="$t('FORM_BTN_SELECT')"  ref="selectFileAttach" multiple accept="*" style="width: 100%;" id="selectFileAttach" @change="handleImageUpload"/>
       </form>
       <div v-if="this.targetType !== 'memo' && this.sFileList.length > 0" :class="pOneLineYn? '' : 'mtop-05'" class="fl" style="width: 100%; overflow: auto;" :style="pOneLineYn? 'width: calc(100% - 55px); margin-top: 2px;': ''">
-          <div :style="attachFileWidth" style="min-width: 100%; float: left; overflow: auto; white-space: nowrap;">
-            <div class="CMiddleBorderColor attachedFiles" style="padding: 3px 10px; float: left; margin-left: 5px; height: 30px; max-width: 200px; padding-right: 25px; box-shadow: 1px 3px 3px 0px #e9e7e7; border-radius: 8px; position: relative; " v-for="(value, index) in this.sFileList" :key="index">
+          <div :style="attachFileWidth" style="min-width: 100%; float: left; overflow: auto; white-space: nowrap; display:flex; align-items:center;">
+            <div class="CMiddleBorderColor attachedFiles" style="padding: 3px 10px; float: left; margin-top:5px; margin-left: 5px; height: 30px; max-width: 200px; padding-right: 25px; box-shadow: 1px 3px 3px 0px #e9e7e7; border-radius: 8px; position: relative; " v-for="(value, index) in this.sFileList" :key="index">
                 <div class="w100P fileNameArea">
                   <p class="CMiddleColor font12 textOverdot">{{splitName(value.file.name)}}</p>
                   <p class="CMiddleColor font12">{{splitExt(value.file.name)}}</p>
@@ -256,7 +256,6 @@ export default {
               this.preImgUr = src
               this.selectFile = compressedFile
               this.sFileList.push({ preImgUrl: src, attachKey: this.gAttachKey, addYn: true, file: newFile })
-              console.log('여기111111111111')
               this.$emit('setSelectedAttachFileList', { attachYn: true, preImgUrl: src, attachKey: this.gAttachKey, addYn: true, file: newFile })
               this.uploadCnt += 1
             /* await uploadToServer(compressedFile) */ // write your own logic

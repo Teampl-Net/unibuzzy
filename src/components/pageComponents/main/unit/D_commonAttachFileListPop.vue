@@ -44,7 +44,7 @@ export default {
   },
   created () {
     // eslint-disable-next-line no-debugger
-    debugger
+    // debugger
     if (this.propFileData) this.mAttachFileList = JSON.parse(JSON.stringify(this.propFileData))
     this.$addHistoryStack('gAttachFileList')
   },

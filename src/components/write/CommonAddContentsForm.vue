@@ -1717,16 +1717,16 @@ export default defineComponent({
         let index = tempFileList.findIndex(f => f.fileKey === val.fileKey)
         console.log('index?', index)
         if (index !== -1) {
-          console.log('?????????')
           tempFileList[index].addYn = false
         } else {
           index = tempFileList.findIndex(f => f.attachKey === val.attachKey)
+
           if (index !== -1) {
             tempFileList.splice(index, 1)
           }
         }
       }
-      console.log(tempFileList)
+      console.log('delAttachFile tempFileList', tempFileList)
     }
     // eslint-disable-next-line no-unused-vars
     const setAttachFileList = () => {
@@ -1736,16 +1736,19 @@ export default defineComponent({
       // const delFileList = []
       const iList = document.querySelectorAll('.formCard .addFalse')
       let delYn = true
+      console.log('tempFileListtempFileList', tempFileList)
       // 1. 이미 있던 사진을 삭제해서 수정(업데이트 하는경우): addYn: false // 삭제한 파일도 포함해야함
       for (let i = tempFileList.length - 1; i > -1; i--) {
         const tempFile = tempFileList[i]
         for (let j = 0; addFalseAttachTrueFileList.length; j++) {
+          // console.log('addFalseAttachTrueFileList ???', addFalseAttachTrueFileList)
           const propAttachFile = addFalseAttachTrueFileList[j]
           // let deleteYn = true
           if (!propAttachFile) break
           if (tempFile.fileKey && tempFile.fileKey === propAttachFile.file) {
             // tempFileList[i].addYn = false
             delYn = false
+            tempFile.deleteYn = true
           }
           /*
           if (deleteYn) {
@@ -2229,6 +2232,7 @@ export default defineComponent({
         }
         newAttachFileList.push(fileObj)
       }
+      console.log('newAttachFileList', newAttachFileList)
       return newAttachFileList
     }
 

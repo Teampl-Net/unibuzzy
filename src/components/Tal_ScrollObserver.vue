@@ -15,6 +15,7 @@ export default defineComponent({
     }
     let observer = null
     const handleIntersect = (entry) => {
+      // console.log('scrollscrollscrollscrollscrollscroll', entry)
       if (entry.isIntersecting) emit('triggerIntersected', trigger.value)
     }
 

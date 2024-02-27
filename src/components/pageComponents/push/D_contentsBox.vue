@@ -453,7 +453,14 @@
             <div @click.stop="clickFileDownload()" v-if="CONT_DETAIL.fileCount" class="cursorP" style="margin-left:0.6rem;">
               <img src="../../../assets/images/push/contentsClipIcon.svg" style="width:15px;" class="" alt=""/>
               <span v-if="propDetailYn===true" class="font15" style="margin-left:0.1rem;"> {{ CONT_DETAIL.attachFileList ? CONT_DETAIL.attachFileList.length : '0' }} file</span>
-              <span v-else-if="propDetailYn===false" class="font15" style="margin-left:0.1rem;"> 1+ file</span>
+              <template v-if="propDetailYn===false">
+              <span v-if="mFileDownData && mFileDownData.attachFileList && mFileDownData.attachFileList.length === 1" class="font15" style="margin-left:0.1rem;">
+                {{ fileName }}</span>
+              <span v-else class="font15" style="margin-left:0.1rem;">
+                {{ '1 + files' }}
+              </span>
+              <!-- <span v-if="CONT_DETAIL && CONT_DETAIL.attachFileList && CONT_DETAIL.attachFileList.length > 1" class="font15" style="margin-left:0.1rem;"> 1+ files</span> -->
+              </template>
             </div>
             </div>
           </div>
@@ -1278,7 +1285,9 @@ export default {
     pNoAuthYn: {}
   },
   created () {
-    console.log('contentsBox this.CONT_DETAIL', this.CONT_DETAIL)
+    this.getContentsDetail()
+    // console.log('contentsBox this.CONT_DETAIL', this.CONT_DETAIL)
+    // console.log('contentsElecontentsElecontentsElecontentsEle', this.contentsEle)
     this.checkUserRef()
     // this.saveStickerList()
     if (this.pFadeNotShowYn) this.mFadeNotShowYn = true
@@ -1301,6 +1310,8 @@ export default {
   },
   data () {
     return {
+      mAttachFileList: {},
+      fileName: '',
       userRefYn: [],
       mCommentPopShowYn: false,
       mMemoLeng: 0,
@@ -1889,6 +1900,9 @@ export default {
       var resultList = await this.$getContentsList(param)
       var detailData = resultList.content[0]
       this.mFileDownData = detailData
+      if (detailData && detailData.attachFileList && detailData.attachFileList.length === 1) {
+        this.fileName = detailData.attachFileList[0].fileName
+      }
       try {
         this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
       } catch (error) {

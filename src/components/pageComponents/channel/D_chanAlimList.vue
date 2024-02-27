@@ -266,6 +266,7 @@ export default {
   created () {
     this.$emit('openLoading')
     this.readyFunction()
+    console.log('<<<<<chanDetail>>>>', this.chanDetail)
     console.log('<<<CHANNEL_DETAIL>>>', this.CHANNEL_DETAIL)
   },
   // updated () {

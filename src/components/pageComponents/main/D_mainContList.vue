@@ -3,8 +3,8 @@
         <template v-for="(cont, index) in this.GE_DISP_CONTS_LIST" :key="cont.contentsKey" > <!-- :propJustShowYn="cont.jobkindId === 'TODO'" -->
           <gContentsBox v-if="cont.jobkindId" :pOpenUnknownLoginPop="pOpenUnknownLoginPop" :pUnknownYn="pUnknownYn" class="mBottom-05" ref="myContentsBox" @requestSearchSticker="requestSearchSticker" @openImgPop="openImgPop" :imgClickYn="true" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" :propContIndex='index' @contDelete='contDelete' />
           <todoContentsBox v-else :pOpenUnknownLoginPop="pOpenUnknownLoginPop" :pUnknownYn="pUnknownYn" class="mBottom-05" ref="myContentsBox" @requestSearchSticker="requestSearchSticker" @openImgPop="openImgPop" :imgClickYn="true" :propDetailYn="false" :pTodoElement="cont" @openPop="openPop" :propContIndex='index' @contDelete='contDelete' />
-            <div style="width: 100%; height: 10px;"></div>
-            <myObserver v-if="this.GE_DISP_CONTS_LIST && this.GE_DISP_CONTS_LIST.length > 9 ?  index === this.GE_DISP_CONTS_LIST.length - 15 : index === this.GE_DISP_CONTS_LIST.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w-100P" style="float: left;"></myObserver>
+          <div style="width: 100%; height: 10px;"></div>
+          <myObserver v-if="this.GE_DISP_CONTS_LIST && this.GE_DISP_CONTS_LIST.length > 9 ?  index === this.GE_DISP_CONTS_LIST.length - 15 : index === this.GE_DISP_CONTS_LIST.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w-100P" style="float: left;"></myObserver>
         </template>
         <div class="fl" style="width: 40px; height: 40px;border-radius: 100%; position: absolute; bottom: 6rem; right: 50px; z-index:2;">
             <img id='writeBtn' src="../../../assets/images/button/Icon_WriteAlimBtn.png" @click="openSelectWriteTypePop()" alt="알림 작성 버튼" style="height: auto; cursor: pointer;" class="img-w66 fl">
@@ -204,6 +204,8 @@ export default {
       this.mContsList = this.replaceArr(resultList.content)
     },
     async setContsList (resultList) {
+      console.log('mainContList resultList', resultList)
+
       if (!resultList || resultList === '') return
       var newArr = []
       this.endListSetFunc(resultList)
@@ -220,6 +222,7 @@ export default {
       } else {
         newArr = resultList.content
       }
+      console.log('newArrnewArrnewArr', newArr)
       this.mContsList = this.replaceArr(newArr)
     },
     replaceMemoArr (arr) {
@@ -277,6 +280,7 @@ export default {
       }
     },
     endListSetFunc (resultList) {
+      console.log('endListSetFunc resultList', resultList)
       if (resultList === undefined || resultList === null || resultList === '') return
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.mEndListYn = true

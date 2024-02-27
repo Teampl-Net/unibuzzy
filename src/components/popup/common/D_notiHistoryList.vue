@@ -31,16 +31,18 @@
       </div>
     </div>
     <div class="w100P flexCenter notiContentsWrap">
-      <template v-if="mNotiList.length">
+      <template v-for="(noti, index) in mNotiList" :key="index">
         <notiCompo
           @clickNoti="goNotiDetail"
           :notiClear="putData"
-          v-for="(noti, index) in mNotiList"
           :mNotiEle="noti" :pClosePop="pClosePop"
-          :key="index"
+          v-if="mNotiList && mNotiList.length"
         />
+        <div style="width: 100%; height: 10px;"></div>
+        <myObserver v-if="mNotiList && mNotiList.length > 9 ?  index === mNotiList.length - 15 : index === mNotiList.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w-100P" style="float: left;"></myObserver>
+          <!-- <myObserver  Observer @triggerIntersected="loadMore" id="observer" class="fl w-100P" style="float: left;"></myObserver> -->
+        <!-- <gEmpty v-else tabName="최신" contentName="전체" /> -->
       </template>
-      <gEmpty v-else tabName="최신" contentName="전체" />
     </div>
     <div class="notiPopBottom">
       <p
@@ -70,11 +72,22 @@ export default {
     return {
       mNotiList: [],
       mConfirmPopShowYn: false,
-      mgetLogKey: ''
+      mgetLogKey: '',
+      mCanLoadYn: true,
+      mEndListYn: false,
+      makeNewArray: [],
+      mOffsetInt: 1,
+      mPageSize: 20,
+      mAxiosQueue: []
     }
   },
   created () {
-    this.getNotiHistoryList()
+    // this.getNotiHistoryList(20, 0, false)
+    if (this.mNotiList.length === 0) {
+      this.getNotiHistoryList().then((result) => {
+        this.setContsList(result)
+      })
+    }
   },
   computed: {
     GE_LOCALE () {
@@ -104,6 +117,74 @@ export default {
     this.$checkDeleteHistory('notiHistoryPop')
   },
   methods: {
+    getConsole () {
+      console.log('엥.')
+    },
+    endListSetFunc (resultList) {
+      console.log('endListSetFunc resultList', resultList)
+      if (resultList === undefined || resultList === null || resultList === '') return
+      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+        this.mEndListYn = true
+        if (this.mOffsetInt > 0) this.mOffsetInt -= 1
+      } else {
+        this.mEndListYn = false
+        this.mOffsetInt += 1
+      }
+    },
+    replaceArr (arr) {
+      // var this_ = this
+      if (!arr && arr.length === 0) return []
+      var uniqueArr = arr.reduce(function (data, current) {
+        if (data.findIndex((item) => Number(item.contentsKey) === Number(current.contentsKey)) === -1) {
+        /* if (data.findIndex(({ mccKey }) => mccKey === current.mccKey) === -1 && ((this_.viewMainTab === 'P' && current.jobkindId === 'ALIM') || (this_.viewMainTab === 'B' && current.jobkindId === 'BOAR'))) { */
+          data.push(current)
+        }
+        data = data.sort(function (a, b) { // num으로 오름차순 정렬
+          return b.contentsKey - a.contentsKey
+          // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
+        })
+        return data
+      }, [])
+      return uniqueArr
+    },
+    async setContsList (resultList) {
+      console.log('setContsList resultList', resultList)
+
+      if (!resultList || resultList === '') return
+      var newArr = []
+      this.endListSetFunc(resultList)
+      // this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
+
+      if (this.mNotiList.length > 0) {
+        newArr = [
+          ...this.mNotiList,
+          ...resultList.content
+        ]
+      } else {
+        newArr = resultList.content
+      }
+      console.log('setContsList newArrnewArrnewArr', newArr)
+      this.mNotiList = this.replaceArr(newArr)
+    },
+    async loadMore (descYn) {
+      console.log(' noti History List LoadMore ')
+      if (this.mCanLoadYn && this.mEndListYn === false) {
+        this.mCanLoadYn = false
+        try {
+          var resultList = await this.getNotiHistoryList(null, null, false)
+          console.log('loadMoreloadMore resultList????', resultList)
+          this.setContsList(resultList)
+        } catch (e) {
+          console.log(e)
+        } finally {
+          this.mCanLoadYn = true
+          // console.log('notiHistory === ', this.mAxiosQueue)
+          // var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getPushContentsList')
+          // if (queueIndex !== -1) this.mAxiosQueue.splice(queueIndex, 1)
+        }
+      } else {
+      }
+    },
     putData (logKey) {
       this.mgetLogKey = logKey
       this.mConfirmPopShowYn = true
@@ -111,17 +192,29 @@ export default {
     closeXPop (reloadYn) {
       this.$emit('closeXPop')
     },
-    async getNotiHistoryList (noti) {
+    async getNotiHistoryList (pageSize, offsetInput, loadingYn) {
       var param = {}
       param.userKey = this.GE_USER.userKey
-      console.log(this.GE_LOCALE)
       param.codeLang = this.GE_LOCALE
+      param.allYn = true
+
+      if (offsetInput !== undefined && offsetInput !== null && offsetInput !== '') { param.offsetInt = offsetInput } else { param.offsetInt = this.mOffsetInt * this.mPageSize + this.mPageSize }
+      if (pageSize !== undefined && pageSize !== null && pageSize !== '') { param.pageSize = pageSize } else { param.pageSize = this.mPageSize }
+
+      var nonLoading = true
+      if (loadingYn) {
+        nonLoading = false
+      }
       const result = await this.$commonAxiosFunction({
         url: '/sUniB/tp.getLogList',
-        param: param
+        param: param,
+        nonLoading
       })
-      this.mNotiList = result.data.log.content
-      console.log('mNotiList', this.mNotiList)
+      this.makeNewArray = result.data.log
+      // this.mNotiList = result.data.log.content
+      console.log('makeNewArray', this.makeNewArray)
+      // console.log('mNotiList', this.mNotiList)
+      return result.data.log
     },
     async notiClear () {
       var param = {}
@@ -137,7 +230,7 @@ export default {
       console.log('result', result)
       this.$store.dispatch('D_NOTI/AC_CLEAR_NOTI_LIST')
       this.mConfirmPopShowYn = false
-      this.getNotiHistoryList()
+      this.getNotiHistoryList(20, 0, false)
     },
     async goNotiDetail (data) {
       console.log('message???', data)

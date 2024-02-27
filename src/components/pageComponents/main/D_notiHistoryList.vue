@@ -18,7 +18,7 @@
     <div style="width: 100%; height: 100%; padding: 60px 1.5rem; padding-bottom: 0;float: left; background: #fff; overflow: hidden scroll;">
         <p class="notiTitle font18 fontBold commonColor textLeft">{{ $t('RECE_TITLE_NOTI') }}</p>
         <p class="font10 lightGray textLeft fl">{{ $t('RECE_MSG_NOTIDESC') }}</p>
-        <p class="font10 lightGray mbottom-05 textLeft fr" @click="mConfirmPopShowYn = true">{{ $t('RECE_BTN_DELETE') }}</p>
+        <!-- <p class="font10 lightGray mbottom-05 textLeft fr" @click="mConfirmPopShowYn = true">{{ $t('RECE_BTN_DELETE') }}</p> -->
         <notiCompo @clickNoti="goNotiDetail" v-for="(noti, index) in GE_RECENT_NOTI_LIST" :mNotiEle="noti" :key="index" />
         <gConfirmPop :confirmText="$t('RECE_MSG_DELETE')" confirmType='two' @no='mConfirmPopShowYn = false' v-if="mConfirmPopShowYn" @ok="notiClear"/>
     </div>
